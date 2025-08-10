@@ -1,5 +1,5 @@
-import RolePermissionRepository from '@/repositories/v1/role-permission.repository';
-import PermissionRepository from '@/repositories/v1/permission.repository';
+import RolePermissionRepository from '@/repositories/v1/modules/role-permission/role-permission.repository';
+import PermissionRepository from '@/repositories/v1/modules/permission/permission.repository';
 import { NotFoundError } from '@/utils/app-error.utils';
 
 export class RolePermissionService {

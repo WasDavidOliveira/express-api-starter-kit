@@ -1,4 +1,4 @@
-import RoleRepository from '@/repositories/v1/role.repository';
+import RoleRepository from '@/repositories/v1/modules/role/role.repository';
 import { NotFoundError } from '@/utils/app-error.utils';
 import { CreateRoleInput } from '@/validations/v1/role.validations';
 

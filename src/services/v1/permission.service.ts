@@ -1,4 +1,4 @@
-import PermissionRepository from '@/repositories/v1/permission.repository';
+import PermissionRepository from '@/repositories/v1/modules/permission/permission.repository';
 import { NotFoundError } from '@/utils/app-error.utils';
 import { CreatePermissionInput } from '@/validations/v1/permission.validations';
 

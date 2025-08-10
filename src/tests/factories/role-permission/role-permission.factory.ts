@@ -1,6 +1,6 @@
 import { RoleFactory } from '@/tests/factories/role/role.factory';
 import { PermissionFactory } from '@/tests/factories/permission/permission.factory';
-import RolePermissionRepository from '@/repositories/v1/role-permission.repository';
+import RolePermissionRepository from '@/repositories/v1/modules/role-permission/role-permission.repository';
 import { RoleModel } from '@/types/models/v1/role.types';
 import { PermissionModel } from '@/types/models/v1/permission.types';
 
