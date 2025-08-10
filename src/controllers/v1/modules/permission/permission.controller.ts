@@ -3,7 +3,7 @@ import { catchAsync } from '@/utils/catch-async.utils';
 import PermissionService from '@/services/v1/permission.service';
 import { StatusCode } from '@/constants/status-code.constants';
 import { CreatePermissionInput } from '@/validations/v1/permission.validations';
-import { PermissionResource } from '@/resources/v1/permission.resource';
+import { PermissionResource } from '@/resources/v1/modules/permission/permission.resource';
 
 export class PermissionController {
   create = catchAsync(
