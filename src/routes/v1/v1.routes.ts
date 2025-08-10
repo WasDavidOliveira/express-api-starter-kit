@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import authRoutes from '@/routes/v1/auth.routes';
 import permissionRoutes from '@/routes/v1/permission.routes';
-import { authMiddleware } from '@/middlewares/auth.middlewares';
+import { authMiddleware } from '@/middlewares/auth/auth.middlewares';
 import rolePermissionRoutes from '@/routes/v1/role-permission.routes';
 import roleRoutes from '@/routes/v1/roles.routes';
 

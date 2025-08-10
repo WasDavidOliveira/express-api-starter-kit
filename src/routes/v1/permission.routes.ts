@@ -4,8 +4,8 @@ import {
   createPermissionSchema,
   updatePermissionSchema,
 } from '@/validations/v1/permission.validations';
-import { validateRequest } from '@/middlewares/validate-request.middlewares';
-import { hasPermission } from '@/middlewares/permission.middleware';
+import { validateRequest } from '@/middlewares/validation/validate-request.middlewares';
+import { hasPermission } from '@/middlewares/authorization/permission.middleware';
 import { PermissionActions } from '@/constants/permission.constants';
 
 const router = Router();
