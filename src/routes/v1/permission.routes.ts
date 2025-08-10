@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import PermissionController from '@/controllers/v1/permission.controller';
+import PermissionController from '@/controllers/v1/modules/permission/permission.controller';
 import {
   createPermissionSchema,
   updatePermissionSchema,

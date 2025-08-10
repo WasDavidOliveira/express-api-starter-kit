@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import RoleController from '@/controllers/v1/role.controller';
+import RoleController from '@/controllers/v1/modules/role/role.controller';
 import {
   createRoleSchema,
   updateRoleSchema,
