@@ -1,6 +1,6 @@
 import appConfig from '@/configs/app.config';
 import { Environment } from '@/constants/environment.constants';
-import { ValidationErrorItem } from '@/types/errors.types';
+import { ValidationErrorItem } from '@/types/core/errors.types';
 
 export class AppError extends Error {
   statusCode: number;

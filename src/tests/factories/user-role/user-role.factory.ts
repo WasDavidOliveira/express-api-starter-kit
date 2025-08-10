@@ -1,6 +1,6 @@
 import { db } from '@/db/db.connection';
 import { userRoles } from '@/db/schema/v1/user-role.schema';
-import { UserRole } from '@/types/middlewares.types';
+import { UserRole } from '@/types/infrastructure/middlewares.types';
 import { eq, and } from 'drizzle-orm';
 
 export class UserRoleFactory {
