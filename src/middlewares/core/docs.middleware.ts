@@ -3,7 +3,7 @@ import { apiReference } from '@scalar/express-api-reference';
 import { scalarConfig } from '@/configs/docs.config';
 import path from 'path';
 import fs from 'fs';
-import { generateOpenAPIDocument } from '@/utils/openapi.utils';
+import { generateOpenAPIDocument } from '@/utils/documentation/openapi.utils';
 
 export const configureDocs = (app: Application) => {
   generateOpenAPIDocument();
