@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import authRoutes from '@/routes/v1/auth.routes';
-import permissionRoutes from '@/routes/v1/permission.routes';
+import authRoutes from '@/routes/v1/modules/auth/auth.routes';
+import permissionRoutes from '@/routes/v1/modules/permission/permission.routes';
 import { authMiddleware } from '@/middlewares/auth/auth.middlewares';
-import rolePermissionRoutes from '@/routes/v1/role-permission.routes';
-import roleRoutes from '@/routes/v1/roles.routes';
+import rolePermissionRoutes from '@/routes/v1/modules/role-permission/role-permission.routes';
+import roleRoutes from '@/routes/v1/modules/role/roles.routes';
 
 const router: Router = Router();
 
