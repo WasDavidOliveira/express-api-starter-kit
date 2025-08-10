@@ -2,7 +2,7 @@ import { StatusCode } from '@/constants/status-code.constants';
 import { catchAsync } from '@/utils/catch-async.utils';
 import { Request, Response } from 'express';
 import { PermissionResource } from '@/resources/v1/modules/permission/permission.resource';
-import RolePermissionService from '@/services/v1/role-permission.service';
+import RolePermissionService from '@/services/v1/modules/role-permission/role-permission.service';
 
 export class RolePermissionController {
   attach = catchAsync(async (req: Request, res: Response) => {

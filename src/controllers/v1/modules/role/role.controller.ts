@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { catchAsync } from '@/utils/catch-async.utils';
-import RoleService from '@/services/v1/role.service';
+import RoleService from '@/services/v1/modules/role/role.service';
 import { StatusCode } from '@/constants/status-code.constants';
 import { CreateRoleInput } from '@/validations/v1/role.validations';
 import { RoleResource } from '@/resources/v1/modules/role/role.resource';
