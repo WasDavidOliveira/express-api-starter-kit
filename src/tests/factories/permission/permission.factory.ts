@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { PermissionModel } from '@/types/models/v1/permission.types';
 import PermissionRepository from '@/repositories/v1/modules/permission/permission.repository';
-import { CreatePermissionInput } from '@/validations/v1/permission.validations';
+import { CreatePermissionInput } from '@/validations/v1/modules/permission.validations';
 
 export class PermissionFactory {
   static makePermissionData(

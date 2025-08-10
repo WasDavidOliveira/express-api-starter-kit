@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { CreateRoleModel, RoleModel } from '@/types/models/v1/role.types';
 import RoleRepository from '@/repositories/v1/modules/role/role.repository';
-import { CreateRoleInput } from '@/validations/v1/role.validations';
+import { CreateRoleInput } from '@/validations/v1/modules/role.validations';
 
 export class RoleFactory {
   static makeRoleData(

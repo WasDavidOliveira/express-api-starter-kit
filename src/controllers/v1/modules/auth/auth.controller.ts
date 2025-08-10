@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { catchAsync } from '@/utils/catch-async.utils';
-import { LoginInput, RegisterInput } from '@/validations/v1/auth.validations';
+import { LoginInput, RegisterInput } from '@/validations/v1/modules/auth.validations';
 import AuthService from '@/services/v1/modules/auth/auth.service';
 import { UserResource } from '@/resources/v1/modules/user/user.resources';
 import { StatusCode } from '@/constants/status-code.constants';

@@ -3,7 +3,7 @@ import PermissionController from '@/controllers/v1/modules/permission/permission
 import {
   createPermissionSchema,
   updatePermissionSchema,
-} from '@/validations/v1/permission.validations';
+} from '@/validations/v1/modules/permission.validations';
 import { validateRequest } from '@/middlewares/validation/validate-request.middlewares';
 import { hasPermission } from '@/middlewares/authorization/permission.middleware';
 import { PermissionActions } from '@/constants/permission.constants';

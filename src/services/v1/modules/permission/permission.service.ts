@@ -1,6 +1,6 @@
 import PermissionRepository from '@/repositories/v1/modules/permission/permission.repository';
 import { NotFoundError } from '@/utils/app-error.utils';
-import { CreatePermissionInput } from '@/validations/v1/permission.validations';
+import { CreatePermissionInput } from '@/validations/v1/modules/permission.validations';
 
 export class PermissionService {
   async create(permissionData: CreatePermissionInput) {

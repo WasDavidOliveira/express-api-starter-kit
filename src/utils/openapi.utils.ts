@@ -6,7 +6,7 @@ import {
   loginSchema,
   registerSchema,
   userResponseSchema,
-} from '@/validations/v1/auth.validations';
+} from '@/validations/v1/modules/auth.validations';
 
 export const generateOpenAPIDocument = () => {
   const loginResponseSchema = z

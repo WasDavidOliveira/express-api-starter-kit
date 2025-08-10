@@ -4,7 +4,7 @@ import UserRepository from '@/repositories/v1/modules/auth/user.repository';
 import { UnauthorizedError } from '@/utils/app-error.utils';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { LoginInput, RegisterInput } from '@/validations/v1/auth.validations';
+import { LoginInput, RegisterInput } from '@/validations/v1/modules/auth.validations';
 
 export class AuthService {
   async login(data: LoginInput) {

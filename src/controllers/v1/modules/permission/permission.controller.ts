@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { catchAsync } from '@/utils/catch-async.utils';
 import PermissionService from '@/services/v1/modules/permission/permission.service';
 import { StatusCode } from '@/constants/status-code.constants';
-import { CreatePermissionInput } from '@/validations/v1/permission.validations';
+import { CreatePermissionInput } from '@/validations/v1/modules/permission.validations';
 import { PermissionResource } from '@/resources/v1/modules/permission/permission.resource';
 
 export class PermissionController {
