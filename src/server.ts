@@ -1,7 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
 import appConfig from '@/configs/app.config';
-import { logger } from '@/utils/logger.utils';
+import { logger } from '@/utils/core/logger.utils';
 import { bootstrapMiddlewares } from '@/middlewares/core/bootstrap.middleware';
 
 const app = express();

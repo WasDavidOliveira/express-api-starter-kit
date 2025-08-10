@@ -2,7 +2,7 @@ import { db } from '@/db/db.connection';
 import { roles } from '@/db/schema/v1/role.schema';
 import { userRoles } from '@/db/schema/v1/user-role.schema';
 import { eq, and } from 'drizzle-orm';
-import { logger } from '@/utils/logger.utils';
+import { logger } from '@/utils/core/logger.utils';
 
 export async function seedUserRoles() {
   try {

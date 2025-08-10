@@ -2,7 +2,7 @@ import { db } from '@/db/db.connection';
 import { roles } from '@/db/schema/v1/role.schema';
 import { rolePermissions } from '@/db/schema/v1/role-permission.schema';
 import { eq, and } from 'drizzle-orm';
-import { logger } from '@/utils/logger.utils';
+import { logger } from '@/utils/core/logger.utils';
 import { PermissionActions } from '@/constants/permission.constants';
 
 export async function seedRolePermissions() {

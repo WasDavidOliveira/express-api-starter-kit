@@ -1,6 +1,6 @@
 import { db } from '@/db/db.connection';
 import { permissions } from '@/db/schema/v1/permission.schema';
-import { logger } from '@/utils/logger.utils';
+import { logger } from '@/utils/core/logger.utils';
 import { PermissionActions } from '@/constants/permission.constants';
 import { eq, and } from 'drizzle-orm';
 

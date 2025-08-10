@@ -3,7 +3,7 @@ import { seedUsers } from '@/db/seeds/users.seeds';
 import { seedPermissions } from '@/db/seeds/permissions.seeds';
 import { seedRolePermissions } from '@/db/seeds/role-permissions.seeds';
 import { seedUserRoles } from '@/db/seeds/user-roles.seeds';
-import { logger } from '@/utils/logger.utils';
+import { logger } from '@/utils/core/logger.utils';
 
 async function runAllSeeds() {
   try {

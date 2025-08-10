@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from '@/utils/app-error.utils';
+import { AppError } from '@/utils/core/app-error.utils';
 import { ZodError } from 'zod';
-import { NotFoundError } from '@/utils/app-error.utils';
+import { NotFoundError } from '@/utils/core/app-error.utils';
 import { StatusCode } from '@/constants/status-code.constants';
 import { PostgresError, ValidationErrorItem } from '@/types/core/errors.types';
 

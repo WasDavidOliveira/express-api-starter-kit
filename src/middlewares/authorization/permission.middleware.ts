@@ -4,7 +4,7 @@ import { user } from '@/db/schema/v1/user.schema';
 import { permissions } from '@/db/schema/v1/permission.schema';
 import { rolePermissions } from '@/db/schema/v1/role-permission.schema';
 import { eq, and, inArray, or } from 'drizzle-orm';
-import { ForbiddenError, UnauthorizedError } from '@/utils/app-error.utils';
+import { ForbiddenError, UnauthorizedError } from '@/utils/core/app-error.utils';
 import { PermissionCheck } from '@/types/models/v1/permission.types';
 import { PermissionAction } from '@/constants/permission.constants';
 import { UserWithRoles } from '@/types/infrastructure/middlewares.types';

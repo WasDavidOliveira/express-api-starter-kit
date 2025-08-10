@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import appConfig from '@/configs/app.config';
-import { UnauthorizedError } from '@/utils/app-error.utils';
+import { UnauthorizedError } from '@/utils/core/app-error.utils';
 import { JwtPayload } from '@/types/core/jwt.types';
 
 export const authMiddleware = (

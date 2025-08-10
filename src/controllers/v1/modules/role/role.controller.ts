@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { catchAsync } from '@/utils/catch-async.utils';
+import { catchAsync } from '@/utils/infrastructure/catch-async.utils';
 import RoleService from '@/services/v1/modules/role/role.service';
 import { StatusCode } from '@/constants/status-code.constants';
 import { CreateRoleInput } from '@/validations/v1/modules/role.validations';

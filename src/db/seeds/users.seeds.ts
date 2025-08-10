@@ -1,7 +1,7 @@
 import { db } from '@/db/db.connection';
 import { user } from '@/db/schema/v1/user.schema';
 import * as bcrypt from 'bcrypt';
-import { logger } from '@/utils/logger.utils';
+import { logger } from '@/utils/core/logger.utils';
 
 export async function seedUsers() {
   try {
