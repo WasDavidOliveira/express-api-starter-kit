@@ -14,7 +14,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:push": "drizzle-kit push",
-    "db:seed": "ts-node -r tsconfig-paths/register src/scripts/run-seeds.script.ts",
+    "db:seed": "ts-node -r tsconfig-paths/register src/scripts/db/seeds/run-seeds.script.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
