@@ -25,6 +25,10 @@ class UserRepository {
 
     return newUser;
   }
+
+  async updatePassword(id: number, passwordHash: string): Promise<void> {
+    await db.update(user).set({ password: passwordHash }).where(eq(user.id, id));
+  }
 }
 
 export default new UserRepository();

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { LoginInput, RegisterInput } from '@/validations/v1/modules/auth.validations';
+import { LoginInput, RegisterInput, ForgotPasswordInput, ResetPasswordInput } from '@/validations/v1/modules/auth.validations';
 import AuthService from '@/services/v1/modules/auth/auth.service';
 import { UserResource } from '@/resources/v1/modules/user/user.resources';
 import { StatusCode } from '@/constants/status-code.constants';
@@ -34,6 +34,29 @@ export class AuthController {
     res.status(StatusCode.OK).json({
       message: 'Usuário encontrado com sucesso.',
       user: UserResource.toResponse(user),
+    });
+  };
+
+  forgotPassword = async (
+    req: Request<{}, {}, ForgotPasswordInput>,
+    res: Response
+  ) => {
+    const result = await AuthService.forgotPassword(req.body);
+
+    res.status(StatusCode.OK).json({
+      message: 'Se existir, enviaremos instruções para o email informado.',
+      token: result?.token,
+    });
+  };
+
+  resetPassword = async (
+    req: Request<{}, {}, ResetPasswordInput>,
+    res: Response
+  ) => {
+    await AuthService.resetPassword(req.body);
+
+    res.status(StatusCode.OK).json({
+      message: 'Senha redefinida com sucesso.',
     });
   };
 }

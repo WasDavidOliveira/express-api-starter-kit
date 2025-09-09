@@ -48,4 +48,44 @@ describe('Autenticação', () => {
     expect(response.body.token).toHaveProperty('expiresIn');
     expect(response.body.token).toHaveProperty('tokenType', 'Bearer');
   });
+
+  it('deve solicitar recuperação de senha e retornar token de reset', async () => {
+    const { user } = await UserFactory.createUser();
+
+    const response = await request(server)
+      .post(`${apiUrl}/forgot-password`)
+      .send({ email: user.email });
+
+    expect(response.status).toBe(StatusCode.OK);
+    expect(response.body.message).toBe('Se existir, enviaremos instruções para o email informado.');
+    expect(response.body).toHaveProperty('token');
+    expect(typeof response.body.token).toBe('string');
+  });
+
+  it('deve redefinir a senha com token válido e permitir login com a nova senha', async () => {
+    const { user } = await UserFactory.createUser();
+
+    const forgotResponse = await request(server)
+      .post(`${apiUrl}/forgot-password`)
+      .send({ email: user.email });
+
+    const resetToken: string = forgotResponse.body.token;
+
+    const newPassword = 'novaSenha123';
+
+    const resetResponse = await request(server)
+      .post(`${apiUrl}/reset-password`)
+      .send({ token: resetToken, password: newPassword });
+
+    expect(resetResponse.status).toBe(StatusCode.OK);
+    expect(resetResponse.body.message).toBe('Senha redefinida com sucesso.');
+
+    const loginResponse = await request(server)
+      .post(`${apiUrl}/login`)
+      .send({ email: user.email, password: newPassword });
+
+    expect(loginResponse.status).toBe(StatusCode.OK);
+    expect(loginResponse.body.message).toBe('Login realizado com sucesso.');
+    expect(loginResponse.body.token).toHaveProperty('accessToken');
+  });
 });

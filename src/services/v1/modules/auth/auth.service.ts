@@ -1,10 +1,9 @@
 import appConfig from '@/configs/app.config';
-import { NotFoundError } from '@/utils/core/app-error.utils';
+import { NotFoundError, UnauthorizedError } from '@/utils/core/app-error.utils';
 import UserRepository from '@/repositories/v1/modules/auth/user.repository';
-import { UnauthorizedError } from '@/utils/core/app-error.utils';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { LoginInput, RegisterInput } from '@/validations/v1/modules/auth.validations';
+import { LoginInput, RegisterInput, ForgotPasswordInput, ResetPasswordInput } from '@/validations/v1/modules/auth.validations';
 
 export class AuthService {
   async login(data: LoginInput) {
@@ -51,6 +50,40 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async forgotPassword(data: ForgotPasswordInput) {
+    const user = await UserRepository.findByEmail(data.email);
+
+    if (!user) {
+      return;
+    }
+
+    const token = jwt.sign({ id: user.id, purpose: 'reset' }, appConfig.jwtSecret, {
+      expiresIn: '15m',
+    });
+
+    return { token };
+  }
+
+  async resetPassword(data: ResetPasswordInput) {
+    const payload = jwt.verify(data.token, appConfig.jwtSecret) as { id: number; purpose?: string };
+
+    if (!payload?.id || payload?.purpose !== 'reset') {
+      throw new UnauthorizedError('Token inválido');
+    }
+
+    const user = await UserRepository.findById(payload.id);
+
+    if (!user) {
+      throw new NotFoundError('Usuário não encontrado');
+    }
+
+    const newPasswordHash = await bcrypt.hash(data.password, 10);
+
+    await UserRepository.updatePassword(user.id, newPasswordHash);
+
+    return;
   }
 }
 
