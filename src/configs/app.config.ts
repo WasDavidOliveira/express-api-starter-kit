@@ -19,7 +19,7 @@ export const appConfig = {
     'http://localhost:5173',
   ],
   databaseUrl: createDatabaseUrl(),
-  jwtSecret: process.env.JWT_SECRET || '',
+  jwtSecret: process.env.JWT_SECRET || '' as string,
   jwtExpiration: process.env.JWT_EXPIRATION || '1h',
   jwtRefreshTokenExpiration: process.env.JWT_REFRESH_TOKEN_EXPIRATION || '7d',
   jwtRefreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET || '',

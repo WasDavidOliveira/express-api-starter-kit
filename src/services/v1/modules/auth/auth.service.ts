@@ -19,10 +19,11 @@ export class AuthService {
       throw new UnauthorizedError('Credenciais inválidas');
     }
 
-    // @ts-expect-error
-    const token = jwt.sign({ id: user.id }, appConfig.jwtSecret, {
-      expiresIn: appConfig.jwtExpiration,
-    });
+    const token = jwt.sign(
+      { id: user.id },
+      appConfig.jwtSecret as jwt.Secret,
+      { expiresIn: appConfig.jwtExpiration as jwt.SignOptions['expiresIn'] }
+    );
 
     return {
       token,
@@ -59,15 +60,20 @@ export class AuthService {
       return;
     }
 
-    const token = jwt.sign({ id: user.id, purpose: 'reset' }, appConfig.jwtSecret, {
-      expiresIn: '15m',
-    });
+    const token = jwt.sign(
+      { id: user.id, purpose: 'reset' },
+      appConfig.jwtSecret as jwt.Secret,
+      { expiresIn: '15m' }
+    );
 
     return { token };
   }
 
   async resetPassword(data: ResetPasswordInput) {
-    const payload = jwt.verify(data.token, appConfig.jwtSecret) as { id: number; purpose?: string };
+    const payload = jwt.verify(
+      data.token,
+      appConfig.jwtSecret as jwt.Secret
+    ) as { id: number; purpose?: string };
 
     if (!payload?.id || payload?.purpose !== 'reset') {
       throw new UnauthorizedError('Token inválido');

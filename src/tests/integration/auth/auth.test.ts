@@ -22,7 +22,7 @@ describe('Autenticação', () => {
   setupTestDB();
 
   it('deve cadastrar um novo usuário com sucesso', async () => {
-    const userData = UserFactory.makeUserData();
+    const userData = UserFactory.build().make();
 
     const response = await request(server)
       .post(`${apiUrl}/register`)
@@ -36,7 +36,7 @@ describe('Autenticação', () => {
   });
 
   it('deve autenticar um usuário e retornar um token', async () => {
-    const { loginData } = await UserFactory.createUserAndGetLoginData();
+    const { loginData } = await UserFactory.build().createAndGetLoginData();
 
     const response = await request(server)
       .post(`${apiUrl}/login`)
@@ -50,7 +50,7 @@ describe('Autenticação', () => {
   });
 
   it('deve solicitar recuperação de senha e retornar token de reset', async () => {
-    const { user } = await UserFactory.createUser();
+    const { user } = await UserFactory.build().create();
 
     const response = await request(server)
       .post(`${apiUrl}/forgot-password`)
@@ -63,7 +63,7 @@ describe('Autenticação', () => {
   });
 
   it('deve redefinir a senha com token válido e permitir login com a nova senha', async () => {
-    const { user } = await UserFactory.createUser();
+    const { user } = await UserFactory.build().create();
 
     const forgotResponse = await request(server)
       .post(`${apiUrl}/forgot-password`)
