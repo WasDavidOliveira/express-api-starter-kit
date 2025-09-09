@@ -29,7 +29,7 @@ export class RolePermissionController {
 
     const permissions = await RolePermissionService.all(Number(roleId));
 
-    return res.json(PermissionResource.collectionToResponse(permissions));
+    res.json(PermissionResource.collectionToResponse(permissions));
   };
 }
 
