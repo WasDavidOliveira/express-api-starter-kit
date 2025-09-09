@@ -1,25 +1,22 @@
 import { Request, Response } from 'express';
-import { catchAsync } from '@/utils/infrastructure/catch-async.utils';
 import PermissionService from '@/services/v1/modules/permission/permission.service';
 import { StatusCode } from '@/constants/status-code.constants';
 import { CreatePermissionInput } from '@/validations/v1/modules/permission.validations';
 import { PermissionResource } from '@/resources/v1/modules/permission/permission.resource';
 
 export class PermissionController {
-  create = catchAsync(
-    async (req: Request<{}, {}, CreatePermissionInput>, res: Response) => {
-      const permissionData: CreatePermissionInput = req.body;
+  create = async (req: Request<{}, {}, CreatePermissionInput>, res: Response) => {
+    const permissionData: CreatePermissionInput = req.body;
 
-      const permission = await PermissionService.create(permissionData);
+    const permission = await PermissionService.create(permissionData);
 
-      res.status(StatusCode.CREATED).json({
-        message: 'Permissão criada com sucesso.',
-        data: PermissionResource.toResponse(permission),
-      });
-    }
-  );
+    res.status(StatusCode.CREATED).json({
+      message: 'Permissão criada com sucesso.',
+      data: PermissionResource.toResponse(permission),
+    });
+  };
 
-  show = catchAsync(async (req: Request, res: Response) => {
+  show = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const permission = await PermissionService.show(Number(id));
@@ -28,9 +25,9 @@ export class PermissionController {
       message: 'Permissão encontrada com sucesso.',
       data: PermissionResource.toResponse(permission),
     });
-  });
+  };
 
-  update = catchAsync(async (req: Request, res: Response) => {
+  update = async (req: Request, res: Response) => {
     const { id } = req.params;
     const permissionData: CreatePermissionInput = req.body;
 
@@ -43,9 +40,9 @@ export class PermissionController {
       message: 'Permissão atualizada com sucesso.',
       data: PermissionResource.toResponse(permission),
     });
-  });
+  };
 
-  delete = catchAsync(async (req: Request, res: Response) => {
+  delete = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     await PermissionService.delete(Number(id));
@@ -53,7 +50,7 @@ export class PermissionController {
     res.status(StatusCode.OK).json({
       message: 'Permissão deletada com sucesso.',
     });
-  });
+  };
 }
 
 export default new PermissionController();
