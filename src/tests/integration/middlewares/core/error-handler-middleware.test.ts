@@ -83,6 +83,7 @@ describe('Error Handler Middleware', () => {
       };
 
       let zodError: z.ZodError;
+      
       try {
         nestedSchema.parse(invalidData);
       } catch (error) {

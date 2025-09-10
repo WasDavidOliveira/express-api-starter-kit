@@ -41,15 +41,10 @@ export const errorHandler = (
   }
 
   if (err instanceof ZodError) {
-    const errors: ValidationErrorItem[] = err.errors.map((zodError) => {
-      const pathParts = zodError.path;
-      const lastPart = pathParts[pathParts.length - 1];
-      const campo = typeof lastPart === 'undefined' ? pathParts.join('.') : String(lastPart);
-      return {
-        campo,
-        mensagem: zodError.message,
-      };
-    });
+    const errors: ValidationErrorItem[] = err.errors.map((zodError) => ({
+      campo: zodError.path.join('.'),
+      mensagem: zodError.message,
+    }));
 
     return res.status(StatusCode.BAD_REQUEST).json({
       status: 'erro',
