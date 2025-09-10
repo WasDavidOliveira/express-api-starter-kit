@@ -7,6 +7,29 @@ import { PostgresError, ValidationErrorItem } from '@/types/core/errors.types';
 
 type ErrorTypes = Error | AppError | PostgresError | ZodError;
 
+const isPostgresError = (error: unknown): error is PostgresError => {
+  if (typeof error !== 'object' || error === null) {
+    return false;
+  }
+  
+  if (!('code' in error)) {
+    return false;
+  }
+
+  const code = (error as { code?: unknown }).code;
+
+  return typeof code === 'string';
+};
+
+const extractFieldFromDetail = (detail?: string, fallback: string = 'campo'): string => {
+  if (!detail) {
+    return fallback;
+  }
+  const match = detail.match(/\((.*?)\)=/);
+  const field = match ? match[1] : fallback;
+  return field.toLowerCase();
+};
+
 export const errorHandler = (
   err: ErrorTypes,
   req: Request,
@@ -18,10 +41,15 @@ export const errorHandler = (
   }
 
   if (err instanceof ZodError) {
-    const errors: ValidationErrorItem[] = err.errors.map((zodError) => ({
-      campo: zodError.path.join('.'),
-      mensagem: zodError.message,
-    }));
+    const errors: ValidationErrorItem[] = err.errors.map((zodError) => {
+      const pathParts = zodError.path;
+      const lastPart = pathParts[pathParts.length - 1];
+      const campo = typeof lastPart === 'undefined' ? pathParts.join('.') : String(lastPart);
+      return {
+        campo,
+        mensagem: zodError.message,
+      };
+    });
 
     return res.status(StatusCode.BAD_REQUEST).json({
       status: 'erro',
@@ -39,11 +67,9 @@ export const errorHandler = (
     });
   }
 
-  if ('code' in err) {
+  if (isPostgresError(err)) {
     if (err.code === '23505') {
-      const match = err.detail?.match(/\((.*?)\)=/);
-      const field = match ? match[1] : 'campo';
-
+      const field = extractFieldFromDetail(err.detail, 'campo');
       return res.status(StatusCode.CONFLICT).json({
         status: 'erro',
         message: `${field} já está em uso`,
@@ -52,9 +78,7 @@ export const errorHandler = (
     }
 
     if (err.code === '23503') {
-      const match = err.detail?.match(/\((.*?)\)=/);
-      const field = match ? match[1].toLowerCase() : 'registro';
-
+      const field = extractFieldFromDetail(err.detail, 'registro');
       return res.status(StatusCode.CONFLICT).json({
         status: 'erro',
         message: `${field} não existe`,
