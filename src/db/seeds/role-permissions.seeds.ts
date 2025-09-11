@@ -90,6 +90,7 @@ export async function seedRolePermissions() {
     logger.info('Role permissions seeded successfully');
   } catch (error) {
     logger.error('Error seeding role permissions:', error);
+
     throw error;
   }
 }

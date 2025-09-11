@@ -32,6 +32,7 @@ export async function seedUsers() {
     logger.info('Users seeded successfully');
   } catch (error) {
     logger.error('Error seeding users:', error);
+
     throw error;
   }
 }

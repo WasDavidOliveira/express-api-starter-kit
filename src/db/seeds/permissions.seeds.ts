@@ -82,6 +82,7 @@ export async function seedPermissions() {
     logger.info('Permissions seeded successfully');
   } catch (error) {
     logger.error('Error seeding permissions:', error);
+
     throw error;
   }
 }

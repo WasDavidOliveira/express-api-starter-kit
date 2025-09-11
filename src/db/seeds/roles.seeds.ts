@@ -31,6 +31,7 @@ export async function seedRoles() {
     logger.info('Roles seeded successfully');
   } catch (error) {
     logger.error('Error seeding roles:', error);
+
     throw error;
   }
 }

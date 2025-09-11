@@ -56,6 +56,7 @@ export async function seedUserRoles() {
     logger.info('User roles seeded successfully');
   } catch (error) {
     logger.error('Error seeding user roles:', error);
+
     throw error;
   }
 }
