@@ -45,7 +45,9 @@ export const errorHandler = (
 
   if (err instanceof ZodError) {
     const errors: ValidationErrorItem[] = err.errors.map(zodError => ({
-      campo: zodError.path.join('.'),
+      campo: String(
+        zodError.path[zodError.path.length - 1] ?? zodError.path.join('.'),
+      ),
       mensagem: zodError.message,
     }));
 
