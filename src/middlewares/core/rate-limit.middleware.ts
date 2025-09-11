@@ -1,8 +1,9 @@
 import rateLimit from 'express-rate-limit';
+import { appConfig } from '@/configs/app.config';
 
 export const globalRateLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minuto
-  max: 60, // limite de 60 requisições por IP
+  windowMs: 60 * 1000,
+  max: appConfig.rateLimitMaxPerMinute,
   standardHeaders: true,
   legacyHeaders: false,
   message: {

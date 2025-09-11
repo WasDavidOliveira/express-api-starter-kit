@@ -23,6 +23,7 @@ export const appConfig = {
   jwtExpiration: process.env.JWT_EXPIRATION ?? '1h',
   jwtRefreshTokenExpiration: process.env.JWT_REFRESH_TOKEN_EXPIRATION ?? '7d',
   jwtRefreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET ?? '',
+  rateLimitMaxPerMinute: Number(process.env.RATE_LIMIT_MAX_PER_MINUTE ?? 60),
 };
 
 export default appConfig;
