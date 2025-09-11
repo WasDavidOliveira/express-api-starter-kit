@@ -27,7 +27,6 @@ export default [
     },
     rules: {
       'prettier/prettier': 'error',
-      
       '@typescript-eslint/no-unused-vars': ['error', { 
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_' 
@@ -39,7 +38,6 @@ export default [
       '@typescript-eslint/prefer-optional-chain': 'error',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
-      
       'no-console': 'warn',
       'no-unused-vars': 'off',
       'prefer-const': 'error',
@@ -49,7 +47,10 @@ export default [
       'prefer-template': 'error',
       'consistent-return': 'error',
       'no-return-await': 'error',
-      
+      'padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: '*', next: 'throw' },
+      ],
       'max-len': ['error', { 
         code: 80, 
         ignoreUrls: true, 
