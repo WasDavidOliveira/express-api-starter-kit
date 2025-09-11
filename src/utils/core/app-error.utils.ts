@@ -9,7 +9,7 @@ export class AppError extends Error {
   constructor(
     message: string,
     statusCode: number = 400,
-    errors?: ValidationErrorItem[]
+    errors?: ValidationErrorItem[],
   ) {
     super(message);
     this.statusCode = statusCode;
@@ -25,7 +25,7 @@ export class AppError extends Error {
 export class BadRequestError extends AppError {
   constructor(
     message: string = 'Requisição inválida',
-    errors?: ValidationErrorItem[]
+    errors?: ValidationErrorItem[],
   ) {
     super(message, 400, errors);
   }
@@ -52,7 +52,7 @@ export class NotFoundError extends AppError {
 export class ValidationError extends AppError {
   constructor(
     message: string = 'Erro de validação',
-    errors: ValidationErrorItem[] = []
+    errors: ValidationErrorItem[] = [],
   ) {
     super(message, 400, errors);
   }

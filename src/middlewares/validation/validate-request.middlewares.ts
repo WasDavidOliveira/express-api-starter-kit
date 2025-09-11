@@ -15,8 +15,8 @@ export const validateRequest = (schema: AnyZodObject) => {
       if (error instanceof ZodError) {
         res.status(StatusCode.BAD_REQUEST).json({
           message: 'Dados inválidos na requisição',
-          errors: error.errors.map((e) => ({
-            campo: e.path[e.path.length - 1] || e.path.join('.'),
+          errors: error.errors.map(e => ({
+            campo: e.path[e.path.length - 1] ?? e.path.join('.'),
             mensagem: e.message,
           })),
         });

@@ -5,7 +5,7 @@ import { CreatePermissionInput } from '@/validations/v1/modules/permission.valid
 
 export class PermissionFactory {
   static makePermissionData(
-    overrides: Partial<CreatePermissionInput> = {}
+    overrides: Partial<CreatePermissionInput> = {},
   ): CreatePermissionInput {
     return {
       name: `${faker.hacker.verb()}_${Date.now()}`,
@@ -16,7 +16,7 @@ export class PermissionFactory {
   }
 
   static async createPermission(
-    overrides: Partial<CreatePermissionInput> = {}
+    overrides: Partial<CreatePermissionInput> = {},
   ): Promise<PermissionModel> {
     const permissionData = this.makePermissionData(overrides);
 
@@ -27,7 +27,7 @@ export class PermissionFactory {
 
   static async createPermissions(
     count: number = 3,
-    overrides: Partial<CreatePermissionInput> = {}
+    overrides: Partial<CreatePermissionInput> = {},
   ): Promise<PermissionModel[]> {
     const permissions = [];
 

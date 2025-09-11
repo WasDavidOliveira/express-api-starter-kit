@@ -15,7 +15,7 @@ let server: Server;
 
 beforeAll(async () => {
   server = app.listen();
-  
+
   await seedRoles();
   await seedPermissions();
   await seedRolePermissions();
@@ -33,11 +33,11 @@ describe('Permission Middleware', () => {
   describe('hasPermission', () => {
     it('deve permitir acesso quando usuário tem a permissão necessária', async () => {
       const { user, token } = await UserFactory.createUserAndGetToken();
-      
+
       const { db } = await import('@/db/db.connection');
       const { roles } = await import('@/db/schema/v1/role.schema');
       const { eq } = await import('drizzle-orm');
-      
+
       const adminRole = await db.query.roles.findFirst({
         where: eq(roles.name, 'admin'),
       });
@@ -49,7 +49,12 @@ describe('Permission Middleware', () => {
       const mockPermissionData = {
         name: faker.hacker.noun(),
         description: faker.lorem.sentence(),
-        action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+        action: faker.helpers.arrayElement([
+          'read',
+          'create',
+          'update',
+          'delete',
+        ]),
       };
 
       const response = await request(server)
@@ -62,11 +67,11 @@ describe('Permission Middleware', () => {
 
     it('deve rejeitar acesso quando usuário não tem a permissão necessária', async () => {
       const { user, token } = await UserFactory.createUserAndGetToken();
-      
+
       const { db } = await import('@/db/db.connection');
       const { roles } = await import('@/db/schema/v1/role.schema');
       const { eq } = await import('drizzle-orm');
-      
+
       const guestRole = await db.query.roles.findFirst({
         where: eq(roles.name, 'guest'),
       });
@@ -78,7 +83,12 @@ describe('Permission Middleware', () => {
       const mockPermissionData = {
         name: faker.hacker.noun(),
         description: faker.lorem.sentence(),
-        action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+        action: faker.helpers.arrayElement([
+          'read',
+          'create',
+          'update',
+          'delete',
+        ]),
       };
 
       const response = await request(server)
@@ -87,7 +97,9 @@ describe('Permission Middleware', () => {
         .send(mockPermissionData);
 
       expect(response.status).toBe(StatusCode.FORBIDDEN);
-      expect(response.body.message).toBe('Usuário não tem permissão para realizar esta ação');
+      expect(response.body.message).toBe(
+        'Usuário não tem permissão para realizar esta ação',
+      );
     });
 
     it('deve rejeitar acesso quando usuário não possui nenhum papel', async () => {
@@ -96,7 +108,12 @@ describe('Permission Middleware', () => {
       const mockPermissionData = {
         name: faker.hacker.noun(),
         description: faker.lorem.sentence(),
-        action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+        action: faker.helpers.arrayElement([
+          'read',
+          'create',
+          'update',
+          'delete',
+        ]),
       };
 
       const response = await request(server)
@@ -105,14 +122,21 @@ describe('Permission Middleware', () => {
         .send(mockPermissionData);
 
       expect(response.status).toBe(StatusCode.FORBIDDEN);
-      expect(response.body.message).toBe('Usuário não possui nenhum papel atribuído');
+      expect(response.body.message).toBe(
+        'Usuário não possui nenhum papel atribuído',
+      );
     });
 
     it('deve rejeitar acesso quando usuário não está autenticado', async () => {
       const mockPermissionData = {
         name: faker.hacker.noun(),
         description: faker.lorem.sentence(),
-        action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+        action: faker.helpers.arrayElement([
+          'read',
+          'create',
+          'update',
+          'delete',
+        ]),
       };
 
       const response = await request(server)
@@ -125,11 +149,11 @@ describe('Permission Middleware', () => {
 
     it('deve rejeitar acesso quando permissão não existe no sistema', async () => {
       const { user, token } = await UserFactory.createUserAndGetToken();
-      
-      const { db } = await import('@/db/db.connection');    
+
+      const { db } = await import('@/db/db.connection');
       const { roles } = await import('@/db/schema/v1/role.schema');
       const { eq } = await import('drizzle-orm');
-      
+
       const adminRole = await db.query.roles.findFirst({
         where: eq(roles.name, 'admin'),
       });
@@ -152,7 +176,12 @@ describe('Permission Middleware', () => {
       const mockPermissionData = {
         name: faker.hacker.noun(),
         description: faker.lorem.sentence(),
-        action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+        action: faker.helpers.arrayElement([
+          'read',
+          'create',
+          'update',
+          'delete',
+        ]),
       };
 
       const response = await request(server)
@@ -168,11 +197,11 @@ describe('Permission Middleware', () => {
   describe('hasAllPermissions', () => {
     it('deve permitir acesso quando usuário tem todas as permissões necessárias', async () => {
       const { user, token } = await UserFactory.createUserAndGetToken();
-      
+
       const { db } = await import('@/db/db.connection');
       const { roles } = await import('@/db/schema/v1/role.schema');
       const { eq } = await import('drizzle-orm');
-      
+
       const adminRole = await db.query.roles.findFirst({
         where: eq(roles.name, 'admin'),
       });
@@ -200,11 +229,11 @@ describe('Permission Middleware', () => {
 
     it('deve rejeitar acesso com usuário que tem permissões parciais', async () => {
       const { user, token } = await UserFactory.createUserAndGetToken();
-      
+
       const { db } = await import('@/db/db.connection');
       const { roles } = await import('@/db/schema/v1/role.schema');
       const { eq } = await import('drizzle-orm');
-      
+
       const userRole = await db.query.roles.findFirst({
         where: eq(roles.name, 'user'),
       });
@@ -219,7 +248,12 @@ describe('Permission Middleware', () => {
         .send({
           name: faker.hacker.noun(),
           description: faker.lorem.sentence(),
-          action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+          action: faker.helpers.arrayElement([
+            'read',
+            'create',
+            'update',
+            'delete',
+          ]),
         });
 
       expect(response.status).toBe(StatusCode.FORBIDDEN);
@@ -229,11 +263,11 @@ describe('Permission Middleware', () => {
   describe('hasAnyPermission', () => {
     it('deve permitir acesso quando usuário tem pelo menos uma das permissões necessárias', async () => {
       const { user, token } = await UserFactory.createUserAndGetToken();
-      
+
       const { db } = await import('@/db/db.connection');
       const { roles } = await import('@/db/schema/v1/role.schema');
       const { eq } = await import('drizzle-orm');
-      
+
       const adminRole = await db.query.roles.findFirst({
         where: eq(roles.name, 'admin'),
       });
@@ -261,11 +295,11 @@ describe('Permission Middleware', () => {
 
     it('deve permitir acesso com role que tem permissão específica', async () => {
       const { user, token } = await UserFactory.createUserAndGetToken();
-      
+
       const { db } = await import('@/db/db.connection');
       const { roles } = await import('@/db/schema/v1/role.schema');
       const { eq } = await import('drizzle-orm');
-      
+
       const userRole = await db.query.roles.findFirst({
         where: eq(roles.name, 'user'),
       });
@@ -283,11 +317,11 @@ describe('Permission Middleware', () => {
 
     it('deve rejeitar acesso com role sem permissões necessárias', async () => {
       const { user, token } = await UserFactory.createUserAndGetToken();
-      
+
       const { db } = await import('@/db/db.connection');
       const { roles } = await import('@/db/schema/v1/role.schema');
       const { eq } = await import('drizzle-orm');
-      
+
       const guestRole = await db.query.roles.findFirst({
         where: eq(roles.name, 'guest'),
       });
@@ -302,7 +336,12 @@ describe('Permission Middleware', () => {
         .send({
           name: faker.hacker.noun(),
           description: faker.lorem.sentence(),
-          action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+          action: faker.helpers.arrayElement([
+            'read',
+            'create',
+            'update',
+            'delete',
+          ]),
         });
 
       expect(response.status).toBe(StatusCode.FORBIDDEN);
@@ -315,7 +354,12 @@ describe('Permission Middleware', () => {
       const mockPermissionData = {
         name: faker.hacker.noun(),
         description: faker.lorem.sentence(),
-        action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+        action: faker.helpers.arrayElement([
+          'read',
+          'create',
+          'update',
+          'delete',
+        ]),
       };
 
       const response = await request(server)
@@ -330,7 +374,12 @@ describe('Permission Middleware', () => {
       const mockPermissionData = {
         name: faker.hacker.noun(),
         description: faker.lorem.sentence(),
-        action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+        action: faker.helpers.arrayElement([
+          'read',
+          'create',
+          'update',
+          'delete',
+        ]),
       };
 
       const response = await request(server)
@@ -345,7 +394,12 @@ describe('Permission Middleware', () => {
       const mockPermissionData = {
         name: faker.hacker.noun(),
         description: faker.lorem.sentence(),
-        action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+        action: faker.helpers.arrayElement([
+          'read',
+          'create',
+          'update',
+          'delete',
+        ]),
       };
 
       const response = await request(server)
@@ -361,7 +415,12 @@ describe('Permission Middleware', () => {
       const mockPermissionData = {
         name: faker.hacker.noun(),
         description: faker.lorem.sentence(),
-        action: faker.helpers.arrayElement(['read', 'create', 'update', 'delete']),
+        action: faker.helpers.arrayElement([
+          'read',
+          'create',
+          'update',
+          'delete',
+        ]),
       };
 
       const response = await request(server)

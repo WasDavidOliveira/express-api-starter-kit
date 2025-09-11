@@ -7,7 +7,7 @@ class UserRepository {
   async findById(id: number): Promise<UserModel | null> {
     const users = await db.select().from(user).where(eq(user.id, id)).limit(1);
 
-    return users[0] || null;
+    return users[0] ?? null;
   }
 
   async findByEmail(email: string): Promise<UserModel | null> {
@@ -17,7 +17,7 @@ class UserRepository {
       .where(eq(user.email, email))
       .limit(1);
 
-    return users[0] || null;
+    return users[0] ?? null;
   }
 
   async create(userData: CreateUserModel): Promise<UserModel> {
@@ -27,7 +27,10 @@ class UserRepository {
   }
 
   async updatePassword(id: number, passwordHash: string): Promise<void> {
-    await db.update(user).set({ password: passwordHash }).where(eq(user.id, id));
+    await db
+      .update(user)
+      .set({ password: passwordHash })
+      .where(eq(user.id, id));
   }
 }
 

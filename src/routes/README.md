@@ -39,6 +39,7 @@ routes/
 ## Módulos Disponíveis
 
 ### 🔐 **Auth Module** (`auth/`)
+
 Rotas de autenticação e registro de usuários:
 
 - **`auth.routes.ts`**: Endpoints de autenticação
@@ -47,6 +48,7 @@ Rotas de autenticação e registro de usuários:
   - `GET /me`: Obter dados do usuário autenticado
 
 ### 🛡️ **Role Module** (`role/`)
+
 Rotas para gerenciamento de roles:
 
 - **`roles.routes.ts`**: Endpoints de roles
@@ -57,6 +59,7 @@ Rotas para gerenciamento de roles:
   - `DELETE /:id`: Deletar role
 
 ### 🔑 **Permission Module** (`permission/`)
+
 Rotas para gerenciamento de permissões:
 
 - **`permission.routes.ts`**: Endpoints de permissões
@@ -66,6 +69,7 @@ Rotas para gerenciamento de permissões:
   - `DELETE /:id`: Deletar permissão
 
 ### 🔗 **Role-Permission Module** (`role-permission/`)
+
 Rotas para gerenciar relacionamentos entre roles e permissões:
 
 - **`role-permission.routes.ts`**: Endpoints de relacionamento
@@ -88,6 +92,7 @@ As rotas são responsáveis por:
 ## Padrão de Implementação
 
 ### Estrutura Base das Rotas
+
 ```typescript
 import { Router } from 'express';
 import [Entity]Controller from '@/controllers/v1/modules/[entity]/[entity].controller';
@@ -109,25 +114,38 @@ export default router;
 ```
 
 ### Middlewares Aplicados
+
 ```typescript
 // Autenticação
 router.use('/permissions', authMiddleware, permissionRoutes);
 
 // Validação de dados
-router.post('/register', validateRequest(registerSchema), AuthController.register);
+router.post(
+  '/register',
+  validateRequest(registerSchema),
+  AuthController.register,
+);
 
 // Autorização por permissão
-router.get('/all', hasPermission('role', PermissionActions.READ), RoleController.index);
+router.get(
+  '/all',
+  hasPermission('role', PermissionActions.READ),
+  RoleController.index,
+);
 ```
 
 ## Exemplo de Implementação
 
 ### Auth Routes
+
 ```typescript
 // auth.routes.ts
 import { Router } from 'express';
 import AuthController from '@/controllers/v1/modules/auth/auth.controller';
-import { registerSchema, loginSchema } from '@/validations/v1/modules/auth.validations';
+import {
+  registerSchema,
+  loginSchema,
+} from '@/validations/v1/modules/auth.validations';
 import { validateRequest } from '@/middlewares/validation/validate-request.middlewares';
 import { authMiddleware } from '@/middlewares/auth/auth.middlewares';
 
@@ -138,7 +156,7 @@ router.post('/login', validateRequest(loginSchema), AuthController.login);
 router.post(
   '/register',
   validateRequest(registerSchema),
-  AuthController.register
+  AuthController.register,
 );
 
 router.get('/me', authMiddleware, AuthController.me);
@@ -147,6 +165,7 @@ export default router;
 ```
 
 ### Role Routes
+
 ```typescript
 // roles.routes.ts
 import { Router } from 'express';
@@ -165,38 +184,39 @@ router.post(
   '/',
   hasPermission('role', PermissionActions.CREATE),
   validateRequest(createRoleSchema),
-  RoleController.create
+  RoleController.create,
 );
 
 router.get(
   '/all',
   hasPermission('role', PermissionActions.READ),
-  RoleController.index
+  RoleController.index,
 );
 
 router.get(
   '/:id',
   hasPermission('role', PermissionActions.READ),
-  RoleController.show
+  RoleController.show,
 );
 
 router.put(
   '/:id',
   hasPermission('role', PermissionActions.UPDATE),
   validateRequest(updateRoleSchema),
-  RoleController.update
+  RoleController.update,
 );
 
 router.delete(
   '/:id',
   hasPermission('role', PermissionActions.DELETE),
-  RoleController.delete
+  RoleController.delete,
 );
 
 export default router;
 ```
 
 ### Permission Routes
+
 ```typescript
 // permission.routes.ts
 import { Router } from 'express';
@@ -215,32 +235,33 @@ router.post(
   '/',
   hasPermission('user', PermissionActions.CREATE),
   validateRequest(createPermissionSchema),
-  PermissionController.create
+  PermissionController.create,
 );
 
 router.get(
   '/:id',
   hasPermission('user', PermissionActions.READ),
-  PermissionController.show
+  PermissionController.show,
 );
 
 router.put(
   '/:id',
   hasPermission('user', PermissionActions.UPDATE),
   validateRequest(updatePermissionSchema),
-  PermissionController.update
+  PermissionController.update,
 );
 
 router.delete(
   '/:id',
   hasPermission('user', PermissionActions.DELETE),
-  PermissionController.delete
+  PermissionController.delete,
 );
 
 export default router;
 ```
 
 ### Role-Permission Routes
+
 ```typescript
 // role-permission.routes.ts
 import { Router } from 'express';
@@ -261,6 +282,7 @@ export default router;
 ## Configuração Central de Rotas
 
 ### Router Principal da Aplicação
+
 ```typescript
 // routes/router.ts
 import { Router } from 'express';
@@ -274,6 +296,7 @@ export default router;
 ```
 
 ### Agrupamento das Rotas v1
+
 ```typescript
 // routes/v1/v1.routes.ts
 import { Router } from 'express';
@@ -296,16 +319,19 @@ export default router;
 ## Características Técnicas
 
 ### Estrutura Modular
+
 - **Organização por Domínio**: Cada módulo tem suas próprias rotas
 - **Separação de Responsabilidades**: Rotas específicas para cada entidade
 - **Reutilização**: Middlewares aplicados de forma consistente
 
 ### Middlewares Implementados
+
 - **Autenticação**: `authMiddleware` para rotas protegidas
 - **Validação**: `validateRequest` com schemas Zod
 - **Autorização**: `hasPermission` para controle de acesso granular
 
 ### Versionamento
+
 - **API v1**: Estrutura atual implementada
 - **Extensibilidade**: Preparado para futuras versões
 - **Compatibilidade**: Manutenção de versões anteriores
@@ -313,11 +339,13 @@ export default router;
 ## Endpoints Disponíveis
 
 ### 🔐 **Autenticação** (`/api/v1/auth`)
+
 - `POST /login` - Login de usuário
 - `POST /register` - Registro de usuário
 - `GET /me` - Dados do usuário autenticado
 
 ### 🛡️ **Roles** (`/api/v1/roles`)
+
 - `POST /` - Criar role
 - `GET /all` - Listar todas as roles
 - `GET /:id` - Obter role específica
@@ -325,12 +353,14 @@ export default router;
 - `DELETE /:id` - Deletar role
 
 ### 🔑 **Permissões** (`/api/v1/permissions`)
+
 - `POST /` - Criar permissão
 - `GET /:id` - Obter permissão específica
 - `PUT /:id` - Atualizar permissão
 - `DELETE /:id` - Deletar permissão
 
 ### 🔗 **Role-Permissões** (`/api/v1/roles-permissions`)
+
 - `GET /:roleId/all` - Listar permissões de uma role
 - `POST /attach` - Vincular permissão a role
 - `POST /detach` - Desvincular permissão de role
@@ -365,16 +395,19 @@ export default router;
 ## Segurança e Controle de Acesso
 
 ### Autenticação
+
 - **Middleware de Auth**: Aplicado em rotas protegidas
 - **JWT**: Tokens para autenticação de usuários
 - **Sessão**: Verificação de usuário autenticado
 
 ### Autorização
+
 - **Controle Granular**: Permissões específicas por ação
 - **Middleware de Permissão**: Verificação de acesso por recurso
 - **Ações Padrão**: CREATE, READ, UPDATE, DELETE
 
 ### Validação
+
 - **Schemas Zod**: Validação de dados de entrada
 - **Middleware de Validação**: Aplicação consistente de validação
-- **Sanitização**: Prevenção de dados maliciosos 
+- **Sanitização**: Prevenção de dados maliciosos

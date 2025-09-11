@@ -7,7 +7,7 @@ import { JwtPayload } from '@/types/core/jwt.types';
 export const authMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const authHeader = req.headers.authorization;
 

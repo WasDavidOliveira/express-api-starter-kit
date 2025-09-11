@@ -31,6 +31,7 @@ validations/
 ## Módulos Disponíveis
 
 ### 🔐 **Auth Module** (`v1/modules/auth.validations.ts`)
+
 Validações para autenticação e gerenciamento de usuários:
 
 - **`loginSchema`**: Validação para login de usuário
@@ -46,6 +47,7 @@ Validações para autenticação e gerenciamento de usuários:
   - `email`: Email do usuário
 
 ### 🎭 **Role Module** (`v1/modules/role.validations.ts`)
+
 Validações para gerenciamento de roles:
 
 - **`createRoleSchema`**: Validação para criação de role
@@ -56,6 +58,7 @@ Validações para gerenciamento de roles:
   - `description`: Descrição obrigatória da role
 
 ### 🔑 **Permission Module** (`v1/modules/permission.validations.ts`)
+
 Validações para gerenciamento de permissões:
 
 - **`createPermissionSchema`**: Validação para criação de permissão
@@ -84,6 +87,7 @@ Os esquemas de validação são responsáveis por:
 ## Implementação com Zod + OpenAPI
 
 ### Configuração Base
+
 ```typescript
 import { z } from 'zod';
 import { extendZodWithOpenApi } from 'zod-openapi';
@@ -93,6 +97,7 @@ extendZodWithOpenApi(z);
 ```
 
 ### Schema de Login
+
 ```typescript
 export const loginSchema = z.object({
   body: z
@@ -121,6 +126,7 @@ export const loginSchema = z.object({
 ```
 
 ### Schema de Registro
+
 ```typescript
 export const registerSchema = z.object({
   body: z
@@ -156,6 +162,7 @@ export const registerSchema = z.object({
 ```
 
 ### Schema de Resposta de Usuário
+
 ```typescript
 export const userResponseSchema = z
   .object({
@@ -179,6 +186,7 @@ export const userResponseSchema = z
 ```
 
 ### Schema de Role
+
 ```typescript
 export const createRoleSchema = z.object({
   body: z.object({
@@ -196,6 +204,7 @@ export const updateRoleSchema = z.object({
 ```
 
 ### Schema de Permissão
+
 ```typescript
 import { PermissionActions } from '@/constants/permission.constants';
 
@@ -219,17 +228,23 @@ export const updatePermissionSchema = z.object({
 ## Tipos TypeScript Gerados
 
 ### Tipos de Entrada
+
 ```typescript
 // Tipos inferidos automaticamente dos schemas
 export type LoginInput = z.infer<typeof loginSchema>['body'];
 export type RegisterInput = z.infer<typeof registerSchema>['body'];
 export type CreateRoleInput = z.infer<typeof createRoleSchema>['body'];
 export type UpdateRoleInput = z.infer<typeof updateRoleSchema>['body'];
-export type CreatePermissionInput = z.infer<typeof createPermissionSchema>['body'];
-export type UpdatePermissionInput = z.infer<typeof updatePermissionSchema>['body'];
+export type CreatePermissionInput = z.infer<
+  typeof createPermissionSchema
+>['body'];
+export type UpdatePermissionInput = z.infer<
+  typeof updatePermissionSchema
+>['body'];
 ```
 
 ### Tipos de Resposta
+
 ```typescript
 // Tipos para respostas da API
 export type UserResponse = z.infer<typeof userResponseSchema>;
@@ -238,6 +253,7 @@ export type UserResponse = z.infer<typeof userResponseSchema>;
 ## Constantes de Permissão
 
 ### Enum de Ações
+
 ```typescript
 // src/constants/permission.constants.ts
 export const PermissionActions = {
@@ -253,11 +269,12 @@ export type PermissionAction =
 ```
 
 ### Uso em Validações
+
 ```typescript
 import { PermissionActions } from '@/constants/permission.constants';
 
 // Validação com enum nativo
-action: z.nativeEnum(PermissionActions)
+action: z.nativeEnum(PermissionActions);
 ```
 
 ## Integração com Middlewares
@@ -269,12 +286,17 @@ Os esquemas de validação são utilizados pelo middleware de validação:
 import { validateRequest } from '@/middlewares/validate-request.middlewares';
 import { createUserSchema } from '@/validations/v1/modules/auth.validations';
 
-router.post('/users', validateRequest(createUserSchema), userController.createUser);
+router.post(
+  '/users',
+  validateRequest(createUserSchema),
+  userController.createUser,
+);
 ```
 
 ## Integração com OpenAPI
 
 ### Geração Automática de Documentação
+
 ```typescript
 // src/utils/documentation/openapi.utils.ts
 import {
@@ -343,18 +365,19 @@ export const generateOpenAPIDocument = () => {
 ## Padrão de Implementação
 
 ### Schema de Validação
+
 ```typescript
 export const [entity]Schema = z.object({
   body: z.object({
     // Campos obrigatórios
     fieldName: z.string().min(1, 'Mensagem de erro'),
-    
+
     // Campos com validações específicas
     email: z.string().email('Email inválido'),
-    
+
     // Campos com transformações
     date: z.string().transform((date) => new Date(date)),
-    
+
     // Campos com validações customizadas
     password: z.string()
       .min(6, 'Mínimo 6 caracteres')
@@ -367,6 +390,7 @@ export const [entity]Schema = z.object({
 ```
 
 ### Schema de Resposta
+
 ```typescript
 export const [entity]ResponseSchema = z
   .object({
@@ -386,6 +410,7 @@ export const [entity]ResponseSchema = z
 ```
 
 ### Tipos TypeScript
+
 ```typescript
 // Tipos de entrada
 export type Create[Entity]Input = z.infer<typeof create[Entity]Schema>['body'];
@@ -398,60 +423,64 @@ export type [Entity]Response = z.infer<typeof [entity]ResponseSchema>;
 ## Uso e Importação
 
 ### Importação de Schemas
+
 ```typescript
-import { 
-  loginSchema, 
+import {
+  loginSchema,
   registerSchema,
-  userResponseSchema 
+  userResponseSchema,
 } from '@/validations/v1/modules/auth.validations';
 
-import { 
-  createRoleSchema, 
-  updateRoleSchema 
+import {
+  createRoleSchema,
+  updateRoleSchema,
 } from '@/validations/v1/modules/role.validations';
 
-import { 
-  createPermissionSchema, 
-  updatePermissionSchema 
+import {
+  createPermissionSchema,
+  updatePermissionSchema,
 } from '@/validations/v1/modules/permission.validations';
 ```
 
 ### Importação de Tipos
+
 ```typescript
-import { 
-  LoginInput, 
+import {
+  LoginInput,
   RegisterInput,
-  UserResponse 
+  UserResponse,
 } from '@/validations/v1/modules/auth.validations';
 
-import { 
-  CreateRoleInput, 
-  UpdateRoleInput 
+import {
+  CreateRoleInput,
+  UpdateRoleInput,
 } from '@/validations/v1/modules/role.validations';
 
-import { 
-  CreatePermissionInput, 
-  UpdatePermissionInput 
+import {
+  CreatePermissionInput,
+  UpdatePermissionInput,
 } from '@/validations/v1/modules/permission.validations';
 ```
 
 ### Uso em Controllers
+
 ```typescript
 import { LoginInput } from '@/validations/v1/modules/auth.validations';
 
 export class AuthController {
   async login(req: Request<{}, {}, LoginInput>, res: Response) {
     const { email, password } = req.body;
-    
+
     // Os dados já foram validados pelo middleware
     const result = await AuthService.login({ email, password });
-    
+
     res.json(result);
   }
 }
 ```
 
 ### Uso em Services
+
 ```typescript
 import { CreateRoleInput } from '@/validations/v1/modules/role.validations';
 
@@ -467,6 +496,7 @@ export class RoleService {
 ## Características Técnicas
 
 ### Validação com Zod
+
 - **Type Safety**: Validação em tempo de execução com tipos TypeScript
 - **Schema Composition**: Combinação e reutilização de schemas
 - **Custom Validation**: Validações customizadas com `.refine()`
@@ -474,6 +504,7 @@ export class RoleService {
 - **Error Messages**: Mensagens de erro personalizadas e localizadas
 
 ### Integração OpenAPI
+
 - **Auto-documentation**: Documentação automática da API
 - **Schema References**: Referências reutilizáveis de schemas
 - **Examples**: Exemplos de dados para cada campo
@@ -481,6 +512,7 @@ export class RoleService {
 - **Security**: Documentação de esquemas de segurança
 
 ### Estrutura Modular
+
 - **Domain Separation**: Separação por domínio de negócio
 - **Versioning**: Versionamento da API (v1)
 - **Reusability**: Schemas reutilizáveis entre módulos
@@ -517,16 +549,19 @@ export class RoleService {
 ## Fluxo de Validação
 
 ### Validação de Requisição
+
 ```
 Request → Middleware de Validação → Schema Zod → Controller → Service
 ```
 
 ### Geração de Tipos
+
 ```
 Schema Zod → TypeScript Inference → Tipos Automáticos → IntelliSense
 ```
 
 ### Documentação OpenAPI
+
 ```
 Schema Zod → OpenAPI Metadata → Documentação Automática → Swagger UI
 ```
@@ -534,29 +569,36 @@ Schema Zod → OpenAPI Metadata → Documentação Automática → Swagger UI
 ## Extensibilidade
 
 ### Adicionando Novos Schemas
+
 ```typescript
 // v1/modules/new-entity.validations.ts
 export const createNewEntitySchema = z.object({
-  body: z.object({
-    name: z.string().min(1, 'Nome é obrigatório'),
-    description: z.string().optional(),
-  }).openapi({
-    ref: 'CreateNewEntityInput',
-    description: 'Dados para criação de nova entidade',
-  }),
+  body: z
+    .object({
+      name: z.string().min(1, 'Nome é obrigatório'),
+      description: z.string().optional(),
+    })
+    .openapi({
+      ref: 'CreateNewEntityInput',
+      description: 'Dados para criação de nova entidade',
+    }),
 });
 
-export type CreateNewEntityInput = z.infer<typeof createNewEntitySchema>['body'];
+export type CreateNewEntityInput = z.infer<
+  typeof createNewEntitySchema
+>['body'];
 ```
 
 ### Adicionando Novas Validações
+
 ```typescript
 // Validação customizada
 export const customValidationSchema = z.object({
   body: z.object({
-    field: z.string()
+    field: z
+      .string()
       .min(1, 'Campo obrigatório')
-      .refine((value) => customValidation(value), {
+      .refine(value => customValidation(value), {
         message: 'Validação customizada falhou',
       }),
   }),
@@ -564,6 +606,7 @@ export const customValidationSchema = z.object({
 ```
 
 ### Adicionando Novos Módulos
+
 ```typescript
 // v1/modules/new-module/
 ├── new-module.validations.ts
@@ -576,6 +619,7 @@ export * from './new-module.validations';
 ## Integração com Outros Módulos
 
 ### Controllers
+
 ```typescript
 import { validateRequest } from '@/middlewares/validate-request.middlewares';
 import { createUserSchema } from '@/validations/v1/modules/auth.validations';
@@ -584,6 +628,7 @@ router.post('/users', validateRequest(createUserSchema), UserController.create);
 ```
 
 ### Services
+
 ```typescript
 import { CreateUserInput } from '@/validations/v1/modules/auth.validations';
 
@@ -597,6 +642,7 @@ export class UserService {
 ```
 
 ### Middlewares
+
 ```typescript
 import { validateRequest } from '@/middlewares/validate-request.middlewares';
 
@@ -626,16 +672,19 @@ export const validateRequest = (schema: z.ZodSchema) => {
 ## Configuração e Ambiente
 
 ### Desenvolvimento
+
 - **TypeScript**: Tipagem estática e IntelliSense
 - **Zod Dev**: Validação em tempo de desenvolvimento
 - **OpenAPI**: Documentação automática atualizada
 
 ### Produção
+
 - **Runtime Validation**: Validação em tempo de execução
 - **Error Handling**: Tratamento robusto de erros de validação
 - **Performance**: Validação otimizada para produção
 
 ### Testes
+
 - **Schema Testing**: Testes unitários para schemas
 - **Validation Testing**: Testes de validação de dados
 - **Type Testing**: Testes de tipos TypeScript
@@ -643,6 +692,7 @@ export const validateRequest = (schema: z.ZodSchema) => {
 ## Monitoramento e Debugging
 
 ### Logs de Validação
+
 ```typescript
 // Log de erros de validação
 if (error instanceof z.ZodError) {
@@ -655,6 +705,7 @@ if (error instanceof z.ZodError) {
 ```
 
 ### Métricas de Validação
+
 ```typescript
 // Contador de erros de validação
 validationErrorCounter.inc({
@@ -666,6 +717,7 @@ validationErrorCounter.inc({
 ## Segurança
 
 ### Sanitização de Dados
+
 ```typescript
 // Sanitização automática
 email: z.string()
@@ -679,6 +731,7 @@ password: z.string()
 ```
 
 ### Validação de Entrada
+
 ```typescript
 // Prevenção de injeção
 name: z.string()
@@ -690,20 +743,24 @@ name: z.string()
 ## Performance
 
 ### Validação Lazy
+
 ```typescript
 // Validação apenas quando necessário
-export const conditionalSchema = z.object({
-  field: z.string().optional(),
-}).refine((data) => {
-  // Validação customizada apenas quando field existe
-  if (data.field) {
-    return customValidation(data.field);
-  }
-  return true;
-});
+export const conditionalSchema = z
+  .object({
+    field: z.string().optional(),
+  })
+  .refine(data => {
+    // Validação customizada apenas quando field existe
+    if (data.field) {
+      return customValidation(data.field);
+    }
+    return true;
+  });
 ```
 
 ### Cache de Schemas
+
 ```typescript
 // Cache de schemas compilados
 const compiledSchemas = new Map();
@@ -714,4 +771,4 @@ export const getCompiledSchema = (schema: z.ZodSchema) => {
   }
   return compiledSchemas.get(schema);
 };
-``` 
+```

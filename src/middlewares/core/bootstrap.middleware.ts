@@ -14,7 +14,7 @@ import { configureDocs } from '@/middlewares/core/docs.middleware';
 
 export const bootstrapMiddlewares = (app: express.Application) => {
   app.set('trust proxy', 1);
-  
+
   app.use(cors(corsConfig));
 
   app.use(helmet(helmetConfig));

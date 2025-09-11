@@ -38,6 +38,7 @@ services/
 ## Módulos Disponíveis
 
 ### 🔐 **Auth Module** (`auth/`)
+
 Service para autenticação e gerenciamento de usuários:
 
 - **`auth.service.ts`**: Lógica de autenticação
@@ -46,6 +47,7 @@ Service para autenticação e gerenciamento de usuários:
   - `me(userId)`: Obter dados do usuário autenticado
 
 ### 🛡️ **Role Module** (`role/`)
+
 Service para gerenciamento de roles:
 
 - **`role.service.ts`**: Lógica de roles
@@ -56,6 +58,7 @@ Service para gerenciamento de roles:
   - `findAll()`: Listar todas as roles
 
 ### 🔑 **Permission Module** (`permission/`)
+
 Service para gerenciamento de permissões:
 
 - **`permission.service.ts`**: Lógica de permissões
@@ -66,6 +69,7 @@ Service para gerenciamento de permissões:
   - `findAll()`: Listar todas as permissões
 
 ### 🔗 **Role-Permission Module** (`role-permission/`)
+
 Service para gerenciar relacionamentos entre roles e permissões:
 
 - **`role-permission.service.ts`**: Lógica de relacionamentos
@@ -90,6 +94,7 @@ Os serviços são responsáveis por:
 ## Padrão de Implementação
 
 ### Estrutura Base dos Services
+
 ```typescript
 import [Entity]Repository from '@/repositories/v1/modules/[entity]/[entity].repository';
 import { NotFoundError } from '@/utils/core/app-error.utils';
@@ -103,32 +108,32 @@ export class [Entity]Service {
 
   async show(id: number) {
     const [entity] = await [Entity]Repository.findById(id);
-    
+
     if (![entity]) {
       throw new NotFoundError('[Entity] não encontrada');
     }
-    
+
     return [entity];
   }
 
   async update(id: number, [entity]Data: Create[Entity]Input) {
     const [entity] = await [Entity]Repository.findById(id);
-    
+
     if (![entity]) {
       throw new NotFoundError('[Entity] não encontrada');
     }
-    
+
     const updated[Entity] = await [Entity]Repository.update(id, [entity]Data);
     return updated[Entity];
   }
 
   async delete(id: number) {
     const [entity] = await [Entity]Repository.findById(id);
-    
+
     if (![entity]) {
       throw new NotFoundError('[Entity] não encontrada');
     }
-    
+
     await [Entity]Repository.delete(id);
     return true;
   }
@@ -143,6 +148,7 @@ export default new [Entity]Service();
 ```
 
 ### Tratamento de Erros
+
 ```typescript
 import { NotFoundError, UnauthorizedError } from '@/utils/core/app-error.utils';
 
@@ -158,6 +164,7 @@ if (!isPasswordValid) {
 ```
 
 ### Autenticação e Criptografia
+
 ```typescript
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -178,6 +185,7 @@ const token = jwt.sign({ id: user.id }, appConfig.jwtSecret, {
 ## Exemplo de Implementação
 
 ### Auth Service
+
 ```typescript
 // auth.service.ts
 import appConfig from '@/configs/app.config';
@@ -185,7 +193,10 @@ import { NotFoundError, UnauthorizedError } from '@/utils/core/app-error.utils';
 import UserRepository from '@/repositories/v1/modules/auth/user.repository';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { LoginInput, RegisterInput } from '@/validations/v1/modules/auth.validations';
+import {
+  LoginInput,
+  RegisterInput,
+} from '@/validations/v1/modules/auth.validations';
 
 export class AuthService {
   async login(data: LoginInput) {
@@ -235,6 +246,7 @@ export default new AuthService();
 ```
 
 ### Role Service
+
 ```typescript
 // role.service.ts
 import RoleRepository from '@/repositories/v1/modules/role/role.repository';
@@ -289,6 +301,7 @@ export default new RoleService();
 ```
 
 ### Permission Service
+
 ```typescript
 // permission.service.ts
 import PermissionRepository from '@/repositories/v1/modules/permission/permission.repository';
@@ -318,7 +331,10 @@ export class PermissionService {
       throw new NotFoundError('Permissão não encontrada');
     }
 
-    const updatedPermission = await PermissionRepository.update(id, permissionData);
+    const updatedPermission = await PermissionRepository.update(
+      id,
+      permissionData,
+    );
     return updatedPermission;
   }
 
@@ -343,6 +359,7 @@ export default new PermissionService();
 ```
 
 ### Role-Permission Service
+
 ```typescript
 // role-permission.service.ts
 import RolePermissionRepository from '@/repositories/v1/modules/role-permission/role-permission.repository';
@@ -357,7 +374,10 @@ export class RolePermissionService {
       throw new NotFoundError('Permissão não encontrada');
     }
 
-    const rolePermission = await RolePermissionRepository.attach(roleId, permissionId);
+    const rolePermission = await RolePermissionRepository.attach(
+      roleId,
+      permissionId,
+    );
     return rolePermission;
   }
 
@@ -435,21 +455,25 @@ export class RoleController {
 ## Características Técnicas
 
 ### Arquitetura de Serviços
+
 - **Organização Modular**: Cada domínio tem seu próprio service
 - **Separação de Responsabilidades**: Lógica específica para cada entidade
 - **Reutilização**: Services podem ser consumidos por múltiplos controllers
 
 ### Tratamento de Erros
+
 - **Erros Específicos**: `NotFoundError`, `UnauthorizedError`, etc.
 - **Validações de Negócio**: Verificações antes de operações críticas
 - **Mensagens Claras**: Erros com descrições específicas do domínio
 
 ### Segurança e Autenticação
+
 - **Criptografia**: Hash de senhas com bcrypt
 - **JWT**: Tokens para autenticação de usuários
 - **Validação de Credenciais**: Verificação segura de login
 
 ### Operações CRUD
+
 - **Create**: Criação com validações
 - **Read**: Leitura com verificação de existência
 - **Update**: Atualização com validações
@@ -487,6 +511,7 @@ export class RoleController {
 ## Fluxo de Dados
 
 ### Operação de Login
+
 ```
 Controller → AuthService → UserRepository → Database
                 ↓
@@ -496,6 +521,7 @@ Controller → AuthService → UserRepository → Database
 ```
 
 ### Operação CRUD
+
 ```
 Controller → [Entity]Service → [Entity]Repository → Database
                 ↓
@@ -505,6 +531,7 @@ Controller → [Entity]Service → [Entity]Repository → Database
 ```
 
 ### Tratamento de Erros
+
 ```
 Service → Validação → Repository
     ↓
@@ -514,16 +541,19 @@ Erro de Negócio → Controller → Response de Erro
 ## Segurança e Validação
 
 ### Autenticação
+
 - **Hash de Senhas**: Criptografia com bcrypt (salt rounds: 10)
 - **JWT Tokens**: Tokens seguros com expiração configurável
 - **Validação de Credenciais**: Verificação segura de email/senha
 
 ### Validação de Negócio
+
 - **Verificação de Existência**: Validação antes de operações
 - **Regras de Domínio**: Lógica específica para cada entidade
 - **Tratamento de Conflitos**: Verificação de dados duplicados
 
 ### Controle de Acesso
+
 - **Verificação de Permissões**: Validação de acesso por recurso
 - **Middleware de Auth**: Proteção de rotas sensíveis
-- **Validação de Usuário**: Verificação de usuário autenticado 
+- **Validação de Usuário**: Verificação de usuário autenticado

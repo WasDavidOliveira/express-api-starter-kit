@@ -15,11 +15,11 @@ export const userRoles = pgTable(
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
-  (table) => {
+  table => {
     return {
       pk: primaryKey({ columns: [table.userId, table.roleId] }),
     };
-  }
+  },
 );
 
 export const userRoleRelations = relations(userRoles, ({ one }) => ({
@@ -31,4 +31,4 @@ export const userRoleRelations = relations(userRoles, ({ one }) => ({
     fields: [userRoles.roleId],
     references: [roles.id],
   }),
-})); 
+}));

@@ -4,8 +4,17 @@ import { StatusCode } from '@/constants/status-code.constants';
 import setupTestDB from '@/tests/hooks/setup-db';
 import { faker } from '@faker-js/faker';
 import { z } from 'zod';
-import { AppError, UnauthorizedError, ForbiddenError, NotFoundError, BadRequestError } from '@/utils/core/app-error.utils';
-import { errorHandler, notFoundHandler } from '@/middlewares/core/error-hander.middleware';
+import {
+  AppError,
+  UnauthorizedError,
+  ForbiddenError,
+  NotFoundError,
+  BadRequestError,
+} from '@/utils/core/app-error.utils';
+import {
+  errorHandler,
+  notFoundHandler,
+} from '@/middlewares/core/error-hander.middleware';
 
 describe('Error Handler Middleware', () => {
   setupTestDB();
@@ -35,7 +44,7 @@ describe('Error Handler Middleware', () => {
       });
 
       const invalidData = {
-        name: 'Jo', 
+        name: 'Jo',
         email: 'email-invalido',
         age: 16,
       };
@@ -69,21 +78,21 @@ describe('Error Handler Middleware', () => {
       const nestedSchema = z.object({
         user: z.object({
           profile: z.object({
-            name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres')
-          })
-        })
+            name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
+          }),
+        }),
       });
 
       const invalidData = {
         user: {
           profile: {
-            name: 'Jo'
-          }
-        }
+            name: 'Jo',
+          },
+        },
       };
 
       let zodError: z.ZodError;
-      
+
       try {
         nestedSchema.parse(invalidData);
       } catch (error) {
@@ -101,7 +110,10 @@ describe('Error Handler Middleware', () => {
         status: 'erro',
         message: 'Erro de validação',
         errors: [
-          { campo: 'user.profile.name', mensagem: 'Nome deve ter pelo menos 3 caracteres' },
+          {
+            campo: 'user.profile.name',
+            mensagem: 'Nome deve ter pelo menos 3 caracteres',
+          },
         ],
       });
     });
@@ -169,7 +181,10 @@ describe('Error Handler Middleware', () => {
     });
 
     it('deve tratar AppError customizado', () => {
-      const error = new AppError('Erro customizado', StatusCode.INTERNAL_SERVER_ERROR);
+      const error = new AppError(
+        'Erro customizado',
+        StatusCode.INTERNAL_SERVER_ERROR,
+      );
       const req = createMockRequest();
       const res = createMockResponse();
       const next = createMockNext();
@@ -187,7 +202,10 @@ describe('Error Handler Middleware', () => {
       const originalEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = 'development';
 
-      const error = new AppError('Erro customizado', StatusCode.INTERNAL_SERVER_ERROR);
+      const error = new AppError(
+        'Erro customizado',
+        StatusCode.INTERNAL_SERVER_ERROR,
+      );
       const req = createMockRequest();
       const res = createMockResponse();
       const next = createMockNext();
@@ -224,7 +242,9 @@ describe('Error Handler Middleware', () => {
 
   describe('PostgreSQL Errors', () => {
     it('deve tratar erro de violação de chave única', () => {
-      const error = new Error('Duplicate key value violates unique constraint') as Error & { code: string; detail: string };
+      const error = new Error(
+        'Duplicate key value violates unique constraint',
+      ) as Error & { code: string; detail: string };
       error.code = '23505';
       error.detail = 'Key (email)=(test@example.com) already exists.';
 
@@ -243,7 +263,10 @@ describe('Error Handler Middleware', () => {
     });
 
     it('deve tratar erro de violação de chave estrangeira', () => {
-      const error = new Error('Foreign key constraint violation') as Error & { code: string; detail: string };
+      const error = new Error('Foreign key constraint violation') as Error & {
+        code: string;
+        detail: string;
+      };
       error.code = '23503';
       error.detail = 'Key (user_id)=(999) is not present in table "users".';
 
@@ -262,7 +285,9 @@ describe('Error Handler Middleware', () => {
     });
 
     it('deve tratar erro de PostgreSQL genérico', () => {
-      const error = new Error('Database connection failed') as Error & { code: string };
+      const error = new Error('Database connection failed') as Error & {
+        code: string;
+      };
       error.code = '08006';
 
       const req = createMockRequest();
@@ -346,7 +371,7 @@ describe('Error Handler Middleware', () => {
       expect(next).toHaveBeenCalledWith(
         expect.objectContaining({
           message: 'Rota não encontrada: GET /api/v1/rota-inexistente',
-        })
+        }),
       );
     });
 
@@ -362,7 +387,7 @@ describe('Error Handler Middleware', () => {
       expect(next).toHaveBeenCalledWith(
         expect.objectContaining({
           message: 'Rota não encontrada: POST /api/v1/outra-rota-inexistente',
-        })
+        }),
       );
     });
   });

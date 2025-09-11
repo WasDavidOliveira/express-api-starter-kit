@@ -14,7 +14,7 @@ let token: string;
 
 beforeAll(async () => {
   server = app.listen();
-  
+
   token = UserFactory.generateJwtToken(1);
 });
 
@@ -40,7 +40,9 @@ describe('Role Permissions', () => {
       });
 
     expect(response.status).toBe(StatusCode.CREATED);
-    expect(response.body.message).toBe('Permissão de role associada com sucesso.');
+    expect(response.body.message).toBe(
+      'Permissão de role associada com sucesso.',
+    );
   });
 
   it('deve remover uma permissão de um perfil com sucesso', async () => {
@@ -58,7 +60,9 @@ describe('Role Permissions', () => {
       });
 
     expect(response.status).toBe(StatusCode.OK);
-    expect(response.body.message).toBe('Permissão de role removida com sucesso.');
+    expect(response.body.message).toBe(
+      'Permissão de role removida com sucesso.',
+    );
   });
 
   it('deve listar todas as permissões de um perfil', async () => {

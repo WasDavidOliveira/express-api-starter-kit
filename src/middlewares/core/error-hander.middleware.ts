@@ -11,7 +11,7 @@ const isPostgresError = (error: unknown): error is PostgresError => {
   if (typeof error !== 'object' || error === null) {
     return false;
   }
-  
+
   if (!('code' in error)) {
     return false;
   }
@@ -21,7 +21,10 @@ const isPostgresError = (error: unknown): error is PostgresError => {
   return typeof code === 'string';
 };
 
-const extractFieldFromDetail = (detail?: string, fallback: string = 'campo'): string => {
+const extractFieldFromDetail = (
+  detail?: string,
+  fallback: string = 'campo',
+): string => {
   if (!detail) {
     return fallback;
   }
@@ -34,14 +37,14 @@ export const errorHandler = (
   err: ErrorTypes,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   if (res.headersSent) {
     return next(err);
   }
 
   if (err instanceof ZodError) {
-    const errors: ValidationErrorItem[] = err.errors.map((zodError) => ({
+    const errors: ValidationErrorItem[] = err.errors.map(zodError => ({
       campo: zodError.path.join('.'),
       mensagem: zodError.message,
     }));
@@ -95,9 +98,9 @@ export const errorHandler = (
 export const notFoundHandler = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   next(
-    new NotFoundError(`Rota não encontrada: ${req.method} ${req.originalUrl}`)
+    new NotFoundError(`Rota não encontrada: ${req.method} ${req.originalUrl}`),
   );
 };

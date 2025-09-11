@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { LoginInput, RegisterInput, ForgotPasswordInput, ResetPasswordInput } from '@/validations/v1/modules/auth.validations';
+import {
+  LoginInput,
+  RegisterInput,
+  ForgotPasswordInput,
+  ResetPasswordInput,
+} from '@/validations/v1/modules/auth.validations';
 import AuthService from '@/services/v1/modules/auth/auth.service';
 import { UserResource } from '@/resources/v1/modules/user/user.resources';
 import { StatusCode } from '@/constants/status-code.constants';
@@ -39,7 +44,7 @@ export class AuthController {
 
   forgotPassword = async (
     req: Request<{}, {}, ForgotPasswordInput>,
-    res: Response
+    res: Response,
   ) => {
     const result = await AuthService.forgotPassword(req.body);
 
@@ -51,7 +56,7 @@ export class AuthController {
 
   resetPassword = async (
     req: Request<{}, {}, ResetPasswordInput>,
-    res: Response
+    res: Response,
   ) => {
     await AuthService.resetPassword(req.body);
 

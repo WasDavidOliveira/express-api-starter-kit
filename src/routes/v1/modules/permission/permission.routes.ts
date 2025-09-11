@@ -14,26 +14,26 @@ router.post(
   '/',
   hasPermission('user', PermissionActions.CREATE),
   validateRequest(createPermissionSchema),
-  PermissionController.create
+  PermissionController.create,
 );
 
 router.get(
   '/:id',
   hasPermission('user', PermissionActions.READ),
-  PermissionController.show
+  PermissionController.show,
 );
 
 router.delete(
   '/:id',
   hasPermission('user', PermissionActions.DELETE),
-  PermissionController.delete
+  PermissionController.delete,
 );
 
 router.put(
   '/:id',
   hasPermission('user', PermissionActions.UPDATE),
   validateRequest(updatePermissionSchema),
-  PermissionController.update
+  PermissionController.update,
 );
 
 export default router;

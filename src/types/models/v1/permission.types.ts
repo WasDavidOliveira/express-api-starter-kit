@@ -9,4 +9,3 @@ export type PermissionCheck = {
   name: string;
   action: PermissionAction;
 };
-

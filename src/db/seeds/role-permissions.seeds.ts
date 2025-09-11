@@ -28,18 +28,18 @@ export async function seedRolePermissions() {
     const allPermissions = await db.query.permissions.findMany();
     if (allPermissions.length === 0) {
       throw new Error(
-        'No permissions found. Please run permission seeds first.'
+        'No permissions found. Please run permission seeds first.',
       );
     }
 
     const getPermissionId = (name: string, action: string) => {
       const permission = allPermissions.find(
-        (p) => p.name === name && p.action === action
+        p => p.name === name && p.action === action,
       );
       return permission?.id;
     };
 
-    const adminPermissions = allPermissions.map((permission) => ({
+    const adminPermissions = allPermissions.map(permission => ({
       roleId: adminRole.id,
       permissionId: permission.id,
     }));
@@ -50,7 +50,7 @@ export async function seedRolePermissions() {
       getPermissionId('role', PermissionActions.READ),
     ].filter((id): id is number => id !== undefined);
 
-    const userPermissions = userPermissionIds.map((permissionId) => ({
+    const userPermissions = userPermissionIds.map(permissionId => ({
       roleId: userRole.id,
       permissionId,
     }));
@@ -59,7 +59,7 @@ export async function seedRolePermissions() {
       getPermissionId('user', PermissionActions.READ),
     ].filter((id): id is number => id !== undefined);
 
-    const guestPermissions = guestPermissionIds.map((permissionId) => ({
+    const guestPermissions = guestPermissionIds.map(permissionId => ({
       roleId: guestRole.id,
       permissionId,
     }));
@@ -77,8 +77,8 @@ export async function seedRolePermissions() {
         .where(
           and(
             eq(rolePermissions.roleId, rolePermission.roleId),
-            eq(rolePermissions.permissionId, rolePermission.permissionId)
-          )
+            eq(rolePermissions.permissionId, rolePermission.permissionId),
+          ),
         )
         .limit(1);
 
@@ -97,7 +97,7 @@ export async function seedRolePermissions() {
 if (require.main === module) {
   seedRolePermissions()
     .then(() => process.exit(0))
-    .catch((error) => {
+    .catch(error => {
       logger.error('Failed to seed role permissions:', error);
       process.exit(1);
     });

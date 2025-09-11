@@ -13,12 +13,16 @@ docs/
 ## Descrição dos Arquivos
 
 ### index.ts
+
 Contém funções utilitárias para manipular a especificação OpenAPI:
+
 - `updateOpenAPISpec`: Atualiza o arquivo openapi.json com uma nova especificação
 - `readOpenAPISpec`: Lê o conteúdo atual do arquivo openapi.json
 
 ### openapi.json
+
 Contém a especificação OpenAPI completa da API no formato JSON. Este arquivo:
+
 - Define informações gerais sobre a API (título, descrição, versão)
 - Lista todos os endpoints disponíveis, agrupados por tags
 - Descreve os parâmetros de entrada e saída para cada endpoint
@@ -56,19 +60,21 @@ Exemplo de schema Zod com metadados OpenAPI:
 ```typescript
 import { z } from 'zod';
 
-export const exemploSchema = z.object({
-  nome: z.string().min(3).openapi({
-    description: 'Nome do recurso',
-    example: 'Exemplo de nome'
-  }),
-  idade: z.number().int().positive().openapi({
-    description: 'Idade em anos',
-    example: 25
+export const exemploSchema = z
+  .object({
+    nome: z.string().min(3).openapi({
+      description: 'Nome do recurso',
+      example: 'Exemplo de nome',
+    }),
+    idade: z.number().int().positive().openapi({
+      description: 'Idade em anos',
+      example: 25,
+    }),
   })
-}).openapi({
-  ref: 'ExemploInput',
-  description: 'Dados para criação de exemplo'
-});
+  .openapi({
+    ref: 'ExemploInput',
+    description: 'Dados para criação de exemplo',
+  });
 ```
 
 ## Benefícios da Documentação
@@ -76,4 +82,4 @@ export const exemploSchema = z.object({
 - **Autoexplicativa**: Facilita o entendimento da API para novos desenvolvedores
 - **Testável**: Permite testar os endpoints diretamente pela interface
 - **Consistente**: Garante que a documentação esteja sempre atualizada com a implementação
-- **Integrável**: Pode ser consumida por ferramentas de geração de código cliente 
+- **Integrável**: Pode ser consumida por ferramentas de geração de código cliente

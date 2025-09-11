@@ -28,7 +28,7 @@ class RoleRepository {
       .where(eq(roles.id, id))
       .limit(1);
 
-    return roleResults[0] || null;
+    return roleResults[0] ?? null;
   }
 
   async findAll(): Promise<RoleModel[]> {

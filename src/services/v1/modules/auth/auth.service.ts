@@ -3,7 +3,12 @@ import { NotFoundError, UnauthorizedError } from '@/utils/core/app-error.utils';
 import UserRepository from '@/repositories/v1/modules/auth/user.repository';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { LoginInput, RegisterInput, ForgotPasswordInput, ResetPasswordInput } from '@/validations/v1/modules/auth.validations';
+import {
+  LoginInput,
+  RegisterInput,
+  ForgotPasswordInput,
+  ResetPasswordInput,
+} from '@/validations/v1/modules/auth.validations';
 
 export class AuthService {
   async login(data: LoginInput) {
@@ -19,11 +24,9 @@ export class AuthService {
       throw new UnauthorizedError('Credenciais inválidas');
     }
 
-    const token = jwt.sign(
-      { id: user.id },
-      appConfig.jwtSecret as jwt.Secret,
-      { expiresIn: appConfig.jwtExpiration as jwt.SignOptions['expiresIn'] }
-    );
+    const token = jwt.sign({ id: user.id }, appConfig.jwtSecret as jwt.Secret, {
+      expiresIn: appConfig.jwtExpiration as jwt.SignOptions['expiresIn'],
+    });
 
     return {
       token,
@@ -63,7 +66,7 @@ export class AuthService {
     const token = jwt.sign(
       { id: user.id, purpose: 'reset' },
       appConfig.jwtSecret as jwt.Secret,
-      { expiresIn: '15m' }
+      { expiresIn: '15m' },
     );
 
     return { token };
@@ -72,7 +75,7 @@ export class AuthService {
   async resetPassword(data: ResetPasswordInput) {
     const payload = jwt.verify(
       data.token,
-      appConfig.jwtSecret as jwt.Secret
+      appConfig.jwtSecret as jwt.Secret,
     ) as { id: number; purpose?: string };
 
     if (!payload?.id || payload?.purpose !== 'reset') {

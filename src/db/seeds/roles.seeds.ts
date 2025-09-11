@@ -38,7 +38,7 @@ export async function seedRoles() {
 if (require.main === module) {
   seedRoles()
     .then(() => process.exit(0))
-    .catch((error) => {
+    .catch(error => {
       logger.error('Failed to seed roles:', error);
       process.exit(1);
     });

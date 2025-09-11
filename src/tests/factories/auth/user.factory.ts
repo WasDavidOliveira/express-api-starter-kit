@@ -2,7 +2,10 @@ import { faker } from '@faker-js/faker';
 import { CreateUserModel, UserModel } from '@/types/models/v1/auth.types';
 import bcrypt from 'bcrypt';
 import UserRepository from '@/repositories/v1/modules/auth/user.repository';
-import { LoginInput, RegisterInput } from '@/validations/v1/modules/auth.validations';
+import {
+  LoginInput,
+  RegisterInput,
+} from '@/validations/v1/modules/auth.validations';
 import jwt from 'jsonwebtoken';
 import appConfig from '@/configs/app.config';
 import { RoleFactory } from '@/tests/factories/role/role.factory';
@@ -48,14 +51,14 @@ class UserFactoryBuilder {
 
   make(): RegisterInput {
     return {
-      name: this.currentOverrides.name || this.currentName,
-      email: this.currentOverrides.email || this.currentEmail,
-      password: this.currentOverrides.password || this.currentPassword,
+      name: this.currentOverrides.name ?? this.currentName,
+      email: this.currentOverrides.email ?? this.currentEmail,
+      password: this.currentOverrides.password ?? this.currentPassword,
     };
   }
 
   async create(): Promise<{ user: UserModel; password: string }> {
-    const rawPassword = this.currentOverrides.password || this.currentPassword;
+    const rawPassword = this.currentOverrides.password ?? this.currentPassword;
     const passwordHash = await bcrypt.hash(rawPassword, 10);
 
     const userData = this.make();
@@ -70,7 +73,9 @@ class UserFactoryBuilder {
     };
   }
 
-  async createWithRole(roleId?: number): Promise<{ user: UserModel; password: string }> {
+  async createWithRole(
+    roleId?: number,
+  ): Promise<{ user: UserModel; password: string }> {
     const { user, password } = await this.create();
 
     if (roleId) {
@@ -79,7 +84,7 @@ class UserFactoryBuilder {
     }
 
     const role = await RoleFactory.createRole();
-    
+
     await UserRoleFactory.attachRoleToUser(user.id, role.id);
 
     return { user, password };
@@ -92,7 +97,10 @@ class UserFactoryBuilder {
     };
   }
 
-  async createAndGetLoginData(): Promise<{ user: UserModel; loginData: LoginInput }> {
+  async createAndGetLoginData(): Promise<{
+    user: UserModel;
+    loginData: LoginInput;
+  }> {
     const { user, password } = await this.create();
     const loginData = this.makeLoginData(user.email);
     loginData.password = password;
@@ -106,17 +114,15 @@ export class UserFactory {
   }
 
   static generateJwtToken(userId: number): string {
-    const token = jwt.sign(
-      { id: userId }, 
-      appConfig.jwtSecret as string,
-      { expiresIn: '24h' }
-    );
+    const token = jwt.sign({ id: userId }, appConfig.jwtSecret as string, {
+      expiresIn: '24h',
+    });
 
     return token;
   }
 
   static async createUserAndGetToken(
-    overrides: Partial<CreateUserModel> = {}
+    overrides: Partial<CreateUserModel> = {},
   ): Promise<{ user: UserModel; token: string }> {
     const { user } = await this.build(overrides).create();
     const token = this.generateJwtToken(user.id);
@@ -129,7 +135,7 @@ export class UserFactory {
 
   static async createUserWithRoleAndGetToken(
     roleId?: number,
-    overrides: Partial<CreateUserModel> = {}
+    overrides: Partial<CreateUserModel> = {},
   ): Promise<{ user: UserModel; token: string }> {
     const { user } = await this.build(overrides).createWithRole(roleId);
     const token = this.generateJwtToken(user.id);

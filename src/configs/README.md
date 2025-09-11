@@ -22,7 +22,9 @@ configs/
 ## Descrição dos Arquivos
 
 ### app.config.ts
+
 Define as configurações principais da aplicação, incluindo:
+
 - Porta do servidor
 - Ambiente de execução (development/production)
 - Origens permitidas para CORS
@@ -30,16 +32,20 @@ Define as configurações principais da aplicação, incluindo:
 - Configurações JWT (segurança)
 
 ### cors.config.ts
+
 Gerencia as configurações de CORS (Cross-Origin Resource Sharing), importante para definir quais origens podem acessar a API. Carrega automaticamente a configuração apropriada com base no ambiente.
 
 ### helmet.config.ts
+
 Configura o middleware Helmet, que ajuda a proteger a aplicação definindo vários cabeçalhos HTTP relacionados à segurança. Seleciona automaticamente a configuração apropriada com base no ambiente.
 
 ### docs.config.ts
+
 Gerencia as configurações para a documentação da API, incluindo:
+
 - Carregamento da especificação OpenAPI
 - Configurações de temas e clientes HTTP para a documentação
 
 ## Uso
 
-As configurações são importadas nos respectivos módulos da aplicação conforme necessário. O sistema automaticamente carrega as configurações apropriadas com base na variável de ambiente `NODE_ENV`. 
+As configurações são importadas nos respectivos módulos da aplicação conforme necessário. O sistema automaticamente carrega as configurações apropriadas com base na variável de ambiente `NODE_ENV`.

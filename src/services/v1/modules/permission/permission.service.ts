@@ -40,7 +40,7 @@ export class PermissionService {
 
     const updatedPermission = await PermissionRepository.update(
       id,
-      permissionData
+      permissionData,
     );
 
     return updatedPermission;

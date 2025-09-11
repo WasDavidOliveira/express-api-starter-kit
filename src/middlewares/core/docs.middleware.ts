@@ -28,6 +28,6 @@ export const configureDocs = (app: Application) => {
         targetKey: 'node',
         clientKey: 'fetch',
       },
-    })
+    }),
   );
 };

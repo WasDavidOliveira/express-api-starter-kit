@@ -69,8 +69,8 @@ export async function seedPermissions() {
           and(
             eq(permissions.name, permission.name),
             eq(permissions.action, permission.action),
-            eq(permissions.description, permission.description)
-          )
+            eq(permissions.description, permission.description),
+          ),
         )
         .limit(1);
 
@@ -89,7 +89,7 @@ export async function seedPermissions() {
 if (require.main === module) {
   seedPermissions()
     .then(() => process.exit(0))
-    .catch((error) => {
+    .catch(error => {
       logger.error('Failed to seed permissions:', error);
       process.exit(1);
     });

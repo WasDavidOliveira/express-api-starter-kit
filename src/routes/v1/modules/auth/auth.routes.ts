@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import AuthController from '@/controllers/v1/modules/auth/auth.controller';
-import { registerSchema, loginSchema, forgotPasswordSchema, resetPasswordSchema } from '@/validations/v1/modules/auth.validations';
+import {
+  registerSchema,
+  loginSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+} from '@/validations/v1/modules/auth.validations';
 import { validateRequest } from '@/middlewares/validation/validate-request.middlewares';
 import { authMiddleware } from '@/middlewares/auth/auth.middlewares';
 
@@ -11,7 +16,7 @@ router.post('/login', validateRequest(loginSchema), AuthController.login);
 router.post(
   '/register',
   validateRequest(registerSchema),
-  AuthController.register
+  AuthController.register,
 );
 
 router.get('/me', authMiddleware, AuthController.me);
@@ -19,13 +24,13 @@ router.get('/me', authMiddleware, AuthController.me);
 router.post(
   '/forgot-password',
   validateRequest(forgotPasswordSchema),
-  AuthController.forgotPassword
+  AuthController.forgotPassword,
 );
 
 router.post(
   '/reset-password',
   validateRequest(resetPasswordSchema),
-  AuthController.resetPassword
+  AuthController.resetPassword,
 );
 
 export default router;

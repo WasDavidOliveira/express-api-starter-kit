@@ -24,7 +24,7 @@ class Logger {
       format: combine(
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         colorize(),
-        logFormat
+        logFormat,
       ),
       transports: [
         new winston.transports.Console(),
@@ -46,17 +46,15 @@ class Logger {
 
     return fs
       .readdirSync(this.logsDir)
-      .filter((date) =>
-        fs.statSync(path.join(this.logsDir, date)).isDirectory()
-      )
-      .map((date) => ({
+      .filter(date => fs.statSync(path.join(this.logsDir, date)).isDirectory())
+      .map(date => ({
         date,
         files: fs.readdirSync(path.join(this.logsDir, date)),
       }));
   }
 
   getLogPath(date?: string, type: 'error' | 'combined' = 'combined'): string {
-    const logDate = date || this.getCurrentDate();
+    const logDate = date ?? this.getCurrentDate();
     return path.join(this.logsDir, logDate, `${type}.log`);
   }
 

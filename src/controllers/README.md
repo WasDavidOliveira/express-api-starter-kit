@@ -36,11 +36,13 @@ controllers/
 ## Módulos Disponíveis
 
 ### 🔐 **Auth Module** (`auth/`)
+
 - **`login`**: Autenticação de usuário
 - **`register`**: Criação de novo usuário
 - **`me`**: Obter dados do usuário autenticado
 
 ### 🛡️ **Role Module** (`role/`)
+
 - **`create`**: Criar nova role
 - **`show`**: Exibir role específica
 - **`update`**: Atualizar role existente
@@ -48,12 +50,14 @@ controllers/
 - **`index`**: Listar todas as roles
 
 ### 🔑 **Permission Module** (`permission/`)
+
 - **`create`**: Criar nova permissão
 - **`show`**: Exibir permissão específica
 - **`update`**: Atualizar permissão existente
 - **`delete`**: Remover permissão
 
 ### 🔗 **Role-Permission Module** (`role-permission/`)
+
 - **`attach`**: Associar permissão a uma role
 - **`detach`**: Remover permissão de uma role
 - **`all`**: Listar todas as permissões de uma role
@@ -72,6 +76,7 @@ Os controllers são responsáveis por:
 ## Padrão de Implementação
 
 ### Estrutura Base
+
 ```typescript
 export class [Entity]Controller {
   [method] = catchAsync(
@@ -88,16 +93,17 @@ export default new [Entity]Controller();
 ```
 
 ### Padrão de Resposta
+
 ```typescript
 // Resposta de sucesso com dados
 res.status(StatusCode.OK).json({
   message: 'Mensagem de sucesso.',
-  data: Resource.toResponse(data)
+  data: Resource.toResponse(data),
 });
 
 // Resposta de sucesso sem dados
 res.status(StatusCode.OK).json({
-  message: 'Operação realizada com sucesso.'
+  message: 'Operação realizada com sucesso.',
 });
 ```
 
@@ -123,7 +129,7 @@ export class RoleController {
         message: 'Role criada com sucesso.',
         data: RoleResource.toResponse(role),
       });
-    }
+    },
   );
 
   show = catchAsync(async (req: Request, res: Response) => {
@@ -146,21 +152,25 @@ export default new RoleController();
 ## Características Técnicas
 
 ### Tratamento de Erros
+
 - Uso do `catchAsync` para captura automática de erros
 - Delegação de erros para o middleware de tratamento de erros
 - Não há try-catch explícito nos controllers
 
 ### Validação de Dados
+
 - Tipagem forte com TypeScript
 - Validação de entrada usando schemas Zod
 - Conversão automática de tipos (ex: `Number(id)`)
 
 ### Formatação de Resposta
+
 - Uso consistente de Resources para transformação de dados
 - Mensagens padronizadas em português
 - Estrutura de resposta consistente
 
 ### Códigos de Status
+
 - Uso de constantes para códigos HTTP
 - Status apropriados para cada operação (200, 201, 204)
 
@@ -189,4 +199,4 @@ export default new RoleController();
 - **Resources**: Para formatação de resposta
 - **Validations**: Para schemas de entrada
 - **Utils**: Para `catchAsync` e outras utilidades
-- **Constants**: Para códigos de status HTTP 
+- **Constants**: Para códigos de status HTTP

@@ -6,7 +6,7 @@ import { PermissionModel } from '@/types/models/v1/permission.types';
 
 export class RolePermissionFactory {
   static async createRoleWithPermissions(
-    permissionCount: number = 2
+    permissionCount: number = 2,
   ): Promise<{ role: RoleModel; permissions: PermissionModel[] }> {
     const role = await RoleFactory.createRole();
     const permissions =

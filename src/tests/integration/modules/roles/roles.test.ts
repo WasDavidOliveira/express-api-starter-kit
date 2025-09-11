@@ -12,7 +12,7 @@ let token: string;
 
 beforeAll(async () => {
   server = app.listen();
-  
+
   token = UserFactory.generateJwtToken(1);
 });
 
@@ -39,7 +39,7 @@ describe('Perfis (Roles)', () => {
     expect(response.body.data).toHaveProperty('name', roleData.name);
     expect(response.body.data).toHaveProperty(
       'description',
-      roleData.description
+      roleData.description,
     );
   });
 
@@ -76,7 +76,7 @@ describe('Perfis (Roles)', () => {
     expect(response.body.data).toHaveProperty('name', updatedData.name);
     expect(response.body.data).toHaveProperty(
       'description',
-      updatedData.description
+      updatedData.description,
     );
   });
 

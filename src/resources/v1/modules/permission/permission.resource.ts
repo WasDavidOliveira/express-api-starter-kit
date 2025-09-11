@@ -13,6 +13,6 @@ export class PermissionResource {
   }
 
   static collectionToResponse(permissions: PermissionModel[]) {
-    return permissions.map((permission) => this.toResponse(permission));
+    return permissions.map(permission => this.toResponse(permission));
   }
 }

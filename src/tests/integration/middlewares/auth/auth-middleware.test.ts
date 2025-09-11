@@ -36,8 +36,7 @@ describe('Auth Middleware', () => {
   });
 
   it('deve rejeitar acesso sem header de autorização', async () => {
-    const response = await request(server)
-      .get(route);
+    const response = await request(server).get(route);
 
     expect(response.status).toBe(StatusCode.UNAUTHORIZED);
     expect(response.body.message).toBe('Token não fornecido');
@@ -64,11 +63,9 @@ describe('Auth Middleware', () => {
   });
 
   it('deve rejeitar acesso com token expirado', async () => {
-    const expiredToken = jwt.sign(
-      { id: 1 },
-      appConfig.jwtSecret as string,
-      { expiresIn: '-1h' }
-    );
+    const expiredToken = jwt.sign({ id: 1 }, appConfig.jwtSecret as string, {
+      expiresIn: '-1h',
+    });
 
     const response = await request(server)
       .get(route)
@@ -79,11 +76,9 @@ describe('Auth Middleware', () => {
   });
 
   it('deve rejeitar acesso com token assinado com secret diferente', async () => {
-    const wrongSecretToken = jwt.sign(
-      { id: 1 },
-      'wrong-secret',
-      { expiresIn: '24h' }
-    );
+    const wrongSecretToken = jwt.sign({ id: 1 }, 'wrong-secret', {
+      expiresIn: '24h',
+    });
 
     const response = await request(server)
       .get(route)

@@ -2,7 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { db } from '@/db/db.connection';
 import { user } from '@/db/schema/v1/user.schema';
 import { eq } from 'drizzle-orm';
-import { ForbiddenError, UnauthorizedError } from '@/utils/core/app-error.utils';
+import {
+  ForbiddenError,
+  UnauthorizedError,
+} from '@/utils/core/app-error.utils';
 import { UserWithRoles } from '@/types/infrastructure/middlewares.types';
 
 export const hasRole = (roleName: string) => {
@@ -28,7 +31,7 @@ export const hasRole = (roleName: string) => {
       }
 
       const userRoles = userData.userRoles.map(ur => ur.role.name);
-      
+
       if (!userRoles.includes(roleName)) {
         throw new ForbiddenError('Você não possui acesso a este recurso.');
       }
@@ -63,8 +66,10 @@ export const hasAnyRole = (roleNames: string[]) => {
       }
 
       const userRoles = userData.userRoles.map(ur => ur.role.name);
-      const hasAnyRequiredRole = roleNames.some(roleName => userRoles.includes(roleName));
-      
+      const hasAnyRequiredRole = roleNames.some(roleName =>
+        userRoles.includes(roleName),
+      );
+
       if (!hasAnyRequiredRole) {
         throw new ForbiddenError('Você não possui acesso a este recurso.');
       }
@@ -99,10 +104,14 @@ export const hasAllRoles = (roleNames: string[]) => {
       }
 
       const userRoles = userData.userRoles.map(ur => ur.role.name);
-      const hasAllRequiredRoles = roleNames.every(roleName => userRoles.includes(roleName));
-      
+      const hasAllRequiredRoles = roleNames.every(roleName =>
+        userRoles.includes(roleName),
+      );
+
       if (!hasAllRequiredRoles) {
-        throw new ForbiddenError('Você não possui todas as permissões necessárias para este recurso.');
+        throw new ForbiddenError(
+          'Você não possui todas as permissões necessárias para este recurso.',
+        );
       }
 
       next();

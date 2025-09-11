@@ -15,11 +15,11 @@ export const rolePermissions = pgTable(
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().notNull(),
   },
-  (table) => {
+  table => {
     return {
       pk: primaryKey({ columns: [table.roleId, table.permissionId] }),
     };
-  }
+  },
 );
 
 export const rolePermissionRelations = relations(
@@ -33,5 +33,5 @@ export const rolePermissionRelations = relations(
       fields: [rolePermissions.permissionId],
       references: [permissions.id],
     }),
-  })
+  }),
 );

@@ -9,7 +9,9 @@ import { validateRequest } from '@/middlewares/validation/validate-request.middl
 describe('Validate Request Middleware', () => {
   setupTestDB();
 
-  const createMockRequest = (overrides: Partial<Request> = {}): Partial<Request> => ({
+  const createMockRequest = (
+    overrides: Partial<Request> = {},
+  ): Partial<Request> => ({
     body: {},
     query: {},
     params: {},
@@ -150,8 +152,14 @@ describe('Validate Request Middleware', () => {
     it('deve rejeitar requisição com query inválida', () => {
       const schema = z.object({
         query: z.object({
-          page: z.string().transform(Number).pipe(z.number().min(1, 'Página deve ser maior que 0')),
-          limit: z.string().transform(Number).pipe(z.number().min(1).max(100, 'Limite deve ser entre 1 e 100')),
+          page: z
+            .string()
+            .transform(Number)
+            .pipe(z.number().min(1, 'Página deve ser maior que 0')),
+          limit: z
+            .string()
+            .transform(Number)
+            .pipe(z.number().min(1).max(100, 'Limite deve ser entre 1 e 100')),
         }),
       });
 
@@ -282,7 +290,10 @@ describe('Validate Request Middleware', () => {
           email: z.string().email('Email inválido'),
         }),
         query: z.object({
-          page: z.string().transform(Number).pipe(z.number().min(1, 'Página inválida')),
+          page: z
+            .string()
+            .transform(Number)
+            .pipe(z.number().min(1, 'Página inválida')),
         }),
         params: z.object({
           id: z.string().uuid('ID inválido'),
@@ -384,7 +395,9 @@ describe('Validate Request Middleware', () => {
       const res = createMockResponse();
       const next = vi.fn();
 
-      const middleware = validateRequest(mockSchema as unknown as import('zod').AnyZodObject);
+      const middleware = validateRequest(
+        mockSchema as unknown as import('zod').AnyZodObject,
+      );
       middleware(req as Request, res as Response, next);
 
       expect(next).toHaveBeenCalledWith(expect.any(Error));
@@ -400,7 +413,9 @@ describe('Validate Request Middleware', () => {
           name: z.string().min(3),
           email: z.string().email(),
           age: z.number().min(18).max(100),
-          phone: z.string().regex(/^\d{10,11}$/, 'Telefone deve ter 10 ou 11 dígitos'),
+          phone: z
+            .string()
+            .regex(/^\d{10,11}$/, 'Telefone deve ter 10 ou 11 dígitos'),
         }),
       });
 
@@ -460,12 +475,14 @@ describe('Validate Request Middleware', () => {
     it('deve validar array de objetos com Faker', () => {
       const schema = z.object({
         body: z.object({
-          users: z.array(
-            z.object({
-              name: z.string().min(3),
-              email: z.string().email(),
-            })
-          ).min(1, 'Deve ter pelo menos um usuário'),
+          users: z
+            .array(
+              z.object({
+                name: z.string().min(3),
+                email: z.string().email(),
+              }),
+            )
+            .min(1, 'Deve ter pelo menos um usuário'),
         }),
       });
 
@@ -497,12 +514,14 @@ describe('Validate Request Middleware', () => {
     it('deve rejeitar array vazio com Faker', () => {
       const schema = z.object({
         body: z.object({
-          users: z.array(
-            z.object({
-              name: z.string().min(3),
-              email: z.string().email(),
-            })
-          ).min(1, 'Deve ter pelo menos um usuário'),
+          users: z
+            .array(
+              z.object({
+                name: z.string().min(3),
+                email: z.string().email(),
+              }),
+            )
+            .min(1, 'Deve ter pelo menos um usuário'),
         }),
       });
 
@@ -560,7 +579,7 @@ describe('Validate Request Middleware', () => {
       const schema = z.object({
         body: z.object({
           age: z.string().transform(Number).pipe(z.number().min(18)),
-          isActive: z.string().transform((val) => val === 'true'),
+          isActive: z.string().transform(val => val === 'true'),
         }),
       });
 
@@ -584,7 +603,10 @@ describe('Validate Request Middleware', () => {
     it('deve rejeitar transformação inválida', () => {
       const schema = z.object({
         body: z.object({
-          age: z.string().transform(Number).pipe(z.number().min(18, 'Idade deve ser maior que 18')),
+          age: z
+            .string()
+            .transform(Number)
+            .pipe(z.number().min(18, 'Idade deve ser maior que 18')),
         }),
       });
 

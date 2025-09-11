@@ -5,7 +5,7 @@ import { CreateRoleInput } from '@/validations/v1/modules/role.validations';
 
 export class RoleFactory {
   static makeRoleData(
-    overrides: Partial<CreateRoleInput> = {}
+    overrides: Partial<CreateRoleInput> = {},
   ): CreateRoleInput {
     return {
       name: `${faker.company.buzzNoun()}_${Date.now()}`,
@@ -15,7 +15,7 @@ export class RoleFactory {
   }
 
   static async createRole(
-    overrides: Partial<CreateRoleModel> = {}
+    overrides: Partial<CreateRoleModel> = {},
   ): Promise<RoleModel> {
     const roleData = this.makeRoleData(overrides);
 
@@ -26,7 +26,7 @@ export class RoleFactory {
 
   static async createRoles(
     count: number = 3,
-    overrides: Partial<CreateRoleModel> = {}
+    overrides: Partial<CreateRoleModel> = {},
   ): Promise<RoleModel[]> {
     const roles = [];
 

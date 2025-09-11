@@ -18,6 +18,6 @@ export class UserResource {
   }
 
   static collectionToResponse(users: UserModel[]) {
-    return users.map((user) => this.toResponse(user));
+    return users.map(user => this.toResponse(user));
   }
 }

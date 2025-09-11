@@ -1,9 +1,4 @@
-import {
-  pgTable,
-  serial,
-  varchar,
-  timestamp,
-} from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { userRoles } from '@/db/schema/v1/user-role.schema';
 

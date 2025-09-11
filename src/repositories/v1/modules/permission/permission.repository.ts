@@ -8,7 +8,7 @@ import {
 
 class PermissionRepository {
   async create(
-    permissionData: CreatePermissionModel
+    permissionData: CreatePermissionModel,
   ): Promise<PermissionModel> {
     const [newPermission] = await db
       .insert(permissions)
@@ -20,7 +20,7 @@ class PermissionRepository {
 
   async update(
     id: number,
-    permissionData: CreatePermissionModel
+    permissionData: CreatePermissionModel,
   ): Promise<PermissionModel> {
     const [updatedPermission] = await db
       .update(permissions)
@@ -38,7 +38,7 @@ class PermissionRepository {
       .where(eq(permissions.id, id))
       .limit(1);
 
-    return permissionResults[0] || null;
+    return permissionResults[0] ?? null;
   }
 
   async findAll(): Promise<PermissionModel[]> {

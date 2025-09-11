@@ -5,7 +5,10 @@ import { CreatePermissionInput } from '@/validations/v1/modules/permission.valid
 import { PermissionResource } from '@/resources/v1/modules/permission/permission.resource';
 
 export class PermissionController {
-  create = async (req: Request<{}, {}, CreatePermissionInput>, res: Response) => {
+  create = async (
+    req: Request<{}, {}, CreatePermissionInput>,
+    res: Response,
+  ) => {
     const permissionData: CreatePermissionInput = req.body;
 
     const permission = await PermissionService.create(permissionData);
@@ -33,7 +36,7 @@ export class PermissionController {
 
     const permission = await PermissionService.update(
       Number(id),
-      permissionData
+      permissionData,
     );
 
     res.status(StatusCode.OK).json({

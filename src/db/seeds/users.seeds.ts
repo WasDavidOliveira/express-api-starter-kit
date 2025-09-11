@@ -39,7 +39,7 @@ export async function seedUsers() {
 if (require.main === module) {
   seedUsers()
     .then(() => process.exit(0))
-    .catch((error) => {
+    .catch(error => {
       logger.error('Failed to seed users:', error);
       process.exit(1);
     });

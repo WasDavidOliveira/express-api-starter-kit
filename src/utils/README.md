@@ -30,9 +30,11 @@ utils/
 ## Módulos Disponíveis
 
 ### 🔧 **Core Module** (`core/`)
+
 Utilitários fundamentais da aplicação:
 
 - **`app-error.utils.ts`**: Sistema de tratamento de erros padronizado
+
   - `AppError`: Classe base para todos os erros da aplicação
   - `BadRequestError`: Erro para requisições inválidas (status 400)
   - `UnauthorizedError`: Erro para operações não autorizadas (status 401)
@@ -49,6 +51,7 @@ Utilitários fundamentais da aplicação:
   - Funções específicas para inicialização do servidor
 
 ### 🏗️ **Infrastructure Module** (`infrastructure/`)
+
 Utilitários relacionados à infraestrutura:
 
 - **`catch-async.utils.ts`**: Tratamento de erros assíncronos
@@ -57,6 +60,7 @@ Utilitários relacionados à infraestrutura:
   - Captura automática de erros e repassa para o middleware de erro
 
 ### 📚 **Documentation Module** (`documentation/`)
+
 Utilitários para geração de documentação:
 
 - **`openapi.utils.ts`**: Geração de documentação OpenAPI (Swagger)
@@ -71,6 +75,7 @@ Utilitários para geração de documentação:
 ### Core Utils
 
 #### **App Error Utils** (`core/app-error.utils.ts`)
+
 ```typescript
 import appConfig from '@/configs/app.config';
 import { Environment } from '@/constants/environment.constants';
@@ -83,7 +88,7 @@ export class AppError extends Error {
   constructor(
     message: string,
     statusCode: number = 400,
-    errors?: ValidationErrorItem[]
+    errors?: ValidationErrorItem[],
   ) {
     super(message);
     this.statusCode = statusCode;
@@ -99,7 +104,7 @@ export class AppError extends Error {
 export class BadRequestError extends AppError {
   constructor(
     message: string = 'Requisição inválida',
-    errors?: ValidationErrorItem[]
+    errors?: ValidationErrorItem[],
   ) {
     super(message, 400, errors);
   }
@@ -126,7 +131,7 @@ export class NotFoundError extends AppError {
 export class ValidationError extends AppError {
   constructor(
     message: string = 'Erro de validação',
-    errors: ValidationErrorItem[] = []
+    errors: ValidationErrorItem[] = [],
   ) {
     super(message, 400, errors);
   }
@@ -140,6 +145,7 @@ export class ConflictError extends AppError {
 ```
 
 #### **Logger Utils** (`core/logger.utils.ts`)
+
 ```typescript
 import winston from 'winston';
 import path from 'path';
@@ -161,7 +167,7 @@ class Logger {
       format: combine(
         timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         colorize(),
-        logFormat
+        logFormat,
       ),
       transports: [
         new winston.transports.Console(),
@@ -204,6 +210,7 @@ export const logger = new Logger();
 ### Infrastructure Utils
 
 #### **Catch Async Utils** (`infrastructure/catch-async.utils.ts`)
+
 ```typescript
 import { Request, Response, NextFunction } from 'express';
 
@@ -217,6 +224,7 @@ export const catchAsync = (fn: Function) => {
 ### Documentation Utils
 
 #### **OpenAPI Utils** (`documentation/openapi.utils.ts`)
+
 ```typescript
 import { createDocument } from 'zod-openapi';
 import path from 'path';
@@ -297,6 +305,7 @@ export const generateOpenAPIDocument = () => {
 ## Padrão de Implementação
 
 ### Classes de Erro
+
 ```typescript
 export class [Entity]Error extends AppError {
   constructor(
@@ -309,6 +318,7 @@ export class [Entity]Error extends AppError {
 ```
 
 ### Funções Utilitárias
+
 ```typescript
 export const [functionName] = (param: ParamType): ReturnType => {
   // Implementação da função
@@ -317,6 +327,7 @@ export const [functionName] = (param: ParamType): ReturnType => {
 ```
 
 ### Classes Utilitárias
+
 ```typescript
 export class [ClassName] {
   private [property]: [Type];
@@ -335,6 +346,7 @@ export class [ClassName] {
 ## Uso e Importação
 
 ### Tratamento de Erros
+
 ```typescript
 import { NotFoundError, ValidationError } from '@/utils/core/app-error.utils';
 
@@ -350,23 +362,31 @@ if (validationErrors.length > 0) {
 ```
 
 ### Tratamento Assíncrono
+
 ```typescript
 import { catchAsync } from '@/utils/infrastructure/catch-async.utils';
 
 // Em um controller
-router.get('/users', catchAsync(async (req, res) => {
-  const users = await UserService.findAll();
-  res.json(users);
-}));
+router.get(
+  '/users',
+  catchAsync(async (req, res) => {
+    const users = await UserService.findAll();
+    res.json(users);
+  }),
+);
 
 // Elimina a necessidade de try/catch
-router.post('/users', catchAsync(async (req, res) => {
-  const user = await UserService.create(req.body);
-  res.status(201).json(user);
-}));
+router.post(
+  '/users',
+  catchAsync(async (req, res) => {
+    const user = await UserService.create(req.body);
+    res.status(201).json(user);
+  }),
+);
 ```
 
 ### Sistema de Logs
+
 ```typescript
 import { logger } from '@/utils/core/logger.utils';
 
@@ -381,6 +401,7 @@ logger.serverStartup(process.env.NODE_ENV, 3000);
 ```
 
 ### Geração de Documentação OpenAPI
+
 ```typescript
 import { generateOpenAPIDocument } from '@/utils/documentation/openapi.utils';
 
@@ -394,12 +415,14 @@ const openAPIDoc = generateOpenAPIDocument();
 ## Características Técnicas
 
 ### Sistema de Erros
+
 - **Hierarquia de Classes**: Herança de `AppError` para tipos específicos
 - **Stack Trace**: Captura automática em ambiente de desenvolvimento
 - **Validação de Erros**: Suporte para múltiplos erros de validação
 - **Status Codes**: Códigos HTTP padronizados para cada tipo de erro
 
 ### Sistema de Logs
+
 - **Winston**: Framework robusto para logging
 - **Múltiplos Transportes**: Console e arquivos simultaneamente
 - **Organização por Data**: Logs separados por dia
@@ -407,12 +430,14 @@ const openAPIDoc = generateOpenAPIDocument();
 - **Formatação Personalizada**: Timestamps e emojis para melhor legibilidade
 
 ### Tratamento Assíncrono
+
 - **Wrapper Function**: Encapsula funções assíncronas
 - **Error Propagation**: Repassa erros para middleware de erro
 - **Express Integration**: Integração nativa com Express.js
 - **Clean Code**: Elimina necessidade de try/catch
 
 ### Documentação OpenAPI
+
 - **Zod Integration**: Validação de schemas com Zod
 - **Auto-generation**: Geração automática de documentação
 - **JWT Security**: Documentação de autenticação
@@ -447,21 +472,25 @@ const openAPIDoc = generateOpenAPIDocument();
 ## Fluxo de Utilização
 
 ### Tratamento de Erros
+
 ```
 Service → Validação → AppError → Controller → Response de Erro
 ```
 
 ### Tratamento Assíncrono
+
 ```
 Controller → catchAsync → Service → Error → Middleware de Erro
 ```
 
 ### Sistema de Logs
+
 ```
 Application → Logger → Console + Arquivos → Logs Organizados
 ```
 
 ### Documentação OpenAPI
+
 ```
 Validations → OpenAPI Utils → JSON Schema → Swagger UI
 ```
@@ -469,6 +498,7 @@ Validations → OpenAPI Utils → JSON Schema → Swagger UI
 ## Extensibilidade
 
 ### Adicionando Novos Tipos de Erro
+
 ```typescript
 // core/new-error.utils.ts
 export class NewError extends AppError {
@@ -479,6 +509,7 @@ export class NewError extends AppError {
 ```
 
 ### Adicionando Novos Utilitários
+
 ```typescript
 // infrastructure/new-utility.utils.ts
 export const newUtility = (param: ParamType): ReturnType => {
@@ -488,6 +519,7 @@ export const newUtility = (param: ParamType): ReturnType => {
 ```
 
 ### Adicionando Novos Utilitários de Documentação
+
 ```typescript
 // documentation/new-doc.utils.ts
 export const generateNewDocumentation = () => {
@@ -499,23 +531,25 @@ export const generateNewDocumentation = () => {
 ## Integração com Outros Módulos
 
 ### Services
+
 ```typescript
 import { NotFoundError } from '@/utils/core/app-error.utils';
 
 export class UserService {
   async findById(id: number) {
     const user = await UserRepository.findById(id);
-    
+
     if (!user) {
       throw new NotFoundError('Usuário não encontrado');
     }
-    
+
     return user;
   }
 }
 ```
 
 ### Controllers
+
 ```typescript
 import { catchAsync } from '@/utils/infrastructure/catch-async.utils';
 
@@ -531,10 +565,15 @@ router.get('/users', catchAsync(UserController.index));
 ```
 
 ### Middlewares
+
 ```typescript
 import { logger } from '@/utils/core/logger.utils';
 
-export const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const loggingMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   logger.info(`${req.method} ${req.path}`);
   next();
 };
@@ -543,16 +582,19 @@ export const loggingMiddleware = (req: Request, res: Response, next: NextFunctio
 ## Configuração e Ambiente
 
 ### Logs
+
 - **Desenvolvimento**: Console colorido + arquivos
 - **Produção**: Apenas arquivos (sem stack trace)
 - **Organização**: Logs separados por data e tipo
 
 ### Erros
+
 - **Desenvolvimento**: Stack trace completo
 - **Produção**: Apenas mensagem de erro
 - **Validação**: Suporte para múltiplos erros
 
 ### Documentação
+
 - **Auto-generation**: Geração automática na inicialização
 - **Output**: Arquivo JSON em `src/docs/openapi.json`
-- **Schemas**: Baseados nas validações Zod existentes 
+- **Schemas**: Baseados nas validações Zod existentes

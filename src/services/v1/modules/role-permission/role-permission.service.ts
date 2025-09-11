@@ -12,7 +12,7 @@ export class RolePermissionService {
 
     const rolePermission = await RolePermissionRepository.attach(
       roleId,
-      permissionId
+      permissionId,
     );
 
     return rolePermission;

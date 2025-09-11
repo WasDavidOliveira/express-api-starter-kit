@@ -12,6 +12,6 @@ export class RoleResource {
   }
 
   static collectionToResponse(roles: RoleModel[]) {
-    return roles.map((role) => this.toResponse(role));
+    return roles.map(role => this.toResponse(role));
   }
 }

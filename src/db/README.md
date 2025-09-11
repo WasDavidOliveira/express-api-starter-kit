@@ -69,4 +69,4 @@ A configuração da conexão com o banco de dados é obtida a partir do arquivo 
 - `DB_PORT`: Porta do banco de dados (padrão: "5432")
 - `DB_USER`: Usuário do banco de dados (padrão: "postgres")
 - `DB_PASSWORD`: Senha do banco de dados (padrão: "senha")
-- `DB_NAME`: Nome do banco de dados (padrão: "carajapp") 
+- `DB_NAME`: Nome do banco de dados (padrão: "carajapp")

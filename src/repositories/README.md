@@ -36,6 +36,7 @@ repositories/
 ## Módulos Disponíveis
 
 ### 🔐 **Auth Module** (`auth/`)
+
 Repositório para gerenciamento de usuários:
 
 - **`user.repository.ts`**: Operações CRUD para usuários
@@ -45,6 +46,7 @@ Repositório para gerenciamento de usuários:
   - Tratamento de erros de conflito (email duplicado)
 
 ### 🛡️ **Role Module** (`role/`)
+
 Repositório para gerenciamento de roles:
 
 - **`role.repository.ts`**: Operações CRUD para roles
@@ -55,6 +57,7 @@ Repositório para gerenciamento de roles:
   - `delete(id)`: Remover role (com limpeza de relacionamentos)
 
 ### 🔑 **Permission Module** (`permission/`)
+
 Repositório para gerenciamento de permissões:
 
 - **`permission.repository.ts`**: Operações CRUD para permissões
@@ -65,6 +68,7 @@ Repositório para gerenciamento de permissões:
   - `delete(id)`: Remover permissão
 
 ### 🔗 **Role-Permission Module** (`role-permission/`)
+
 Repositório para gerenciamento de relacionamentos entre roles e permissões:
 
 - **`role-permission.repository.ts`**: Operações de relacionamento
@@ -88,6 +92,7 @@ Os repositórios são responsáveis por:
 ## Padrão de Implementação
 
 ### Estrutura Base dos Repositories
+
 ```typescript
 import { [entity] } from '@/db/schema/v1/[entity].schema';
 import { db } from '@/db/db.connection';
@@ -106,7 +111,7 @@ class [Entity]Repository {
       .from([entity])
       .where(eq([entity].id, id))
       .limit(1);
-    
+
     return results[0] || null;
   }
 
@@ -117,6 +122,7 @@ export default new [Entity]Repository();
 ```
 
 ### Tratamento de Erros
+
 ```typescript
 async create(userData: CreateUserModel): Promise<UserModel> {
   try {
@@ -144,6 +150,7 @@ async create(userData: CreateUserModel): Promise<UserModel> {
 ```
 
 ### Queries com JOIN
+
 ```typescript
 async findAllByRoleId(roleId: number) {
   const rolePermissionsList = await db
@@ -166,6 +173,7 @@ async findAllByRoleId(roleId: number) {
 ## Exemplo de Implementação
 
 ### User Repository
+
 ```typescript
 // user.repository.ts
 import { user } from '@/db/schema/v1/user.schema';
@@ -244,17 +252,20 @@ export class AuthService {
 ## Características Técnicas
 
 ### ORM e Queries
+
 - **Drizzle ORM**: ORM moderno e type-safe para TypeScript
 - **Queries tipadas**: Uso de schemas para garantir tipagem
 - **Operações CRUD**: Métodos padrão para todas as entidades
 - **JOINs otimizados**: Queries eficientes para relacionamentos
 
 ### Tratamento de Erros
+
 - **Erros específicos**: Tratamento de códigos de erro do banco
 - **Classes de erro**: Uso de `ConflictError` e outras classes personalizadas
 - **Fallback seguro**: Re-throw de erros não tratados
 
 ### Performance
+
 - **Limite de resultados**: Uso de `.limit(1)` para queries únicas
 - **Queries otimizadas**: Seleção específica de campos quando necessário
 - **Transações**: Gerenciamento de operações relacionadas
@@ -283,4 +294,4 @@ export class AuthService {
 - **Schemas**: Para definição de estrutura das tabelas
 - **Types**: Para tipagem dos modelos de dados
 - **Utils**: Para classes de erro personalizadas
-- **DB Connection**: Para conexão com o banco de dados 
+- **DB Connection**: Para conexão com o banco de dados

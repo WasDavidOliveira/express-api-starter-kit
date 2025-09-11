@@ -34,6 +34,7 @@ resources/
 ## Módulos Disponíveis
 
 ### 👤 **User Module** (`user/`)
+
 Resource para transformação de dados de usuários:
 
 - **`user.resources.ts`**: Transformação de usuários
@@ -42,6 +43,7 @@ Resource para transformação de dados de usuários:
   - `collectionToResponse(users)`: Transforma coleção de usuários
 
 ### 🛡️ **Role Module** (`role/`)
+
 Resource para transformação de dados de roles:
 
 - **`role.resource.ts`**: Transformação de roles
@@ -49,6 +51,7 @@ Resource para transformação de dados de roles:
   - `collectionToResponse(roles)`: Transforma coleção de roles
 
 ### 🔑 **Permission Module** (`permission/`)
+
 Resource para transformação de dados de permissões:
 
 - **`permission.resource.ts`**: Transformação de permissões
@@ -69,6 +72,7 @@ Os recursos são responsáveis por:
 ## Padrão de Implementação
 
 ### Estrutura Base dos Resources
+
 ```typescript
 import { [Entity]Model } from '@/types/models/v1/[entity].types';
 
@@ -90,6 +94,7 @@ export class [Entity]Resource {
 ```
 
 ### Tratamento de Campos Sensíveis
+
 ```typescript
 static toResponse(user: UserModel) {
   const { password: _password, ...userSafe } = user;
@@ -98,6 +103,7 @@ static toResponse(user: UserModel) {
 ```
 
 ### Transformação de Coleções
+
 ```typescript
 static collectionToResponse(users: UserModel[]) {
   return users.map((user) => this.toResponse(user));
@@ -107,6 +113,7 @@ static collectionToResponse(users: UserModel[]) {
 ## Exemplo de Implementação
 
 ### User Resource
+
 ```typescript
 // user.resources.ts
 import { UserModel } from '@/types/models/v1/auth.types';
@@ -128,12 +135,13 @@ export class UserResource {
   }
 
   static collectionToResponse(users: UserModel[]) {
-    return users.map((user) => this.toResponse(user));
+    return users.map(user => this.toResponse(user));
   }
 }
 ```
 
 ### Role Resource
+
 ```typescript
 // role.resource.ts
 import { RoleModel } from '@/types/models/v1/role.types';
@@ -150,12 +158,13 @@ export class RoleResource {
   }
 
   static collectionToResponse(roles: RoleModel[]) {
-    return roles.map((role) => this.toResponse(role));
+    return roles.map(role => this.toResponse(role));
   }
 }
 ```
 
 ### Permission Resource
+
 ```typescript
 // permission.resource.ts
 import { PermissionModel } from '@/types/models/v1/permission.types';
@@ -173,7 +182,7 @@ export class PermissionResource {
   }
 
   static collectionToResponse(permissions: PermissionModel[]) {
-    return permissions.map((permission) => this.toResponse(permission));
+    return permissions.map(permission => this.toResponse(permission));
   }
 }
 ```
@@ -213,16 +222,19 @@ export class RoleController {
 ## Características Técnicas
 
 ### Transformação de Dados
+
 - **Métodos estáticos**: Uso de métodos estáticos para facilitar o acesso
 - **Desestruturação segura**: Remoção de campos sensíveis com desestruturação
 - **Mapeamento de coleções**: Transformação eficiente de arrays de entidades
 
 ### Segurança
+
 - **Ocultação de senhas**: Remoção automática de campos sensíveis
 - **Dados filtrados**: Exposição apenas de campos seguros para a API
 - **Consistência**: Estrutura padronizada para todas as respostas
 
 ### Performance
+
 - **Transformação sob demanda**: Sem cache desnecessário
 - **Mapeamento eficiente**: Uso de `map` para coleções
 - **Sem mutação**: Criação de novos objetos sem alterar os originais
@@ -255,6 +267,7 @@ export class RoleController {
 ## Padrão de Resposta da API
 
 ### Resposta Individual
+
 ```typescript
 {
   "message": "Operação realizada com sucesso.",
@@ -269,6 +282,7 @@ export class RoleController {
 ```
 
 ### Resposta de Coleção
+
 ```typescript
 {
   "message": "Dados listados com sucesso.",
@@ -282,4 +296,4 @@ export class RoleController {
     }
   ]
 }
-``` 
+```

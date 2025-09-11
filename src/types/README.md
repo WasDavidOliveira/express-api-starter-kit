@@ -38,13 +38,16 @@ types/
 ## Módulos Disponíveis
 
 ### 🔧 **Core Module** (`core/`)
+
 Tipos fundamentais da aplicação:
 
 - **`errors.types.ts`**: Tipos para tratamento de erros
+
   - `PostgresError`: Erros específicos do PostgreSQL
   - `ValidationErrorItem`: Campos com erro de validação
 
 - **`jwt.types.ts`**: Tipos para tokens JWT
+
   - `JwtPayload`: Estrutura do payload JWT
 
 - **`openapi.types.ts`**: Tipos para documentação OpenAPI
@@ -53,6 +56,7 @@ Tipos fundamentais da aplicação:
   - `OpenAPISpec`: Especificação completa da API
 
 ### 🏗️ **Infrastructure Module** (`infrastructure/`)
+
 Tipos relacionados à infraestrutura:
 
 - **`middlewares.types.ts`**: Tipos para middlewares
@@ -61,13 +65,16 @@ Tipos relacionados à infraestrutura:
   - `UserWithRole`: Alias para UserWithRoles
 
 ### 📊 **Models Module** (`models/v1/`)
+
 Tipos dos modelos de dados da API v1:
 
 - **`auth.types.ts`**: Tipos de autenticação
+
   - `UserModel`: Modelo completo do usuário
   - `CreateUserModel`: Dados para criação de usuário
 
 - **`role.types.ts`**: Tipos de roles
+
   - `RoleModel`: Modelo completo da role
   - `CreateRoleModel`: Dados para criação de role
 
@@ -77,6 +84,7 @@ Tipos dos modelos de dados da API v1:
   - `PermissionCheck`: Verificação de permissão
 
 ### 🌐 **Express Module** (`express/`)
+
 Extensões das interfaces nativas do Express:
 
 - **`index.d.ts`**: Extensão da interface Request
@@ -87,6 +95,7 @@ Extensões das interfaces nativas do Express:
 ### Core Types
 
 #### **Errors Types** (`core/errors.types.ts`)
+
 ```typescript
 /**
  * Tipo para erros específicos do PostgreSQL
@@ -107,6 +116,7 @@ export type ValidationErrorItem = {
 ```
 
 #### **JWT Types** (`core/jwt.types.ts`)
+
 ```typescript
 export type JwtPayload = {
   id: number;
@@ -114,6 +124,7 @@ export type JwtPayload = {
 ```
 
 #### **OpenAPI Types** (`core/openapi.types.ts`)
+
 ```typescript
 export type HttpMethod =
   | 'get'
@@ -153,6 +164,7 @@ export type OpenAPISpec = {
 ### Infrastructure Types
 
 #### **Middlewares Types** (`infrastructure/middlewares.types.ts`)
+
 ```typescript
 export type UserWithRoles = {
   id: number;
@@ -182,6 +194,7 @@ export type UserWithRole = UserWithRoles;
 ### Model Types
 
 #### **Auth Types** (`models/v1/auth.types.ts`)
+
 ```typescript
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { user } from '@/db/schema/v1/user.schema';
@@ -191,6 +204,7 @@ export type CreateUserModel = InferInsertModel<typeof user>;
 ```
 
 #### **Role Types** (`models/v1/role.types.ts`)
+
 ```typescript
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { roles } from '@/db/schema/v1/role.schema';
@@ -200,6 +214,7 @@ export type CreateRoleModel = InferInsertModel<typeof roles>;
 ```
 
 #### **Permission Types** (`models/v1/permission.types.ts`)
+
 ```typescript
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { permissions } from '@/db/schema/v1/permission.schema';
@@ -217,6 +232,7 @@ export type PermissionCheck = {
 ### Express Types
 
 #### **Express Extensions** (`express/index.d.ts`)
+
 ```typescript
 declare namespace Express {
   export interface Request {
@@ -228,6 +244,7 @@ declare namespace Express {
 ## Padrão de Implementação
 
 ### Tipos de Modelos com Drizzle ORM
+
 ```typescript
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 import { [entity] } from '@/db/schema/v1/[entity].schema';
@@ -240,6 +257,7 @@ export type Create[Entity]Model = InferInsertModel<typeof [entity]>;
 ```
 
 ### Tipos de Erro Personalizados
+
 ```typescript
 export type [Entity]Error = Error & {
   code?: string;
@@ -250,6 +268,7 @@ export type [Entity]Error = Error & {
 ```
 
 ### Tipos de Validação
+
 ```typescript
 export type [Entity]Validation = {
   field: string;
@@ -262,6 +281,7 @@ export type [Entity]Validation = {
 ## Uso e Importação
 
 ### Importação de Tipos Core
+
 ```typescript
 import { PostgresError, ValidationErrorItem } from '@/types/core/errors.types';
 import { JwtPayload } from '@/types/core/jwt.types';
@@ -269,18 +289,27 @@ import { OpenAPISpec, HttpMethod } from '@/types/core/openapi.types';
 ```
 
 ### Importação de Tipos de Infraestrutura
+
 ```typescript
-import { UserWithRoles, UserRole } from '@/types/infrastructure/middlewares.types';
+import {
+  UserWithRoles,
+  UserRole,
+} from '@/types/infrastructure/middlewares.types';
 ```
 
 ### Importação de Tipos de Modelos
+
 ```typescript
 import { UserModel, CreateUserModel } from '@/types/models/v1/auth.types';
 import { RoleModel, CreateRoleModel } from '@/types/models/v1/role.types';
-import { PermissionModel, CreatePermissionModel } from '@/types/models/v1/permission.types';
+import {
+  PermissionModel,
+  CreatePermissionModel,
+} from '@/types/models/v1/permission.types';
 ```
 
 ### Importação de Tipos do Express
+
 ```typescript
 // Os tipos do Express são automaticamente disponíveis
 // após a declaração em index.d.ts
@@ -290,16 +319,19 @@ req.userId; // number
 ## Características Técnicas
 
 ### Type Safety
+
 - **Inferência Automática**: Uso de `InferSelectModel` e `InferInsertModel` do Drizzle ORM
 - **Validação em Tempo de Compilação**: Detecção de erros antes da execução
 - **IntelliSense**: Autocompletar e verificação de tipos no editor
 
 ### Organização Modular
+
 - **Separação por Funcionalidade**: Core, Infrastructure, Models
 - **Versionamento**: Suporte para múltiplas versões da API
 - **Reutilização**: Tipos compartilhados entre diferentes módulos
 
 ### Integração com Drizzle ORM
+
 - **Schemas Automáticos**: Tipos derivados dos schemas do banco
 - **Consistência**: Sincronização automática entre schema e tipos
 - **Manutenibilidade**: Mudanças no schema refletem automaticamente nos tipos
@@ -333,18 +365,21 @@ req.userId; // number
 ## Fluxo de Tipos
 
 ### Criação de Tipos
+
 ```
 Schema Drizzle → InferSelectModel → UserModel
 Schema Drizzle → InferInsertModel → CreateUserModel
 ```
 
 ### Uso nos Services
+
 ```
 Service → UserModel → Repository → Database
 Service → CreateUserModel → Validation → Repository
 ```
 
 ### Uso nos Controllers
+
 ```
 Controller → Request → Validation → Service
 Controller → Response → UserModel → Resource
@@ -353,6 +388,7 @@ Controller → Response → UserModel → Resource
 ## Extensibilidade
 
 ### Adicionando Novos Tipos de Modelo
+
 ```typescript
 // models/v1/new-entity.types.ts
 import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
@@ -363,6 +399,7 @@ export type CreateNewEntityModel = InferInsertModel<typeof newEntity>;
 ```
 
 ### Adicionando Novos Tipos Core
+
 ```typescript
 // core/new-feature.types.ts
 export type NewFeatureConfig = {
@@ -373,6 +410,7 @@ export type NewFeatureConfig = {
 ```
 
 ### Adicionando Novos Tipos de Infraestrutura
+
 ```typescript
 // infrastructure/database.types.ts
 export type DatabaseConfig = {
@@ -382,4 +420,4 @@ export type DatabaseConfig = {
   username: string;
   password: string;
 };
-``` 
+```

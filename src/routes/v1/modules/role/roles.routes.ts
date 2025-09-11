@@ -14,32 +14,32 @@ router.post(
   '/',
   hasPermission('role', PermissionActions.CREATE),
   validateRequest(createRoleSchema),
-  RoleController.create
+  RoleController.create,
 );
 
 router.get(
   '/all',
   hasPermission('role', PermissionActions.READ),
-  RoleController.index
+  RoleController.index,
 );
 
 router.get(
   '/:id',
   hasPermission('role', PermissionActions.READ),
-  RoleController.show
+  RoleController.show,
 );
 
 router.put(
   '/:id',
   hasPermission('role', PermissionActions.UPDATE),
   validateRequest(updateRoleSchema),
-  RoleController.update
+  RoleController.update,
 );
 
 router.delete(
   '/:id',
   hasPermission('role', PermissionActions.DELETE),
-  RoleController.delete
+  RoleController.delete,
 );
 
 export default router;

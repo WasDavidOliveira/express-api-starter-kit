@@ -13,7 +13,9 @@ constants/
 ## Descrição dos Arquivos
 
 ### environment.constants.ts
+
 Define as constantes relacionadas aos ambientes de execução da aplicação:
+
 - `PRODUCTION`: Ambiente de produção
 - `DEVELOPMENT`: Ambiente de desenvolvimento
 - `LOCAL`: Ambiente local
@@ -21,7 +23,9 @@ Define as constantes relacionadas aos ambientes de execução da aplicação:
 Essas constantes são utilizadas para determinar comportamentos específicos da aplicação com base no ambiente em que está sendo executada.
 
 ### status-code.constants.ts
+
 Contém todos os códigos de status HTTP utilizados nas respostas da API, organizados por categorias:
+
 - **Respostas de Sucesso (2xx)**: Códigos que indicam que a requisição foi processada com sucesso
 - **Redirecionamentos (3xx)**: Códigos que indicam algum tipo de redirecionamento
 - **Erros do Cliente (4xx)**: Códigos que indicam erros causados pelo cliente
@@ -50,5 +54,7 @@ if (process.env.NODE_ENV === Environment.PRODUCTION) {
 }
 
 // Utilizando códigos de status HTTP
-response.status(StatusCode.OK).json({ message: 'Operação realizada com sucesso' });
-``` 
+response
+  .status(StatusCode.OK)
+  .json({ message: 'Operação realizada com sucesso' });
+```

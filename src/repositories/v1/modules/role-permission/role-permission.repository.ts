@@ -18,7 +18,7 @@ class RolePermissionRepository {
       .delete(rolePermissions)
       .where(
         eq(rolePermissions.roleId, roleId) &&
-          eq(rolePermissions.permissionId, permissionId)
+          eq(rolePermissions.permissionId, permissionId),
       );
   }
 

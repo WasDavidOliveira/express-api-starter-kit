@@ -57,7 +57,9 @@ describe('Autenticação', () => {
       .send({ email: user.email });
 
     expect(response.status).toBe(StatusCode.OK);
-    expect(response.body.message).toBe('Se existir, enviaremos instruções para o email informado.');
+    expect(response.body.message).toBe(
+      'Se existir, enviaremos instruções para o email informado.',
+    );
     expect(response.body).toHaveProperty('token');
     expect(typeof response.body.token).toBe('string');
   });

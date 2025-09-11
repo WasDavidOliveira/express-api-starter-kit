@@ -39,7 +39,7 @@ describe('Permissões (Permissions)', () => {
     expect(response.body.data).toHaveProperty('name', permissionData.name);
     expect(response.body.data).toHaveProperty(
       'description',
-      permissionData.description
+      permissionData.description,
     );
     expect(response.body.data).toHaveProperty('action', permissionData.action);
   });
@@ -57,7 +57,7 @@ describe('Permissões (Permissions)', () => {
     expect(response.body.data).toHaveProperty('name', permission.name);
     expect(response.body.data).toHaveProperty(
       'description',
-      permission.description
+      permission.description,
     );
     expect(response.body.data).toHaveProperty('action', permission.action);
   });
@@ -82,7 +82,7 @@ describe('Permissões (Permissions)', () => {
     expect(response.body.data).toHaveProperty('name', updatedData.name);
     expect(response.body.data).toHaveProperty(
       'description',
-      updatedData.description
+      updatedData.description,
     );
     expect(response.body.data).toHaveProperty('action', updatedData.action);
   });
