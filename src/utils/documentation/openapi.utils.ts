@@ -80,7 +80,7 @@ export const generateOpenAPIDocument = () => {
             },
           },
           responses: {
-            '200': {
+            200: {
               description: 'Login realizado com sucesso',
               content: {
                 'application/json': {
@@ -88,10 +88,10 @@ export const generateOpenAPIDocument = () => {
                 },
               },
             },
-            '400': {
+            400: {
               description: 'Dados inválidos',
             },
-            '401': {
+            401: {
               description: 'Credenciais inválidas',
             },
           },
@@ -111,7 +111,7 @@ export const generateOpenAPIDocument = () => {
             },
           },
           responses: {
-            '200': {
+            200: {
               description: 'Usuário criado com sucesso',
               content: {
                 'application/json': {
@@ -119,7 +119,7 @@ export const generateOpenAPIDocument = () => {
                 },
               },
             },
-            '400': {
+            400: {
               description: 'Dados inválidos ou usuário já existe',
             },
           },
@@ -136,7 +136,7 @@ export const generateOpenAPIDocument = () => {
             },
           ],
           responses: {
-            '200': {
+            200: {
               description: 'Usuário encontrado com sucesso',
               content: {
                 'application/json': {
@@ -144,10 +144,10 @@ export const generateOpenAPIDocument = () => {
                 },
               },
             },
-            '401': {
+            401: {
               description: 'Não autorizado - Token ausente ou inválido',
             },
-            '404': {
+            404: {
               description: 'Usuário não encontrado',
             },
           },

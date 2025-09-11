@@ -28,7 +28,7 @@ export class UserRoleFactory {
     userId: number,
     roleId: number,
   ): Promise<UserRole> {
-    return await this.attachRoleToUser(userId, roleId);
+    return this.attachRoleToUser(userId, roleId);
   }
 
   static async detachRoleFromUser(
