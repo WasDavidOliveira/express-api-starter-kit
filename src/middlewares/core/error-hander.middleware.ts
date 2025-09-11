@@ -79,6 +79,7 @@ export const errorHandler = (
 
     if (err.code === '23503') {
       const field = extractFieldFromDetail(err.detail, 'registro');
+
       return res.status(StatusCode.CONFLICT).json({
         status: 'erro',
         message: `${field} não existe`,
