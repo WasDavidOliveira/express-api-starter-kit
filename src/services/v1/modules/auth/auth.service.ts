@@ -56,11 +56,13 @@ export class AuthService {
     return user;
   }
 
-  async forgotPassword(data: ForgotPasswordInput) {
+  async forgotPassword(
+    data: ForgotPasswordInput,
+  ): Promise<{ token: string } | null> {
     const user = await UserRepository.findByEmail(data.email);
 
     if (!user) {
-      return;
+      throw new NotFoundError('Usuário não encontrado');
     }
 
     const token = jwt.sign(
@@ -72,7 +74,7 @@ export class AuthService {
     return { token };
   }
 
-  async resetPassword(data: ResetPasswordInput) {
+  async resetPassword(data: ResetPasswordInput): Promise<void> {
     const payload = jwt.verify(
       data.token,
       appConfig.jwtSecret as jwt.Secret,
