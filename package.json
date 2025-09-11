@@ -9,7 +9,12 @@
     "start": "node dist/server.js",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
+    "lint:check": "eslint src --ext .ts --max-warnings 0",
     "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "format:ci": "prettier --list-different src",
+    "code:check": "npm run lint:check && npm run format:check",
+    "code:fix": "npm run lint:fix && npm run format",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
@@ -18,7 +23,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:view": "vitest --ui"
+    "test:view": "vitest --ui",
+    "precommit": "npm run code:check && npm run test"
   },
   "dependencies": {
     "@scalar/express-api-reference": "^0.6.8",
@@ -50,6 +56,8 @@
     "@vitest/ui": "^3.1.1",
     "drizzle-kit": "^0.31.1",
     "eslint": "^9.25.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
     "globals": "^16.0.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",

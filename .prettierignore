@@ -1,12 +1,37 @@
-node_modules
-dist
-build
-coverage
-.vscode
-.github
-.git
-.env*
-*.md
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Environment files
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Database
+*.db
+*.sqlite
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+
+# Package files
 package-lock.json
 yarn.lock
-html
+
+# HTML build
+html/
+
+# Migration files
+src/db/migrations/
+*.sql
