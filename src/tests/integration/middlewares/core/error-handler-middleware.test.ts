@@ -111,7 +111,7 @@ describe('Error Handler Middleware', () => {
         message: 'Erro de validação',
         errors: [
           {
-            campo: 'user.profile.name',
+            campo: 'name',
             mensagem: 'Nome deve ter pelo menos 3 caracteres',
           },
         ],
