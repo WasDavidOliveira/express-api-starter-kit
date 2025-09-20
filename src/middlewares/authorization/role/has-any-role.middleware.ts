@@ -2,10 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { db } from '@/db/db.connection';
 import { user } from '@/db/schema/v1/user.schema';
 import { eq } from 'drizzle-orm';
-import {
-  ForbiddenError,
-  UnauthorizedError,
-} from '@/exceptions/app.exceptions';
+import { ForbiddenError, UnauthorizedError } from '@/exceptions/app.exceptions';
 import { UserWithRoles } from '@/types/infrastructure/middlewares.types';
 
 export const hasAnyRole = (roleNames: string[]) => {
