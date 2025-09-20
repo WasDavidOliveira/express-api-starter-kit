@@ -24,6 +24,12 @@ export const appConfig = {
   jwtRefreshTokenExpiration: process.env.JWT_REFRESH_TOKEN_EXPIRATION ?? '7d',
   jwtRefreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET ?? '',
   rateLimitMaxPerMinute: Number(process.env.RATE_LIMIT_MAX_PER_MINUTE ?? 60),
+  discord: {
+    webhookEnabled: process.env.DISCORD_WEBHOOK_ENABLED === 'true',
+    webhookUrl: process.env.DISCORD_WEBHOOK_URL ?? '',
+    username: process.env.DISCORD_USERNAME ?? 'console-news-observer',
+    avatarUrl: process.env.DISCORD_AVATAR_URL ?? '',
+  },
 };
 
 export default appConfig;

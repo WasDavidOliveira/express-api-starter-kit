@@ -8,6 +8,7 @@ import {
   isPostgresError,
   extractFieldFromDetail,
 } from '@/utils/core/error.utils';
+import { sendErrorNotification } from '@/events';
 
 export const errorHandler = (
   err: ErrorTypes,
@@ -27,6 +28,10 @@ export const errorHandler = (
       mensagem: zodError.message,
     }));
 
+    if (process.env.NODE_ENV === 'production') {
+      sendErrorNotification(err);
+    }
+
     return res.status(StatusCode.BAD_REQUEST).json({
       status: 'erro',
       message: 'Erro de validação',
@@ -35,6 +40,8 @@ export const errorHandler = (
   }
 
   if (err instanceof AppError) {
+    sendErrorNotification(err);
+
     return res.status(err.statusCode).json({
       status: 'erro',
       message: err.message,
@@ -44,6 +51,8 @@ export const errorHandler = (
   }
 
   if (isPostgresError(err)) {
+    sendErrorNotification(err);
+
     if (err.code === '23505') {
       const field = extractFieldFromDetail(err.detail, 'campo');
       return res.status(StatusCode.CONFLICT).json({
@@ -63,6 +72,8 @@ export const errorHandler = (
       });
     }
   }
+
+  sendErrorNotification(err);
 
   return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
     status: 'erro',
