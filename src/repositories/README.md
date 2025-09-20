@@ -180,7 +180,7 @@ import { user } from '@/db/schema/v1/user.schema';
 import { CreateUserModel, UserModel } from '@/types/models/v1/auth.types';
 import { db } from '@/db/db.connection';
 import { eq } from 'drizzle-orm';
-import { ConflictError } from '@/utils/core/app-error.utils';
+import { ConflictError } from '@/exceptions/app.exceptions';
 
 class UserRepository {
   async findById(id: number): Promise<UserModel | null> {

@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 import {
   ForbiddenError,
   UnauthorizedError,
-} from '@/utils/core/app-error.utils';
+} from '@/exceptions/app.exceptions';
 import { UserWithRoles } from '@/types/infrastructure/middlewares.types';
 
 export const hasAnyRole = (roleNames: string[]) => {

@@ -7,7 +7,7 @@ import { eq, and, inArray, or } from 'drizzle-orm';
 import {
   ForbiddenError,
   UnauthorizedError,
-} from '@/utils/core/app-error.utils';
+} from '@/exceptions/app.exceptions';
 import { PermissionCheck } from '@/types/models/v1/permission.types';
 import { UserWithRoles } from '@/types/infrastructure/middlewares.types';
 

@@ -97,7 +97,7 @@ Os serviços são responsáveis por:
 
 ```typescript
 import [Entity]Repository from '@/repositories/v1/modules/[entity]/[entity].repository';
-import { NotFoundError } from '@/utils/core/app-error.utils';
+import { NotFoundError } from '@/exceptions/app.exceptions';
 import { Create[Entity]Input } from '@/validations/v1/modules/[entity].validations';
 
 export class [Entity]Service {
@@ -150,7 +150,7 @@ export default new [Entity]Service();
 ### Tratamento de Erros
 
 ```typescript
-import { NotFoundError, UnauthorizedError } from '@/utils/core/app-error.utils';
+import { NotFoundError, UnauthorizedError } from '@/exceptions/app.exceptions';
 
 // Verificação de existência
 if (!user) {
@@ -189,7 +189,7 @@ const token = jwt.sign({ id: user.id }, appConfig.jwtSecret, {
 ```typescript
 // auth.service.ts
 import appConfig from '@/configs/app.config';
-import { NotFoundError, UnauthorizedError } from '@/utils/core/app-error.utils';
+import { NotFoundError, UnauthorizedError } from '@/exceptions/app.exceptions';
 import UserRepository from '@/repositories/v1/modules/auth/user.repository';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -250,7 +250,7 @@ export default new AuthService();
 ```typescript
 // role.service.ts
 import RoleRepository from '@/repositories/v1/modules/role/role.repository';
-import { NotFoundError } from '@/utils/core/app-error.utils';
+import { NotFoundError } from '@/exceptions/app.exceptions';
 import { CreateRoleInput } from '@/validations/v1/modules/role.validations';
 
 export class RoleService {
@@ -305,7 +305,7 @@ export default new RoleService();
 ```typescript
 // permission.service.ts
 import PermissionRepository from '@/repositories/v1/modules/permission/permission.repository';
-import { NotFoundError } from '@/utils/core/app-error.utils';
+import { NotFoundError } from '@/exceptions/app.exceptions';
 import { CreatePermissionInput } from '@/validations/v1/modules/permission.validations';
 
 export class PermissionService {
@@ -364,7 +364,7 @@ export default new PermissionService();
 // role-permission.service.ts
 import RolePermissionRepository from '@/repositories/v1/modules/role-permission/role-permission.repository';
 import PermissionRepository from '@/repositories/v1/modules/permission/permission.repository';
-import { NotFoundError } from '@/utils/core/app-error.utils';
+import { NotFoundError } from '@/exceptions/app.exceptions';
 
 export class RolePermissionService {
   async attach(roleId: number, permissionId: number) {

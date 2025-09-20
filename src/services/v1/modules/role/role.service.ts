@@ -1,5 +1,5 @@
 import RoleRepository from '@/repositories/v1/modules/role/role.repository';
-import { NotFoundError } from '@/utils/core/app-error.utils';
+import { NotFoundError } from '@/exceptions/app.exceptions';
 import { CreateRoleInput } from '@/validations/v1/modules/role.validations';
 
 export class RoleService {

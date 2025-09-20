@@ -10,7 +10,7 @@ import {
   ForbiddenError,
   NotFoundError,
   BadRequestError,
-} from '@/utils/core/app-error.utils';
+} from '@/exceptions/app.exceptions';
 import {
   errorHandler,
   notFoundHandler,

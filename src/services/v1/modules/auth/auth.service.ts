@@ -1,5 +1,5 @@
 import appConfig from '@/configs/app.config';
-import { NotFoundError, UnauthorizedError } from '@/utils/core/app-error.utils';
+import { NotFoundError, UnauthorizedError } from '@/exceptions/app.exceptions';
 import UserRepository from '@/repositories/v1/modules/auth/user.repository';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';

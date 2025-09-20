@@ -1,5 +1,5 @@
 import PermissionRepository from '@/repositories/v1/modules/permission/permission.repository';
-import { NotFoundError } from '@/utils/core/app-error.utils';
+import { NotFoundError } from '@/exceptions/app.exceptions';
 import { CreatePermissionInput } from '@/validations/v1/modules/permission.validations';
 
 export class PermissionService {

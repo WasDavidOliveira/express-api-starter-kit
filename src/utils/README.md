@@ -16,7 +16,6 @@ Os utils fornecem funcionalidades transversais e reutilizáveis em toda a aplica
 utils/
 ├── README.md                    # Esta documentação
 ├── core/                        # Utilitários fundamentais da aplicação
-│   ├── app-error.utils.ts      # Classes para tratamento padronizado de erros
 │   ├── logger.utils.ts         # Sistema de logs da aplicação
 │   └── index.ts                # Exportação centralizada dos utils core
 ├── infrastructure/              # Utilitários relacionados à infraestrutura
@@ -32,16 +31,6 @@ utils/
 ### 🔧 **Core Module** (`core/`)
 
 Utilitários fundamentais da aplicação:
-
-- **`app-error.utils.ts`**: Sistema de tratamento de erros padronizado
-
-  - `AppError`: Classe base para todos os erros da aplicação
-  - `BadRequestError`: Erro para requisições inválidas (status 400)
-  - `UnauthorizedError`: Erro para operações não autorizadas (status 401)
-  - `ForbiddenError`: Erro para acesso negado (status 403)
-  - `NotFoundError`: Erro para recursos não encontrados (status 404)
-  - `ValidationError`: Erro para falhas de validação (status 400)
-  - `ConflictError`: Erro para conflitos de recurso (status 409)
 
 - **`logger.utils.ts`**: Sistema completo de logs com Winston
   - Registro em arquivos e console
@@ -73,76 +62,6 @@ Utilitários para geração de documentação:
 ## Descrição Detalhada
 
 ### Core Utils
-
-#### **App Error Utils** (`core/app-error.utils.ts`)
-
-```typescript
-import appConfig from '@/configs/app.config';
-import { Environment } from '@/constants/environment.constants';
-import { ValidationErrorItem } from '@/types/core/errors.types';
-
-export class AppError extends Error {
-  statusCode: number;
-  errors?: ValidationErrorItem[];
-
-  constructor(
-    message: string,
-    statusCode: number = 400,
-    errors?: ValidationErrorItem[],
-  ) {
-    super(message);
-    this.statusCode = statusCode;
-    this.errors = errors;
-
-    if (appConfig.nodeEnv !== Environment.PRODUCTION) {
-      Error.captureStackTrace(this, this.constructor);
-      Object.setPrototypeOf(this, AppError.prototype);
-    }
-  }
-}
-
-export class BadRequestError extends AppError {
-  constructor(
-    message: string = 'Requisição inválida',
-    errors?: ValidationErrorItem[],
-  ) {
-    super(message, 400, errors);
-  }
-}
-
-export class UnauthorizedError extends AppError {
-  constructor(message: string = 'Não autorizado') {
-    super(message, 401);
-  }
-}
-
-export class ForbiddenError extends AppError {
-  constructor(message: string = 'Acesso negado') {
-    super(message, 403);
-  }
-}
-
-export class NotFoundError extends AppError {
-  constructor(message: string = 'Recurso não encontrado') {
-    super(message, 404);
-  }
-}
-
-export class ValidationError extends AppError {
-  constructor(
-    message: string = 'Erro de validação',
-    errors: ValidationErrorItem[] = [],
-  ) {
-    super(message, 400, errors);
-  }
-}
-
-export class ConflictError extends AppError {
-  constructor(message: string = 'Recurso já existe') {
-    super(message, 409);
-  }
-}
-```
 
 #### **Logger Utils** (`core/logger.utils.ts`)
 
@@ -304,19 +223,6 @@ export const generateOpenAPIDocument = () => {
 
 ## Padrão de Implementação
 
-### Classes de Erro
-
-```typescript
-export class [Entity]Error extends AppError {
-  constructor(
-    message: string = 'Mensagem padrão',
-    errors?: ValidationErrorItem[]
-  ) {
-    super(message, [statusCode], errors);
-  }
-}
-```
-
 ### Funções Utilitárias
 
 ```typescript
@@ -344,22 +250,6 @@ export class [ClassName] {
 ```
 
 ## Uso e Importação
-
-### Tratamento de Erros
-
-```typescript
-import { NotFoundError, ValidationError } from '@/utils/core/app-error.utils';
-
-// Em um service
-if (!user) {
-  throw new NotFoundError('Usuário não encontrado');
-}
-
-// Com erros de validação
-if (validationErrors.length > 0) {
-  throw new ValidationError('Dados inválidos', validationErrors);
-}
-```
 
 ### Tratamento Assíncrono
 
@@ -414,13 +304,6 @@ const openAPIDoc = generateOpenAPIDocument();
 
 ## Características Técnicas
 
-### Sistema de Erros
-
-- **Hierarquia de Classes**: Herança de `AppError` para tipos específicos
-- **Stack Trace**: Captura automática em ambiente de desenvolvimento
-- **Validação de Erros**: Suporte para múltiplos erros de validação
-- **Status Codes**: Códigos HTTP padronizados para cada tipo de erro
-
 ### Sistema de Logs
 
 - **Winston**: Framework robusto para logging
@@ -471,12 +354,6 @@ const openAPIDoc = generateOpenAPIDocument();
 
 ## Fluxo de Utilização
 
-### Tratamento de Erros
-
-```
-Service → Validação → AppError → Controller → Response de Erro
-```
-
 ### Tratamento Assíncrono
 
 ```
@@ -496,17 +373,6 @@ Validations → OpenAPI Utils → JSON Schema → Swagger UI
 ```
 
 ## Extensibilidade
-
-### Adicionando Novos Tipos de Erro
-
-```typescript
-// core/new-error.utils.ts
-export class NewError extends AppError {
-  constructor(message: string = 'Mensagem padrão') {
-    super(message, [statusCode]);
-  }
-}
-```
 
 ### Adicionando Novos Utilitários
 
@@ -529,24 +395,6 @@ export const generateNewDocumentation = () => {
 ```
 
 ## Integração com Outros Módulos
-
-### Services
-
-```typescript
-import { NotFoundError } from '@/utils/core/app-error.utils';
-
-export class UserService {
-  async findById(id: number) {
-    const user = await UserRepository.findById(id);
-
-    if (!user) {
-      throw new NotFoundError('Usuário não encontrado');
-    }
-
-    return user;
-  }
-}
-```
 
 ### Controllers
 
@@ -586,12 +434,6 @@ export const loggingMiddleware = (
 - **Desenvolvimento**: Console colorido + arquivos
 - **Produção**: Apenas arquivos (sem stack trace)
 - **Organização**: Logs separados por data e tipo
-
-### Erros
-
-- **Desenvolvimento**: Stack trace completo
-- **Produção**: Apenas mensagem de erro
-- **Validação**: Suporte para múltiplos erros
 
 ### Documentação
 
