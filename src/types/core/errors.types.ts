@@ -22,3 +22,13 @@ export type ValidationErrorItem = {
  * Union type para todos os tipos de erro tratados pelo error handler
  */
 export type ErrorTypes = Error | AppError | PostgresError | ZodError;
+
+export type ErrorResponse = {
+  status: 'erro';
+  message: string;
+  statusCode: number;
+  errors?: ValidationErrorItem[];
+  campo?: string;
+  stack?: string;
+  error?: string;
+};

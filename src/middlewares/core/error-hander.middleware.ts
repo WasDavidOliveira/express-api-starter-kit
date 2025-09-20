@@ -6,30 +6,18 @@ import {
   ValidationErrorItem,
   ErrorTypes,
   PostgresError,
+  ErrorResponse,
 } from '@/types/core/errors.types';
 import {
   isPostgresError,
   extractFieldFromDetail,
 } from '@/utils/core/error.utils';
 import { sendErrorNotification } from '@/events';
-
-// ============================================================================
-// TYPES & INTERFACES
-// ============================================================================
-
-interface ErrorResponse {
-  status: 'erro';
-  message: string;
-  statusCode: number;
-  errors?: ValidationErrorItem[];
-  campo?: string;
-  stack?: string;
-  error?: string;
-}
+import appConfig from '@/configs/app.config';
 
 class ApiErrorHandler {
-  private readonly isDevelopment = process.env.NODE_ENV === 'development';
-  private readonly isProduction = process.env.NODE_ENV === 'production';
+  private readonly isDevelopment = appConfig.nodeEnv === 'development';
+  private readonly isProduction = appConfig.nodeEnv === 'production';
 
   public handle(error: ErrorTypes): ErrorResponse {
     if (error instanceof ZodError) {
