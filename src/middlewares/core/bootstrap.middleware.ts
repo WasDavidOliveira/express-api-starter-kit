@@ -5,10 +5,8 @@ import { corsConfig } from '@/configs/cors.config';
 import { helmetConfig } from '@/configs/helmet.config';
 import { globalRateLimiter } from '@/middlewares/core/rate-limit.middleware';
 import router from '@/routes/router';
-import {
-  errorHandler,
-  notFoundHandler,
-} from '@/middlewares/core/error-hander.middleware';
+import { errorHandler } from '@/middlewares/core/error-hander.middleware';
+import { notFoundHandler } from '@/middlewares/core/not-found.middleware';
 import { ErrorRequestHandler } from 'express';
 import { configureDocs } from '@/middlewares/core/docs.middleware';
 import { initializeNotificationSystem } from '@/configs/notification.config';

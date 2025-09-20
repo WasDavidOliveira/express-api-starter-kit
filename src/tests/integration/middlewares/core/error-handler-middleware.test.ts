@@ -11,10 +11,8 @@ import {
   NotFoundError,
   BadRequestError,
 } from '@/exceptions/app.exceptions';
-import {
-  errorHandler,
-  notFoundHandler,
-} from '@/middlewares/core/error-hander.middleware';
+import { errorHandler } from '@/middlewares/core/error-hander.middleware';
+import { notFoundHandler } from '@/middlewares/core/not-found.middleware';
 
 describe('Error Handler Middleware', () => {
   setupTestDB();

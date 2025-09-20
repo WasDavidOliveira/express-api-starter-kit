@@ -1,96 +1,157 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '@/exceptions/app.exceptions';
 import { ZodError } from 'zod';
-import { NotFoundError } from '@/exceptions/app.exceptions';
 import { StatusCode } from '@/constants/status-code.constants';
-import { ValidationErrorItem, ErrorTypes } from '@/types/core/errors.types';
+import {
+  ValidationErrorItem,
+  ErrorTypes,
+  PostgresError,
+} from '@/types/core/errors.types';
 import {
   isPostgresError,
   extractFieldFromDetail,
 } from '@/utils/core/error.utils';
 import { sendErrorNotification } from '@/events';
 
-export const errorHandler = (
-  err: ErrorTypes,
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  if (res.headersSent) {
-    return next(err);
+// ============================================================================
+// TYPES & INTERFACES
+// ============================================================================
+
+interface ErrorResponse {
+  status: 'erro';
+  message: string;
+  statusCode: number;
+  errors?: ValidationErrorItem[];
+  campo?: string;
+  stack?: string;
+  error?: string;
+}
+
+class ApiErrorHandler {
+  private readonly isDevelopment = process.env.NODE_ENV === 'development';
+  private readonly isProduction = process.env.NODE_ENV === 'production';
+
+
+  public handle(error: ErrorTypes): ErrorResponse {
+    if (error instanceof ZodError) {
+      return this.handleZodError(error);
+    }
+
+    if (error instanceof AppError) {
+      return this.handleAppError(error);
+    }
+
+    if (isPostgresError(error)) {
+      return this.handlePostgresError(error);
+    }
+
+    return this.handleGenericError(error);
   }
 
-  if (err instanceof ZodError) {
-    const errors: ValidationErrorItem[] = err.errors.map(zodError => ({
+  public middleware = (
+    err: ErrorTypes,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): void => {
+    if (res.headersSent) {
+      next(err);
+      return;
+    }
+
+    const errorResponse = this.handle(err);
+    res.status(errorResponse.statusCode).json(errorResponse);
+  };
+
+  protected handleZodError(error: ZodError): ErrorResponse {
+    const errors: ValidationErrorItem[] = error.errors.map(zodError => ({
       campo: String(
         zodError.path[zodError.path.length - 1] ?? zodError.path.join('.'),
       ),
       mensagem: zodError.message,
     }));
 
-    if (process.env.NODE_ENV === 'production') {
-      sendErrorNotification(err);
-    }
+    this.notifyError(error, this.isProduction);
 
-    return res.status(StatusCode.BAD_REQUEST).json({
-      status: 'erro',
-      message: 'Erro de validação',
-      errors,
+    return this.createErrorResponse(
+      'Erro de validação',
+      StatusCode.BAD_REQUEST,
+      { errors },
+    );
+  }
+
+  protected handleAppError(error: AppError): ErrorResponse {
+    this.notifyError(error);
+
+    return this.createErrorResponse(error.message, error.statusCode, {
+      errors: error.errors,
+      stack: this.isDevelopment ? error.stack : undefined,
     });
   }
 
-  if (err instanceof AppError) {
-    sendErrorNotification(err);
+  protected handlePostgresError(error: PostgresError): ErrorResponse {
+    this.notifyError(error);
 
-    return res.status(err.statusCode).json({
+    if (error.code === '23505') {
+      const field = extractFieldFromDetail(error.detail, 'campo');
+      return this.createErrorResponse(
+        `${field} já está em uso`,
+        StatusCode.CONFLICT,
+        { campo: field },
+      );
+    }
+
+    if (error.code === '23503') {
+      const field = extractFieldFromDetail(error.detail, 'registro');
+      return this.createErrorResponse(
+        `${field} não existe`,
+        StatusCode.CONFLICT,
+        { campo: field },
+      );
+    }
+
+    return this.handleGenericError(error);
+  }
+
+  protected handleGenericError(error: Error): ErrorResponse {
+    this.notifyError(error);
+
+    return this.createErrorResponse(
+      'Erro interno do servidor',
+      StatusCode.INTERNAL_SERVER_ERROR,
+      {
+        stack: this.isDevelopment ? error.stack : undefined,
+        error: this.isDevelopment ? error.message : undefined,
+      },
+    );
+  }
+
+  protected createErrorResponse(
+    message: string,
+    statusCode: number,
+    options: {
+      errors?: ValidationErrorItem[];
+      campo?: string;
+      stack?: string;
+      error?: string;
+    } = {},
+  ): ErrorResponse {
+    return {
       status: 'erro',
-      message: err.message,
-      ...(err.errors && { errors: err.errors }),
-      ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
-    });
+      message,
+      statusCode,
+      ...(options.errors && { errors: options.errors }),
+      ...(options.campo && { campo: options.campo }),
+      ...(options.stack && { stack: options.stack }),
+      ...(options.error && { error: options.error }),
+    };
   }
 
-  if (isPostgresError(err)) {
-    sendErrorNotification(err);
-
-    if (err.code === '23505') {
-      const field = extractFieldFromDetail(err.detail, 'campo');
-      return res.status(StatusCode.CONFLICT).json({
-        status: 'erro',
-        message: `${field} já está em uso`,
-        campo: field,
-      });
-    }
-
-    if (err.code === '23503') {
-      const field = extractFieldFromDetail(err.detail, 'registro');
-
-      return res.status(StatusCode.CONFLICT).json({
-        status: 'erro',
-        message: `${field} não existe`,
-        campo: field,
-      });
+  protected notifyError(error: ErrorTypes, shouldNotify: boolean = true): void {
+    if (shouldNotify) {
+      sendErrorNotification(error);
     }
   }
+}
 
-  sendErrorNotification(err);
-
-  return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
-    status: 'erro',
-    message: 'Erro interno do servidor',
-    ...(process.env.NODE_ENV === 'development' && {
-      error: err.message,
-      stack: err.stack,
-    }),
-  });
-};
-
-export const notFoundHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  next(
-    new NotFoundError(`Rota não encontrada: ${req.method} ${req.originalUrl}`),
-  );
-};
+export const errorHandler = new ApiErrorHandler().middleware;
