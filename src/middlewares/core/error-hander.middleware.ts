@@ -3,35 +3,11 @@ import { AppError } from '@/exceptions/app.exceptions';
 import { ZodError } from 'zod';
 import { NotFoundError } from '@/exceptions/app.exceptions';
 import { StatusCode } from '@/constants/status-code.constants';
-import { PostgresError, ValidationErrorItem } from '@/types/core/errors.types';
-
-type ErrorTypes = Error | AppError | PostgresError | ZodError;
-
-const isPostgresError = (error: unknown): error is PostgresError => {
-  if (typeof error !== 'object' || error === null) {
-    return false;
-  }
-
-  if (!('code' in error)) {
-    return false;
-  }
-
-  const code = (error as { code?: unknown }).code;
-
-  return typeof code === 'string';
-};
-
-const extractFieldFromDetail = (
-  detail?: string,
-  fallback: string = 'campo',
-): string => {
-  if (!detail) {
-    return fallback;
-  }
-  const match = detail.match(/\((.*?)\)=/);
-  const field = match ? match[1] : fallback;
-  return field.toLowerCase();
-};
+import { ValidationErrorItem, ErrorTypes } from '@/types/core/errors.types';
+import {
+  isPostgresError,
+  extractFieldFromDetail,
+} from '@/utils/core/error.utils';
 
 export const errorHandler = (
   err: ErrorTypes,

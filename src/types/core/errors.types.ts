@@ -1,3 +1,6 @@
+import { AppError } from '@/exceptions/app.exceptions';
+import { ZodError } from 'zod';
+
 /**
  * Tipo para erros específicos do PostgreSQL
  */
@@ -14,3 +17,8 @@ export type ValidationErrorItem = {
   mensagem: string;
   codigo?: string;
 };
+
+/**
+ * Union type para todos os tipos de erro tratados pelo error handler
+ */
+export type ErrorTypes = Error | AppError | PostgresError | ZodError;
