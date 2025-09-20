@@ -31,7 +31,6 @@ class ApiErrorHandler {
   private readonly isDevelopment = process.env.NODE_ENV === 'development';
   private readonly isProduction = process.env.NODE_ENV === 'production';
 
-
   public handle(error: ErrorTypes): ErrorResponse {
     if (error instanceof ZodError) {
       return this.handleZodError(error);
