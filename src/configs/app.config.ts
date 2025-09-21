@@ -30,6 +30,12 @@ export const appConfig = {
     username: process.env.DISCORD_USERNAME ?? 'console-news-observer',
     avatarUrl: process.env.DISCORD_AVATAR_URL ?? '',
   },
+  telegram: {
+    enabled: process.env.TELEGRAM_ENABLED === 'true',
+    botToken: process.env.TELEGRAM_BOT_TOKEN ?? '',
+    chatId: process.env.TELEGRAM_CHAT_ID ?? '',
+    parseMode: (process.env.TELEGRAM_PARSE_MODE as 'HTML' | 'Markdown' | 'MarkdownV2') ?? 'HTML',
+  },
 };
 
 export default appConfig;

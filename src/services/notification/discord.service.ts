@@ -55,27 +55,21 @@ export class DiscordNotificationService extends BaseNotificationProvider {
       return;
     }
 
-    try {
-      const response = await fetch(this.config.url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+    const response = await fetch(this.config.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
 
-      if (!response.ok) {
-        throw new Error(
-          `Discord webhook failed: ${response.status} ${response.statusText}`,
-        );
-      }
-
-      logger.info('Discord notification sent successfully');
-    } catch (error) {
-      logger.error('Failed to send Discord notification:', error);
-
-      throw error;
+    if (!response.ok) {
+      const errorMessage = `Discord webhook failed: ${response.status} ${response.statusText}`;
+      logger.error('Failed to send Discord notification:', errorMessage);
+      return;
     }
+
+    logger.info('Discord notification sent successfully');
   }
 
   public isEnabled(): boolean {

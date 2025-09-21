@@ -1,6 +1,10 @@
 import { DiscordNotificationService } from '@/services/notification/discord.service';
+import { TelegramNotificationService } from '@/services/notification/telegram.service';
 import { NotificationProvider } from '@/providers/notification/notification.provider';
-import { DiscordWebhookConfig } from '@/types/core/notification';
+import {
+  DiscordWebhookConfig,
+  TelegramConfig,
+} from '@/types/core/notification';
 import { appConfig } from '@/configs/app.config';
 import { eventEmitter } from '@/events';
 import { ErrorEvent, NotificationEvent } from '@/types/core/events.types';
@@ -18,6 +22,16 @@ export class NotificationFactory {
 
     const discordService = new DiscordNotificationService(discordConfig);
     providers.push(discordService);
+
+    const telegramConfig: TelegramConfig = {
+      enabled: appConfig.telegram.enabled,
+      botToken: appConfig.telegram.botToken,
+      chatId: appConfig.telegram.chatId,
+      parseMode: appConfig.telegram.parseMode,
+    };
+
+    const telegramService = new TelegramNotificationService(telegramConfig);
+    providers.push(telegramService);
 
     return providers;
   }
