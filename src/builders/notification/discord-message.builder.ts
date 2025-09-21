@@ -1,5 +1,10 @@
 import { ErrorEvent, NotificationEvent } from '@/types/core/events.types';
 import { DiscordEmbed } from '@/types/core/notification/discord.types';
+import {
+  NOTIFICATION_LEVEL_COLORS,
+  NOTIFICATION_LEVEL_EMOJIS,
+  ERROR_TYPE_COLORS,
+} from '@/constants/notification.constants';
 
 export class DiscordMessageBuilder {
   static createErrorEmbed(event: ErrorEvent): DiscordEmbed {
@@ -64,24 +69,10 @@ export class DiscordMessageBuilder {
   static createNotificationEmbed(event: NotificationEvent): DiscordEmbed {
     const { title, description, level, color, stack } = event.data;
 
-    const levelColors = {
-      success: 0x00ff00,
-      warning: 0xffa500,
-      info: 0x0099ff,
-      error: 0xff0000,
-    };
-
-    const levelEmojis = {
-      success: '✅',
-      warning: '⚠️',
-      info: 'ℹ️',
-      error: '❌',
-    };
-
     const embed: DiscordEmbed = {
-      title: `${levelEmojis[level]} ${title}`,
+      title: `${NOTIFICATION_LEVEL_EMOJIS[level]} ${title}`,
       description,
-      color: color ?? levelColors[level],
+      color: color ?? NOTIFICATION_LEVEL_COLORS[level],
       timestamp: event.timestamp.toISOString(),
       footer: {
         text: 'Sistema de Notificações',
@@ -130,21 +121,10 @@ export class DiscordMessageBuilder {
   }
 
   private static getErrorColor(errorName: string): number {
-    const colorMap: Record<string, number> = {
-      ValidationError: 0xffa500, // Orange
-      TypeError: 0xff6b6b, // Red
-      ReferenceError: 0xff6b6b, // Red
-      SyntaxError: 0xff6b6b, // Red
-      NetworkError: 0x4ecdc4, // Teal
-      DatabaseError: 0xff6b6b, // Red
-      AuthenticationError: 0xffd93d, // Yellow
-      AuthorizationError: 0xff6b6b, // Red
-      NotFoundError: 0x95a5a6, // Gray
-      TimeoutError: 0xffa500, // Orange
-      RateLimitError: 0xffa500, // Orange
-      InternalServerError: 0xff0000, // Bright Red
-    };
-    return colorMap[errorName] ?? 0xff0000;
+    return (
+      ERROR_TYPE_COLORS[errorName as keyof typeof ERROR_TYPE_COLORS] ??
+      NOTIFICATION_LEVEL_COLORS.error
+    );
   }
 
   private static colorizeError(errorName: string): string {

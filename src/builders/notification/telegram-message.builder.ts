@@ -1,4 +1,5 @@
 import { ErrorEvent, NotificationEvent } from '@/types/core/events.types';
+import { NOTIFICATION_LEVEL_EMOJIS } from '@/constants/notification.constants';
 
 export class TelegramMessageBuilder {
   static createNotificationMessage(event: NotificationEvent): string {
@@ -56,13 +57,10 @@ export class TelegramMessageBuilder {
   }
 
   protected static getLevelEmoji(level: string): string {
-    const emojiMap: Record<string, string> = {
-      success: '✅',
-      warning: '⚠️',
-      info: 'ℹ️',
-      error: '❌',
-    };
-
-    return emojiMap[level] || 'ℹ️';
+    return (
+      NOTIFICATION_LEVEL_EMOJIS[
+        level as keyof typeof NOTIFICATION_LEVEL_EMOJIS
+      ] || 'ℹ️'
+    );
   }
 }
