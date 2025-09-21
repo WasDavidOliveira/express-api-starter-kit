@@ -16,8 +16,8 @@ import { sendErrorNotification } from '@/events';
 import appConfig from '@/configs/app.config';
 
 class ApiErrorHandler {
-  private readonly isDevelopment = appConfig.nodeEnv === 'development';
-  private readonly isProduction = appConfig.nodeEnv === 'production';
+  protected readonly isDevelopment = appConfig.nodeEnv === 'development';
+  protected readonly isProduction = appConfig.nodeEnv === 'production';
 
   public handle(error: ErrorTypes): ErrorResponse {
     if (error instanceof ZodError) {

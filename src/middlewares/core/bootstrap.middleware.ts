@@ -10,7 +10,6 @@ import { errorHandler } from '@/middlewares/core/error-hander.middleware';
 import { notFoundHandler } from '@/middlewares/core/not-found.middleware';
 import { ErrorRequestHandler } from 'express';
 import { configureDocs } from '@/middlewares/core/docs.middleware';
-import { initializeNotificationSystem } from '@/configs/notification.config';
 
 export const bootstrapMiddlewares = (app: express.Application) => {
   app.set('trust proxy', 1);
@@ -32,6 +31,4 @@ export const bootstrapMiddlewares = (app: express.Application) => {
   app.use(notFoundHandler);
 
   app.use(errorHandler as ErrorRequestHandler);
-
-  initializeNotificationSystem();
 };
