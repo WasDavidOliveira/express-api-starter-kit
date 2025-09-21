@@ -19,20 +19,29 @@ class ApiErrorHandler {
   protected readonly isDevelopment = appConfig.nodeEnv === 'development';
   protected readonly isProduction = appConfig.nodeEnv === 'production';
 
-  public handle(error: ErrorTypes): ErrorResponse {
+  public handle(
+    error: ErrorTypes,
+    context?: {
+      method?: string;
+      url?: string;
+      userAgent?: string;
+      ip?: string;
+      userId?: number;
+    },
+  ): ErrorResponse {
     if (error instanceof ZodError) {
-      return this.handleZodError(error);
+      return this.handleZodError(error, context);
     }
 
     if (error instanceof AppError) {
-      return this.handleAppError(error);
+      return this.handleAppError(error, context);
     }
 
     if (isPostgresError(error)) {
-      return this.handlePostgresError(error);
+      return this.handlePostgresError(error, context);
     }
 
-    return this.handleGenericError(error);
+    return this.handleGenericError(error, context);
   }
 
   public middleware = (
@@ -46,11 +55,28 @@ class ApiErrorHandler {
       return;
     }
 
-    const errorResponse = this.handle(err);
+    const context = {
+      method: req.method,
+      url: req.originalUrl ?? req.url,
+      userAgent: req.get('User-Agent'),
+      ip: req.ip ?? req.socket.remoteAddress,
+      userId: req.userId,
+    };
+
+    const errorResponse = this.handle(err, context);
     res.status(errorResponse.statusCode).json(errorResponse);
   };
 
-  protected handleZodError(error: ZodError): ErrorResponse {
+  protected handleZodError(
+    error: ZodError,
+    context?: {
+      method?: string;
+      url?: string;
+      userAgent?: string;
+      ip?: string;
+      userId?: number;
+    },
+  ): ErrorResponse {
     const errors: ValidationErrorItem[] = error.errors.map(zodError => ({
       campo: String(
         zodError.path[zodError.path.length - 1] ?? zodError.path.join('.'),
@@ -58,7 +84,7 @@ class ApiErrorHandler {
       mensagem: zodError.message,
     }));
 
-    this.notifyError(error, this.isProduction);
+    this.notifyError(error, this.isProduction, context);
 
     return this.createErrorResponse(
       'Erro de validação',
@@ -67,8 +93,17 @@ class ApiErrorHandler {
     );
   }
 
-  protected handleAppError(error: AppError): ErrorResponse {
-    this.notifyError(error);
+  protected handleAppError(
+    error: AppError,
+    context?: {
+      method?: string;
+      url?: string;
+      userAgent?: string;
+      ip?: string;
+      userId?: number;
+    },
+  ): ErrorResponse {
+    this.notifyError(error, true, context);
 
     return this.createErrorResponse(error.message, error.statusCode, {
       errors: error.errors,
@@ -76,8 +111,17 @@ class ApiErrorHandler {
     });
   }
 
-  protected handlePostgresError(error: PostgresError): ErrorResponse {
-    this.notifyError(error);
+  protected handlePostgresError(
+    error: PostgresError,
+    context?: {
+      method?: string;
+      url?: string;
+      userAgent?: string;
+      ip?: string;
+      userId?: number;
+    },
+  ): ErrorResponse {
+    this.notifyError(error, true, context);
 
     if (error.code === '23505') {
       const field = extractFieldFromDetail(error.detail, 'campo');
@@ -97,11 +141,20 @@ class ApiErrorHandler {
       );
     }
 
-    return this.handleGenericError(error);
+    return this.handleGenericError(error, context);
   }
 
-  protected handleGenericError(error: Error): ErrorResponse {
-    this.notifyError(error);
+  protected handleGenericError(
+    error: Error,
+    context?: {
+      method?: string;
+      url?: string;
+      userAgent?: string;
+      ip?: string;
+      userId?: number;
+    },
+  ): ErrorResponse {
+    this.notifyError(error, true, context);
 
     return this.createErrorResponse(
       'Erro interno do servidor',
@@ -134,9 +187,19 @@ class ApiErrorHandler {
     };
   }
 
-  protected notifyError(error: ErrorTypes, shouldNotify: boolean = true): void {
+  protected notifyError(
+    error: ErrorTypes,
+    shouldNotify: boolean = true,
+    context?: {
+      method?: string;
+      url?: string;
+      userAgent?: string;
+      ip?: string;
+      userId?: number;
+    },
+  ): void {
     if (shouldNotify) {
-      sendErrorNotification(error);
+      sendErrorNotification(error, context);
     }
   }
 }

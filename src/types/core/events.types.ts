@@ -13,6 +13,7 @@ export interface ErrorEvent extends BaseEvent {
     environment: string;
     userAgent?: string;
     ip?: string;
+    userId?: number;
   };
 }
 

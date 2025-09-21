@@ -43,21 +43,34 @@ export const sendInfoNotification = (message: string): void => {
   eventEmitter.emit('notification', event);
 };
 
-export const sendErrorNotification = (error: Error | string): void => {
+export const sendErrorNotification = (
+  error: Error | string,
+  context?: {
+    method?: string;
+    url?: string;
+    userAgent?: string;
+    ip?: string;
+    userId?: number;
+  },
+): void => {
   const isError = error instanceof Error;
+  const errorObj = isError ? error : new Error(error);
 
-  const event: NotificationEvent = {
-    type: 'notification',
+  const event: ErrorEvent = {
+    type: 'error',
     timestamp: new Date(),
     data: {
-      title: 'Erro',
-      description: isError ? error.message : error,
-      level: 'error',
-      stack: isError ? error.stack : undefined,
+      error: errorObj,
+      method: context?.method ?? 'UNKNOWN',
+      url: context?.url ?? 'UNKNOWN',
+      environment: process.env.NODE_ENV ?? 'development',
+      userAgent: context?.userAgent,
+      ip: context?.ip,
+      userId: context?.userId,
     },
   };
 
-  eventEmitter.emit('notification', event);
+  eventEmitter.emit('error', event);
 };
 
 export const sendCustomNotification = (
