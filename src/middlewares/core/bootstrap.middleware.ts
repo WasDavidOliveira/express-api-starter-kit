@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { corsConfig } from '@/configs/cors.config';
 import { helmetConfig } from '@/configs/helmet.config';
 import { globalRateLimiter } from '@/middlewares/core/rate-limit.middleware';
+import { requestContextMiddleware } from '@/middlewares/core/request-context.middleware';
 import router from '@/routes/router';
 import { errorHandler } from '@/middlewares/core/error-hander.middleware';
 import { notFoundHandler } from '@/middlewares/core/not-found.middleware';
@@ -21,6 +22,8 @@ export const bootstrapMiddlewares = (app: express.Application) => {
   app.use(globalRateLimiter);
 
   app.use(express.json());
+
+  app.use(requestContextMiddleware);
 
   configureDocs(app);
 
