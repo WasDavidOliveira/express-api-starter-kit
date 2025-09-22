@@ -1,7 +1,7 @@
 import { NotificationProvider } from '@/providers/notification/notification.provider';
 import { onAppEvent } from '@/events';
 import { ErrorEvent, NotificationEvent } from '@/types/core/events.types';
-import { NotificationFactory } from '@/factories/notification.factory';
+import { NotificationFactory } from '@/factories/notification/notification.factory';
 
 export class NotificationManagerService {
   private static instance: NotificationManagerService | null = null;
