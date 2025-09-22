@@ -1,5 +1,5 @@
 import { permissions } from '@/db/schema/v1/permission.schema';
-import { BaseRepository } from '@/repositories/v1/modules/base/base.repository';
+import { BaseRepository } from '@/repositories/v1/base/base.repository';
 import {
   CreatePermissionModel,
   PermissionModel,

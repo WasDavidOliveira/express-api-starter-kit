@@ -1,5 +1,5 @@
 import { roles } from '@/db/schema/v1/role.schema';
-import { BaseRepository } from '@/repositories/v1/modules/base/base.repository';
+import { BaseRepository } from '@/repositories/v1/base/base.repository';
 import { CreateRoleModel, RoleModel } from '@/types/models/v1/role.types';
 import { rolePermissions } from '@/db/schema/v1/role-permission.schema';
 import { db } from '@/db/db.connection';
