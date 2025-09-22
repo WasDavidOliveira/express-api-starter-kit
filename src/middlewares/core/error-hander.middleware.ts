@@ -157,7 +157,8 @@ class ApiErrorHandler {
       StatusCode.INTERNAL_SERVER_ERROR,
       {
         stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
-        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
+        error:
+          process.env.NODE_ENV === 'development' ? error.message : undefined,
       },
     );
   }
