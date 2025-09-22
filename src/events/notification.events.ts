@@ -1,4 +1,4 @@
-import { eventEmitter } from '@/events/event-emitter';
+import { emitAppEvent } from '@/events/event-emitter';
 import { ErrorEvent } from '@/types/core/events.types';
 
 export const sendErrorNotification = (
@@ -28,5 +28,5 @@ export const sendErrorNotification = (
     },
   };
 
-  eventEmitter.emit('error', event);
+  emitAppEvent('error', event);
 };

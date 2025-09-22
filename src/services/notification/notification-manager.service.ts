@@ -1,5 +1,5 @@
 import { NotificationProvider } from '@/providers/notification/notification.provider';
-import { eventEmitter } from '@/events';
+import { onAppEvent } from '@/events';
 import { ErrorEvent, NotificationEvent } from '@/types/core/events.types';
 import { NotificationFactory } from '@/factories/notification.factory';
 
@@ -24,13 +24,13 @@ export class NotificationManagerService {
   }
 
   protected setupListeners(): void {
-    eventEmitter.on('error', async event => {
+    onAppEvent('error', async event => {
       if (event.type === 'error') {
         await this.sendErrorNotification(event as ErrorEvent);
       }
     });
 
-    eventEmitter.on('notification', async event => {
+    onAppEvent('notification', async event => {
       if (event.type === 'notification') {
         await this.sendNotification(event as NotificationEvent);
       }

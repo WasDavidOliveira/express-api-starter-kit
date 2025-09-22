@@ -1,18 +1,22 @@
 import { EventEmitter } from 'events';
 import { AppEvent } from '@/types/core/events.types';
 
-class AppEventEmitter extends EventEmitter {
-  emit(eventName: string, event: AppEvent): boolean {
-    return super.emit(eventName, event);
-  }
+export const eventEmitter = new EventEmitter();
 
-  on(eventName: string, listener: (event: AppEvent) => void): this {
-    return super.on(eventName, listener);
-  }
+export const emitAppEvent = (eventName: string, event: AppEvent): boolean => {
+  return eventEmitter.emit(eventName, event);
+};
 
-  once(eventName: string, listener: (event: AppEvent) => void): this {
-    return super.once(eventName, listener);
-  }
-}
+export const onAppEvent = (
+  eventName: string,
+  listener: (event: AppEvent) => void,
+): EventEmitter => {
+  return eventEmitter.on(eventName, listener);
+};
 
-export const eventEmitter = new AppEventEmitter();
+export const onceAppEvent = (
+  eventName: string,
+  listener: (event: AppEvent) => void,
+): EventEmitter => {
+  return eventEmitter.once(eventName, listener);
+};
