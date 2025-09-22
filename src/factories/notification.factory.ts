@@ -1,70 +1,32 @@
-import { DiscordNotificationService } from '@/services/notification/discord.service';
-import { TelegramNotificationService } from '@/services/notification/telegram.service';
+import { DiscordNotificationService } from '@/services/notification/discord';
+import { TelegramNotificationService } from '@/services/notification/telegram';
 import { NotificationProvider } from '@/providers/notification/notification.provider';
-import {
-  DiscordWebhookConfig,
-  TelegramConfig,
-} from '@/types/core/notification';
-import { appConfig } from '@/configs/app.config';
-import { eventEmitter } from '@/events';
-import { ErrorEvent, NotificationEvent } from '@/types/core/events.types';
+import { NotificationConfigFactory } from '@/factories/notification-config.factory';
 
 export class NotificationFactory {
   static createNotificationProviders(): NotificationProvider[] {
     const providers: NotificationProvider[] = [];
 
-    const discordConfig: DiscordWebhookConfig = {
-      enabled: appConfig.discord.webhookEnabled,
-      url: appConfig.discord.webhookUrl,
-      username: appConfig.discord.username,
-      avatarUrl: appConfig.discord.avatarUrl,
-    };
+    const discordConfig = NotificationConfigFactory.createDiscordConfig();
 
-    const discordService = new DiscordNotificationService(discordConfig);
-    providers.push(discordService);
+    if (discordConfig.enabled && discordConfig.url) {
+      const discordService = new DiscordNotificationService(discordConfig);
 
-    const telegramConfig: TelegramConfig = {
-      enabled: appConfig.telegram.enabled,
-      botToken: appConfig.telegram.botToken,
-      chatId: appConfig.telegram.chatId,
-      parseMode: appConfig.telegram.parseMode,
-    };
+      providers.push(discordService);
+    }
 
-    const telegramService = new TelegramNotificationService(telegramConfig);
-    providers.push(telegramService);
+    const telegramConfig = NotificationConfigFactory.createTelegramConfig();
+
+    if (
+      telegramConfig.enabled &&
+      telegramConfig.botToken &&
+      telegramConfig.chatId
+    ) {
+      const telegramService = new TelegramNotificationService(telegramConfig);
+
+      providers.push(telegramService);
+    }
 
     return providers;
-  }
-
-  static setupNotificationListeners(): void {
-    const providers = this.createNotificationProviders();
-
-    eventEmitter.on('error', async event => {
-      if (event.type === 'error') {
-        const enabledProviders = providers.filter(provider =>
-          provider.isEnabled(),
-        );
-
-        await Promise.allSettled(
-          enabledProviders.map(provider =>
-            provider.sendErrorNotification(event as ErrorEvent),
-          ),
-        );
-      }
-    });
-
-    eventEmitter.on('notification', async event => {
-      if (event.type === 'notification') {
-        const enabledProviders = providers.filter(provider =>
-          provider.isEnabled(),
-        );
-
-        await Promise.allSettled(
-          enabledProviders.map(provider =>
-            provider.sendNotification(event as NotificationEvent),
-          ),
-        );
-      }
-    });
   }
 }

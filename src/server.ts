@@ -3,13 +3,13 @@ import 'dotenv/config';
 import appConfig from '@/configs/app.config';
 import { logger } from '@/utils/core/logger.utils';
 import { bootstrapMiddlewares } from '@/middlewares/core/bootstrap.middleware';
-import { initializeNotificationSystem } from './configs/notification.config';
+import { NotificationManagerService } from '@/services/notification/notification-manager.service';
 
 const app = express();
 
 bootstrapMiddlewares(app);
 
-initializeNotificationSystem();
+NotificationManagerService.initialize();
 
 app.listen(appConfig.port, () => {
   logger.serverStartup(appConfig.nodeEnv, appConfig.port as number);
