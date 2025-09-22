@@ -24,7 +24,7 @@ abstract class BaseRepository<
   protected enableActivityLog: boolean = false;
 
   protected getTableName(): string {
-    return this.table._.name;
+    return (this.table as { tableName?: string }).tableName ?? 'unknown_table';
   }
 
   protected getContextInfo() {
