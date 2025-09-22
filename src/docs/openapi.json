@@ -14,7 +14,9 @@
   "paths": {
     "/api/v1/auth/login": {
       "post": {
-        "tags": ["Autenticação"],
+        "tags": [
+          "Autenticação"
+        ],
         "summary": "Login de usuário",
         "description": "Endpoint para autenticar um usuário existente",
         "requestBody": {
@@ -49,7 +51,9 @@
     },
     "/api/v1/auth/register": {
       "post": {
-        "tags": ["Autenticação"],
+        "tags": [
+          "Autenticação"
+        ],
         "summary": "Registro de usuário",
         "description": "Endpoint para cadastrar um novo usuário",
         "requestBody": {
@@ -81,7 +85,9 @@
     },
     "/api/v1/auth/me": {
       "get": {
-        "tags": ["Autenticação"],
+        "tags": [
+          "Autenticação"
+        ],
         "summary": "Detalhes do usuário atual",
         "description": "Endpoint para obter informações do usuário autenticado",
         "security": [
@@ -136,7 +142,10 @@
             "format": "password"
           }
         },
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "description": "Dados para autenticação de usuário"
       },
       "LoginResponse": {
@@ -156,7 +165,11 @@
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
           }
         },
-        "required": ["message", "user", "token"],
+        "required": [
+          "message",
+          "user",
+          "token"
+        ],
         "description": "Resposta de login bem-sucedido"
       },
       "User": {
@@ -179,7 +192,11 @@
             "example": "usuario@exemplo.com"
           }
         },
-        "required": ["id", "name", "email"],
+        "required": [
+          "id",
+          "name",
+          "email"
+        ],
         "description": "Informações do usuário"
       },
       "RegisterInput": {
@@ -205,7 +222,11 @@
             "format": "password"
           }
         },
-        "required": ["name", "email", "password"],
+        "required": [
+          "name",
+          "email",
+          "password"
+        ],
         "description": "Dados para criação de um novo usuário"
       },
       "RegisterResponse": {
@@ -220,7 +241,10 @@
             "$ref": "#/components/schemas/User"
           }
         },
-        "required": ["message", "user"],
+        "required": [
+          "message",
+          "user"
+        ],
         "description": "Resposta de registro bem-sucedido"
       },
       "MeResponse": {
@@ -235,7 +259,10 @@
             "$ref": "#/components/schemas/User"
           }
         },
-        "required": ["message", "user"],
+        "required": [
+          "message",
+          "user"
+        ],
         "description": "Resposta com dados do usuário atual"
       }
     }

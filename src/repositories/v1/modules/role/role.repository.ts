@@ -1,41 +1,13 @@
 import { roles } from '@/db/schema/v1/role.schema';
-import { db } from '@/db/db.connection';
-import { eq } from 'drizzle-orm';
+import { BaseRepository } from '@/repositories/base.repository';
 import { CreateRoleModel, RoleModel } from '@/types/models/v1/role.types';
 import { rolePermissions } from '@/db/schema/v1/role-permission.schema';
+import { db } from '@/db/db.connection';
+import { eq } from 'drizzle-orm';
 
-class RoleRepository {
-  async create(roleData: CreateRoleModel): Promise<RoleModel> {
-    const [newRole] = await db.insert(roles).values(roleData).returning();
-
-    return newRole;
-  }
-
-  async update(id: number, roleData: CreateRoleModel): Promise<RoleModel> {
-    const [updatedRole] = await db
-      .update(roles)
-      .set(roleData)
-      .where(eq(roles.id, id))
-      .returning();
-
-    return updatedRole;
-  }
-
-  async findById(id: number): Promise<RoleModel | null> {
-    const roleResults = await db
-      .select()
-      .from(roles)
-      .where(eq(roles.id, id))
-      .limit(1);
-
-    return roleResults[0] ?? null;
-  }
-
-  async findAll(): Promise<RoleModel[]> {
-    const roleResults = await db.select().from(roles);
-
-    return roleResults;
-  }
+class RoleRepository extends BaseRepository<RoleModel, CreateRoleModel> {
+  protected table = roles;
+  protected idColumn = roles.id;
 
   async delete(id: number): Promise<void> {
     await db.delete(rolePermissions).where(eq(rolePermissions.roleId, id));
