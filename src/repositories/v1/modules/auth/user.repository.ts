@@ -1,6 +1,6 @@
 import { user } from '@/db/schema/v1/user.schema';
 import { CreateUserModel, UserModel } from '@/types/models/v1/auth.types';
-import { BaseRepository } from '@/repositories/base.repository';
+import { BaseRepository } from '@/repositories/v1/modules/base/base.repository';
 import { db } from '@/db/db.connection';
 import { eq } from 'drizzle-orm';
 
