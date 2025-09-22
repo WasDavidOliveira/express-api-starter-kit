@@ -8,6 +8,7 @@ import { eq } from 'drizzle-orm';
 class RoleRepository extends BaseRepository<RoleModel, CreateRoleModel> {
   protected table = roles;
   protected idColumn = roles.id;
+  protected enableActivityLog = true;
 
   async delete(id: number): Promise<void> {
     await db.delete(rolePermissions).where(eq(rolePermissions.roleId, id));

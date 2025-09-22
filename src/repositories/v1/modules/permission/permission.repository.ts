@@ -11,6 +11,7 @@ class PermissionRepository extends BaseRepository<
 > {
   protected table = permissions;
   protected idColumn = permissions.id;
+  protected enableActivityLog = true;
 }
 
 export default new PermissionRepository();

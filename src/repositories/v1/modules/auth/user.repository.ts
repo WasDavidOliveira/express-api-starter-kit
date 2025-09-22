@@ -7,6 +7,7 @@ import { eq } from 'drizzle-orm';
 class UserRepository extends BaseRepository<UserModel, CreateUserModel> {
   protected table = user;
   protected idColumn = user.id;
+  protected enableActivityLog = true;
 
   async findByEmail(email: string): Promise<UserModel | null> {
     return this.findOneByCondition(eq(user.email, email));

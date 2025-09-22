@@ -1,3 +1,5 @@
+import { ActivityLogEvent } from '@/types/core/activityLog.types';
+
 export interface BaseEvent {
   type: string;
   timestamp: Date;
@@ -28,4 +30,4 @@ export interface NotificationEvent extends BaseEvent {
   };
 }
 
-export type AppEvent = ErrorEvent | NotificationEvent;
+export type AppEvent = ErrorEvent | NotificationEvent | ActivityLogEvent;

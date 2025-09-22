@@ -16,5 +16,7 @@ export const activityLogs = pgTable('activity_logs', {
   recordId: integer('record_id').notNull(),
   oldValues: json('old_values'),
   newValues: json('new_values'),
+  userAgent: varchar('user_agent', { length: 500 }),
+  ip: varchar('ip', { length: 45 }),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });

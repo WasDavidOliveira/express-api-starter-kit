@@ -1,42 +1,54 @@
-import { Request } from 'express';
+import { AsyncLocalStorage } from 'async_hooks';
 import { RequestContext } from '@/types/core/request-context.types';
 
-export const getRequestContext = (req: Request): RequestContext | null => {
-  return req.requestContext ?? null;
+const asyncLocalStorage = new AsyncLocalStorage<RequestContext>();
+
+export const setRequestContext = (context: RequestContext): void => {
+  asyncLocalStorage.enterWith(context);
 };
 
-export const getRequestId = (req: Request): string | null => {
-  return req.requestContext?.requestId ?? null;
+export const getRequestContext = (): RequestContext | null => {
+  return asyncLocalStorage.getStore() ?? null;
 };
 
-export const getUserId = (req: Request): number | null => {
-  return req.requestContext?.userId ?? null;
+export const getRequestId = (): string | null => {
+  const context = getRequestContext();
+  return context?.requestId ?? null;
 };
 
-export const getSessionId = (req: Request): string | null => {
-  return req.requestContext?.sessionId ?? null;
+export const getUserId = (): number | null => {
+  const context = getRequestContext();
+  return context?.userId ?? null;
 };
 
-export const getRequestMetadata = (req: Request): Record<string, unknown> => {
-  return req.requestContext?.metadata ?? {};
+export const getUserAgent = (): string | null => {
+  const context = getRequestContext();
+  return context?.userAgent ?? null;
 };
 
-export const addRequestMetadata = (
-  req: Request,
-  key: string,
-  value: unknown,
-): void => {
-  if (!req.requestContext) return;
-
-  req.requestContext.metadata[key] = value;
+export const getIp = (): string | null => {
+  const context = getRequestContext();
+  return context?.ip ?? null;
 };
 
-export const getRequestDuration = (req: Request): number | null => {
-  if (!req.requestContext) return null;
-
-  return Date.now() - req.requestContext.startTime;
+export const getSessionId = (): string | null => {
+  const context = getRequestContext();
+  return context?.sessionId ?? null;
 };
 
-export const isAuthenticated = (req: Request): boolean => {
-  return !!req.requestContext?.userId;
+export const getRequestMetadata = (): Record<string, unknown> => {
+  const context = getRequestContext();
+  return context?.metadata ?? {};
+};
+
+export const getRequestDuration = (): number | null => {
+  const context = getRequestContext();
+  if (!context) return null;
+
+  return Date.now() - context.startTime;
+};
+
+export const isAuthenticated = (): boolean => {
+  const context = getRequestContext();
+  return !!context?.userId;
 };

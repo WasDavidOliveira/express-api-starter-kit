@@ -4,6 +4,7 @@ import {
   RequestContextOptions,
 } from '@/types/core/request-context.types';
 import { REQUEST_CONTEXT_DEFAULT_OPTIONS } from '@/constants/core/request-context.constants';
+import { setRequestContext } from '@/utils/core/request-context.utils';
 
 export const createRequestContextMiddleware = (
   options: RequestContextOptions = {},
@@ -50,9 +51,9 @@ export const createRequestContextMiddleware = (
       }
     }
 
-    req.requestContext = context;
     res.set('X-Request-ID', requestId);
 
+    setRequestContext(context);
     next();
   };
 };
