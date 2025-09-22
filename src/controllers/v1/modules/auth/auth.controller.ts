@@ -7,7 +7,7 @@ import {
 } from '@/validations/v1/modules/auth.validations';
 import AuthService from '@/services/v1/modules/auth/auth.service';
 import { UserResource } from '@/resources/v1/modules/user/user.resources';
-import { StatusCode } from '@/constants/status-code.constants';
+import { StatusCode } from '@/constants/http';
 import appConfig from '@/configs/app.config';
 
 export class AuthController {

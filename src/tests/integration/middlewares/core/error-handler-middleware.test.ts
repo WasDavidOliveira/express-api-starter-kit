@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { Request, Response, NextFunction } from 'express';
-import { StatusCode } from '@/constants/status-code.constants';
+import { StatusCode } from '@/constants/http';
 import setupTestDB from '@/tests/hooks/setup-db';
 import { faker } from '@faker-js/faker';
 import { z } from 'zod';

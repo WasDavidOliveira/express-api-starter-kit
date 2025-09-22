@@ -206,7 +206,7 @@ export const updateRoleSchema = z.object({
 ### Schema de Permissão
 
 ```typescript
-import { PermissionActions } from '@/constants/permission.constants';
+import { PermissionActions } from '@/constants/auth';
 
 export const createPermissionSchema = z.object({
   body: z.object({
@@ -271,7 +271,7 @@ export type PermissionAction =
 ### Uso em Validações
 
 ```typescript
-import { PermissionActions } from '@/constants/permission.constants';
+import { PermissionActions } from '@/constants/auth';
 
 // Validação com enum nativo
 action: z.nativeEnum(PermissionActions);

@@ -45,8 +45,8 @@ Além disso, o arquivo inclui um tipo TypeScript (`StatusCodeType`) para facilit
 Para utilizar estas constantes em qualquer parte do projeto, basta importá-las:
 
 ```typescript
-import { Environment } from '@/constants/environment.constants';
-import { StatusCode } from '@/constants/status-code.constants';
+import { Environment } from '@/constants/core';
+import { StatusCode } from '@/constants/http';
 
 // Exemplo de uso
 if (process.env.NODE_ENV === Environment.PRODUCTION) {

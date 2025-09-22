@@ -99,7 +99,7 @@ import [Entity]Controller from '@/controllers/v1/modules/[entity]/[entity].contr
 import { [action][Entity]Schema } from '@/validations/v1/modules/[entity].validations';
 import { validateRequest } from '@/middlewares/validation/validate-request.middlewares';
 import { hasPermission } from '@/middlewares/authorization/permission.middleware';
-import { PermissionActions } from '@/constants/permission.constants';
+import { PermissionActions } from '@/constants/auth';
 
 const router = Router();
 
@@ -176,7 +176,7 @@ import {
 } from '@/validations/v1/modules/role.validations';
 import { validateRequest } from '@/middlewares/validation/validate-request.middlewares';
 import { hasPermission } from '@/middlewares/authorization/permission.middleware';
-import { PermissionActions } from '@/constants/permission.constants';
+import { PermissionActions } from '@/constants/auth';
 
 const router = Router();
 
@@ -227,7 +227,7 @@ import {
 } from '@/validations/v1/modules/permission.validations';
 import { validateRequest } from '@/middlewares/validation/validate-request.middlewares';
 import { hasPermission } from '@/middlewares/authorization/permission.middleware';
-import { PermissionActions } from '@/constants/permission.constants';
+import { PermissionActions } from '@/constants/auth';
 
 const router = Router();
 

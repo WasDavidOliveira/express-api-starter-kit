@@ -1,5 +1,5 @@
 import appConfig from '@/configs/app.config';
-import { Environment } from '@/constants/environment.constants';
+import { Environment } from '@/constants/core';
 import { ValidationErrorItem } from '@/types/core/errors.types';
 
 export class AppError extends Error {

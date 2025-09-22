@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import RoleService from '@/services/v1/modules/role/role.service';
-import { StatusCode } from '@/constants/status-code.constants';
+import { StatusCode } from '@/constants/http';
 import { CreateRoleInput } from '@/validations/v1/modules/role.validations';
 import { RoleResource } from '@/resources/v1/modules/role/role.resource';
 

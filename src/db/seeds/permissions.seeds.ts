@@ -1,7 +1,7 @@
 import { db } from '@/db/db.connection';
 import { permissions } from '@/db/schema/v1/permission.schema';
 import { logger } from '@/utils/core/logger.utils';
-import { PermissionActions } from '@/constants/permission.constants';
+import { PermissionActions } from '@/constants/auth';
 import { eq, and } from 'drizzle-orm';
 
 export async function seedPermissions() {

@@ -6,7 +6,7 @@ import {
 } from '@/validations/v1/modules/permission.validations';
 import { validateRequest } from '@/middlewares/validation/validate-request.middlewares';
 import { hasPermission } from '@/middlewares/authorization/permission.middleware';
-import { PermissionActions } from '@/constants/permission.constants';
+import { PermissionActions } from '@/constants/auth';
 
 const router = Router();
 

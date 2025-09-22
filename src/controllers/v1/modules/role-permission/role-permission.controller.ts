@@ -1,4 +1,4 @@
-import { StatusCode } from '@/constants/status-code.constants';
+import { StatusCode } from '@/constants/http';
 import { Request, Response } from 'express';
 import { PermissionResource } from '@/resources/v1/modules/permission/permission.resource';
 import RolePermissionService from '@/services/v1/modules/role-permission/role-permission.service';

@@ -9,6 +9,7 @@ export class NotificationManagerService {
 
   protected constructor(providers: NotificationProvider[]) {
     this.providers = providers;
+
     this.setupListeners();
   }
 

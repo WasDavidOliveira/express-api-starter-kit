@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { extendZodWithOpenApi } from 'zod-openapi';
-import { PermissionActions } from '@/constants/permission.constants';
+import { PermissionActions } from '@/constants/auth';
 
 extendZodWithOpenApi(z);
 

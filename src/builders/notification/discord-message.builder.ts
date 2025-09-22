@@ -4,7 +4,7 @@ import {
   NOTIFICATION_LEVEL_COLORS,
   NOTIFICATION_LEVEL_EMOJIS,
   ERROR_TYPE_COLORS,
-} from '@/constants/notification.constants';
+} from '@/constants/notification';
 
 export class DiscordMessageBuilder {
   static createErrorEmbed(event: ErrorEvent): DiscordEmbed {

@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import request from 'supertest';
 import app from '@/server';
-import { StatusCode } from '@/constants/status-code.constants';
+import { StatusCode } from '@/constants/http';
 import { RoleFactory } from '@/tests/factories/role/role.factory';
 import { PermissionFactory } from '@/tests/factories/permission/permission.factory';
 import { RolePermissionFactory } from '@/tests/factories/role-permission/role-permission.factory';

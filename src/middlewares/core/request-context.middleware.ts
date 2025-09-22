@@ -1,21 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
-import { v4 as uuidv4 } from 'uuid';
 import {
   RequestContext,
   RequestContextOptions,
 } from '@/types/core/request-context.types';
-
-const defaultOptions: Required<RequestContextOptions> = {
-  generateRequestId: () => uuidv4(),
-  includeUserInfo: true,
-  includeMetadata: true,
-  maxMetadataSize: 1000,
-};
+import { REQUEST_CONTEXT_DEFAULT_OPTIONS } from '@/constants/core/request-context.constants';
 
 export const createRequestContextMiddleware = (
   options: RequestContextOptions = {},
 ) => {
-  const config = { ...defaultOptions, ...options };
+  const config = { ...REQUEST_CONTEXT_DEFAULT_OPTIONS, ...options };
 
   return (req: Request, res: Response, next: NextFunction) => {
     const startTime = Date.now();

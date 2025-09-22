@@ -1,5 +1,5 @@
 import { ErrorEvent, NotificationEvent } from '@/types/core/events.types';
-import { NOTIFICATION_LEVEL_EMOJIS } from '@/constants/notification.constants';
+import { NOTIFICATION_LEVEL_EMOJIS } from '@/constants/notification';
 
 export class TelegramMessageBuilder {
   static createNotificationMessage(event: NotificationEvent): string {
@@ -48,7 +48,7 @@ export class TelegramMessageBuilder {
     if (error.stack) {
       const stackTrace =
         error.stack.length > 1000
-          ? error.stack.substring(0, 1000) + '...'
+          ? `${error.stack.substring(0, 1000)}...`
           : error.stack;
       message += `\n<b>📚 Stack Trace:</b>\n<pre>${stackTrace}</pre>`;
     }

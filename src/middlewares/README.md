@@ -175,7 +175,7 @@ router.get('/rota-protegida', authMiddleware, meuController.acessoProtegido);
 // Em uma definição de rota
 import { authMiddleware } from '@/middlewares/auth';
 import { hasPermission } from '@/middlewares/authorization';
-import { PermissionActions } from '@/constants/permission.constants';
+import { PermissionActions } from '@/constants/auth';
 import UserController from '@/controllers/v1/modules/user/user.controller';
 
 router.get(

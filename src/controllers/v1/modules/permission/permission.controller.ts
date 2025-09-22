@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import PermissionService from '@/services/v1/modules/permission/permission.service';
-import { StatusCode } from '@/constants/status-code.constants';
+import { StatusCode } from '@/constants/http';
 import { CreatePermissionInput } from '@/validations/v1/modules/permission.validations';
 import { PermissionResource } from '@/resources/v1/modules/permission/permission.resource';
 

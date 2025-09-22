@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '@/exceptions/app.exceptions';
 import { ZodError } from 'zod';
-import { StatusCode } from '@/constants/status-code.constants';
+import { StatusCode } from '@/constants/http';
 import {
   ValidationErrorItem,
   ErrorTypes,
