@@ -7,6 +7,7 @@ import {
 } from '@/types/core/notification';
 import { logger } from '@/utils/core/logger.utils';
 import { TelegramMessageBuilder } from '@/builders/notification';
+import { TelegramParseMode } from '@/constants/notification';
 
 export class TelegramNotificationService extends BaseNotificationProvider {
   protected config: TelegramConfig;
@@ -45,7 +46,7 @@ export class TelegramNotificationService extends BaseNotificationProvider {
     const message: TelegramMessage = {
       chat_id: this.config.chatId,
       text,
-      parse_mode: this.config.parseMode ?? 'HTML',
+      parse_mode: this.config.parseMode ?? TelegramParseMode.HTML,
       disable_web_page_preview: true,
     };
 

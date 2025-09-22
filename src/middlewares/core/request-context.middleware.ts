@@ -39,6 +39,7 @@ export const createRequestContextMiddleware = (
       };
 
       const metadataSize = JSON.stringify(context.metadata).length;
+
       if (metadataSize > config.maxMetadataSize) {
         context.metadata = {
           headers: req.headers,

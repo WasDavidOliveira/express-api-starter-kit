@@ -34,9 +34,7 @@ export const appConfig = {
     enabled: process.env.TELEGRAM_ENABLED === 'true',
     botToken: process.env.TELEGRAM_BOT_TOKEN ?? '',
     chatId: process.env.TELEGRAM_CHAT_ID ?? '',
-    parseMode:
-      (process.env.TELEGRAM_PARSE_MODE as 'HTML' | 'Markdown' | 'MarkdownV2') ??
-      'HTML',
+    parseMode: process.env.TELEGRAM_PARSE_MODE ?? 'HTML',
   },
 };
 
