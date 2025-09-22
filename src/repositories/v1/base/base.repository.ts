@@ -21,10 +21,11 @@ abstract class BaseRepository<
 {
   protected abstract table: PgTable;
   protected abstract idColumn: PgColumn;
+  protected abstract tableName: string;
   protected enableActivityLog: boolean = false;
 
   protected getTableName(): string {
-    return (this.table as { tableName?: string }).tableName ?? 'unknown_table';
+    return this.tableName;
   }
 
   protected getContextInfo() {

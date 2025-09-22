@@ -4,10 +4,12 @@ import { CreateRoleModel, RoleModel } from '@/types/models/v1/role.types';
 import { rolePermissions } from '@/db/schema/v1/role-permission.schema';
 import { db } from '@/db/db.connection';
 import { eq } from 'drizzle-orm';
+import { getTableName } from 'drizzle-orm';
 
 class RoleRepository extends BaseRepository<RoleModel, CreateRoleModel> {
   protected table = roles;
   protected idColumn = roles.id;
+  protected tableName = getTableName(roles);
   protected enableActivityLog = true;
 
   async delete(id: number): Promise<void> {

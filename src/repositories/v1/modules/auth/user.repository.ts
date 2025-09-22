@@ -3,10 +3,11 @@ import { CreateUserModel, UserModel } from '@/types/models/v1/auth.types';
 import { BaseRepository } from '@/repositories/v1/base/base.repository';
 import { db } from '@/db/db.connection';
 import { eq } from 'drizzle-orm';
-
+import { getTableName } from 'drizzle-orm';
 class UserRepository extends BaseRepository<UserModel, CreateUserModel> {
   protected table = user;
   protected idColumn = user.id;
+  protected tableName = getTableName(user);
   protected enableActivityLog = true;
 
   async findByEmail(email: string): Promise<UserModel | null> {

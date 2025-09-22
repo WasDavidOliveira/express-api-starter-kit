@@ -2,8 +2,13 @@ import { db } from '@/db/db.connection';
 import { rolePermissions } from '@/db/schema/v1/role-permission.schema';
 import { permissions } from '@/db/schema/v1/permission.schema';
 import { eq } from 'drizzle-orm';
+import { getTableName } from 'drizzle-orm';
 
 class RolePermissionRepository {
+  protected table = rolePermissions;
+  protected tableName = getTableName(rolePermissions);
+  protected enableActivityLog = true;
+
   static async attach(roleId: number, permissionId: number) {
     const [newRolePermission] = await db
       .insert(rolePermissions)
