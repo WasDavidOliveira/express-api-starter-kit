@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCode } from '@/constants/http';
 import setupTestDB from '@/tests/hooks/setup-db';
@@ -14,12 +14,27 @@ import {
 import { errorHandler } from '@/middlewares/core/error-hander.middleware';
 import { notFoundHandler } from '@/middlewares/core/not-found.middleware';
 
+vi.mock('@/events', () => ({
+  sendErrorNotification: vi.fn(),
+}));
+
 describe('Error Handler Middleware', () => {
   setupTestDB();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   const createMockRequest = (): Partial<Request> => ({
     method: 'GET',
     originalUrl: '/test',
+    url: '/test',
+    get: vi.fn().mockReturnValue('test-user-agent'),
+    ip: '127.0.0.1',
+    socket: {
+      remoteAddress: '127.0.0.1',
+    } as unknown as import('net').Socket,
+    userId: 1,
   });
 
   const createMockResponse = () => {
@@ -64,6 +79,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro de validação',
+        statusCode: 400,
         errors: [
           { campo: 'name', mensagem: 'Nome deve ter pelo menos 3 caracteres' },
           { campo: 'email', mensagem: 'Email inválido' },
@@ -107,6 +123,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro de validação',
+        statusCode: 400,
         errors: [
           {
             campo: 'name',
@@ -130,6 +147,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Usuário não autenticado',
+        statusCode: 401,
       });
     });
 
@@ -145,6 +163,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Acesso negado',
+        statusCode: 403,
       });
     });
 
@@ -160,6 +179,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Recurso não encontrado',
+        statusCode: 404,
       });
     });
 
@@ -175,6 +195,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Dados inválidos',
+        statusCode: 400,
       });
     });
 
@@ -193,6 +214,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro customizado',
+        statusCode: 500,
       });
     });
 
@@ -213,6 +235,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro customizado',
+        statusCode: 500,
         stack: error.stack,
       });
 
@@ -233,6 +256,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro com detalhes',
+        statusCode: 400,
         errors: [{ campo: 'email', mensagem: 'Email inválido' }],
       });
     });
@@ -256,6 +280,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'email já está em uso',
+        statusCode: 409,
         campo: 'email',
       });
     });
@@ -278,6 +303,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'user_id não existe',
+        statusCode: 409,
         campo: 'user_id',
       });
     });
@@ -298,6 +324,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro interno do servidor',
+        statusCode: 500,
       });
     });
   });
@@ -315,6 +342,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro interno do servidor',
+        statusCode: 500,
       });
     });
 
@@ -332,6 +360,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro interno do servidor',
+        statusCode: 500,
         error: 'Erro genérico',
         stack: error.stack,
       });
@@ -421,6 +450,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro de validação',
+        statusCode: 400,
         errors: expect.arrayContaining([
           expect.objectContaining({ campo: 'name' }),
           expect.objectContaining({ campo: 'email' }),
@@ -442,6 +472,7 @@ describe('Error Handler Middleware', () => {
       expect(res.json).toHaveBeenCalledWith({
         status: 'erro',
         message: 'Erro interno do servidor',
+        statusCode: 500,
       });
     });
   });

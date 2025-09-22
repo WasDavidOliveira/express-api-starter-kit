@@ -13,12 +13,8 @@ import {
   extractFieldFromDetail,
 } from '@/utils/core/error.utils';
 import { sendErrorNotification } from '@/events';
-import appConfig from '@/configs/app.config';
 
 class ApiErrorHandler {
-  protected readonly isDevelopment = appConfig.nodeEnv === 'development';
-  protected readonly isProduction = appConfig.nodeEnv === 'production';
-
   public handle(
     error: ErrorTypes,
     context?: {
@@ -84,7 +80,7 @@ class ApiErrorHandler {
       mensagem: zodError.message,
     }));
 
-    this.notifyError(error, this.isProduction, context);
+    this.notifyError(error, process.env.NODE_ENV === 'production', context);
 
     return this.createErrorResponse(
       'Erro de validação',
@@ -107,7 +103,7 @@ class ApiErrorHandler {
 
     return this.createErrorResponse(error.message, error.statusCode, {
       errors: error.errors,
-      stack: this.isDevelopment ? error.stack : undefined,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
     });
   }
 
@@ -160,8 +156,8 @@ class ApiErrorHandler {
       'Erro interno do servidor',
       StatusCode.INTERNAL_SERVER_ERROR,
       {
-        stack: this.isDevelopment ? error.stack : undefined,
-        error: this.isDevelopment ? error.message : undefined,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
       },
     );
   }
