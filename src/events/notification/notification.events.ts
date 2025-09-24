@@ -1,4 +1,4 @@
-import { emitAppEvent } from '@/events/event-emitter';
+import { emitAppEvent } from '@/events/core/event-emitter';
 import { ErrorEvent } from '@/types/core/events.types';
 
 export const sendErrorNotification = (

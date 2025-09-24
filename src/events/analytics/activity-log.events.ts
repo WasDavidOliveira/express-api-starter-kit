@@ -1,4 +1,4 @@
-import { emitAppEvent } from '@/events/event-emitter';
+import { emitAppEvent } from '@/events/core/event-emitter';
 import { ActivityLogEvent } from '@/types/core/activityLog.types';
 
 export const emitActivityLogEvent = (

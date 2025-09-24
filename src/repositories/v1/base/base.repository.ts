@@ -6,7 +6,7 @@ import {
   emitCreateEvent,
   emitUpdateEvent,
   emitDeleteEvent,
-} from '@/events/analytics.events';
+} from '@/events/analytics/activity-log.events';
 import {
   getUserId,
   getUserAgent,

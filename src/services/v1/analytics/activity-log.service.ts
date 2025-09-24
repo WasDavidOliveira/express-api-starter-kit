@@ -1,4 +1,4 @@
-import { onAppEvent } from '@/events/event-emitter';
+import { onAppEvent } from '@/events/core/event-emitter';
 import { ActivityLogEvent } from '@/types/core/activityLog.types';
 import { eq } from 'drizzle-orm';
 import activityLogRepository from '@/repositories/v1/analytics/activity-log.repository';
