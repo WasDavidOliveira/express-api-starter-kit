@@ -3,9 +3,19 @@ import { ActivityLogEvent } from '@/types/core/activityLog.types';
 import { eq } from 'drizzle-orm';
 import activityLogRepository from '@/repositories/v1/analytics/activity-log.repository';
 
-class ActivityLogService {
-  constructor() {
+export class ActivityLogService {
+  private static instance: ActivityLogService | null = null;
+
+  protected constructor() {
     this.setupEventListeners();
+  }
+
+  static initialize(): void {
+    if (this.instance) {
+      return;
+    }
+
+    this.instance = new ActivityLogService();
   }
 
   protected setupEventListeners(): void {
@@ -51,5 +61,3 @@ class ActivityLogService {
     );
   }
 }
-
-export default new ActivityLogService();

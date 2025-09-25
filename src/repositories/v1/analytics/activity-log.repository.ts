@@ -1,5 +1,6 @@
 import { activityLogs } from '@/db/schema/v1/activity-log.schema';
 import { BaseRepository } from '@/repositories/v1/base/base.repository';
+import { getTableName } from 'drizzle-orm';
 import {
   CreateActivityLogModel,
   ActivityLogModel,
@@ -11,6 +12,7 @@ class ActivityLogRepository extends BaseRepository<
 > {
   protected table = activityLogs;
   protected idColumn = activityLogs.id;
+  protected tableName = getTableName(activityLogs);
 }
 
 export default new ActivityLogRepository();
