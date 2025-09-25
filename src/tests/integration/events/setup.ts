@@ -4,11 +4,10 @@ import { vi } from 'vitest';
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
-vi.mock('@/events', () => ({
+vi.mock('@/events/core/event-emitter', () => ({
   emitAppEvent: vi.fn(),
   onAppEvent: vi.fn(),
   onceAppEvent: vi.fn(),
-  sendErrorNotification: vi.fn(),
 }));
 
 vi.mock('@/services/notification/notification-manager.service', () => ({
@@ -17,7 +16,7 @@ vi.mock('@/services/notification/notification-manager.service', () => ({
   },
 }));
 
-vi.mock('@/services/v1/analytics/activity-log.service', () => ({
+vi.mock('@/services/analytics/activity-log.service', () => ({
   ActivityLogService: {
     initialize: vi.fn(),
   },

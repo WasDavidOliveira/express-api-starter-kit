@@ -7,7 +7,7 @@ export default defineConfig({
     reporters: ['default', 'html'],
     environment: 'node',
     include: ['tests/**/*.test.ts', 'src/**/*.test.ts'],
-    setupFiles: ['src/tests/setup.ts'],
+    setupFiles: ['src/tests/integration/events/setup.ts'],
     coverage: {
       reporter: ['text', 'json', 'html'],
       exclude: ['node_modules/', 'dist/'],
