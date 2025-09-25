@@ -3,15 +3,13 @@ import 'dotenv/config';
 import appConfig from '@/configs/app.config';
 import { logger } from '@/utils/core/logger.utils';
 import { bootstrapMiddlewares } from '@/middlewares/core/bootstrap.middleware';
-import { NotificationManagerService } from '@/services/notification/notification-manager.service';
-import { ActivityLogService } from '@/services/v1/analytics/activity-log.service';
+import { BoostrapEventServices } from '@/events/bootstrap/events.bootstrap';
 
 const app = express();
 
 bootstrapMiddlewares(app);
 
-NotificationManagerService.initialize();
-ActivityLogService.initialize();
+BoostrapEventServices();
 
 app.listen(appConfig.port, () => {
   logger.serverStartup(appConfig.nodeEnv, appConfig.port as number);

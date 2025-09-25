@@ -69,7 +69,7 @@ abstract class BaseRepository<
       .where(eq(this.idColumn, id))
       .returning();
 
-    if (this.enableActivityLog && oldRecord) {
+    if (this.enableActivityLog) {
       emitUpdateEvent(
         this.getTableName(),
         id,
@@ -114,7 +114,7 @@ abstract class BaseRepository<
 
     await db.delete(this.table).where(eq(this.idColumn, id));
 
-    if (this.enableActivityLog && oldRecord) {
+    if (this.enableActivityLog) {
       emitDeleteEvent(
         this.getTableName(),
         id,
