@@ -1,6 +1,6 @@
 import { DiscordNotificationService } from '@/services/notification/discord';
 import { TelegramNotificationService } from '@/services/notification/telegram';
-import { NotificationProvider } from '@/providers/notification/notification.provider';
+import { NotificationProvider } from '@/types/core/notification/notification-provider.types';
 import { discordConfig } from '@/configs/providers/discord.config';
 import { telegramConfig } from '@/configs/providers/telegram.config';
 
