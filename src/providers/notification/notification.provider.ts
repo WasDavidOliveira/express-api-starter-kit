@@ -1,10 +1,5 @@
 import { ErrorEvent, NotificationEvent } from '@/types/core/events.types';
-
-export interface NotificationProvider {
-  sendErrorNotification(event: ErrorEvent): Promise<void>;
-  sendNotification(event: NotificationEvent): Promise<void>;
-  isEnabled(): boolean;
-}
+import { NotificationProvider } from '@/types/core/notification/notification-provider.types';
 
 export abstract class BaseNotificationProvider implements NotificationProvider {
   protected enabled: boolean;
