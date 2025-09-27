@@ -5,6 +5,15 @@ import { CreateRoleInput } from '@/validations/v1/modules/role.validations';
 import { RoleResource } from '@/resources/v1/modules/role/role.resource';
 
 export class RoleController {
+  index = async (req: Request, res: Response) => {
+    const roles = await RoleService.findAll();
+
+    res.status(StatusCode.OK).json({
+      message: 'Roles listadas com sucesso.',
+      data: RoleResource.collectionToResponse(roles),
+    });
+  };
+
   create = async (req: Request<{}, {}, CreateRoleInput>, res: Response) => {
     const roleData: CreateRoleInput = req.body;
 
@@ -46,15 +55,6 @@ export class RoleController {
 
     res.status(StatusCode.OK).json({
       message: 'Role deletada com sucesso.',
-    });
-  };
-
-  index = async (req: Request, res: Response) => {
-    const roles = await RoleService.findAll();
-
-    res.status(StatusCode.OK).json({
-      message: 'Roles listadas com sucesso.',
-      data: RoleResource.collectionToResponse(roles),
     });
   };
 }
