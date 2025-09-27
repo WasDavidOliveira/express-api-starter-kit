@@ -38,16 +38,19 @@ export class EmailService {
     };
 
     const result = await this.transporter!.sendMail(mailOptions);
-    
+
     return {
       success: true,
       messageId: result.messageId,
     };
   }
 
-  async sendWelcomeEmail(userEmail: string, userName: string): Promise<EmailResponse> {
+  async sendWelcomeEmail(
+    userEmail: string,
+    userName: string,
+  ): Promise<EmailResponse> {
     const welcomeTemplate = this.createWelcomeTemplate(userName);
-    
+
     return this.sendEmail({
       to: userEmail,
       subject: `🎉 Bem-vindo ${userName}! Sua jornada começa agora`,

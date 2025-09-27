@@ -1,12 +1,14 @@
-import { onAppEvent } from '@/events/core/event-emitter';
+import { BaseEventHandler } from '@/events/core/base-event-handler';
+import { AppEvent } from '@/types/core/events.types';
 import { ActivityLogEvent } from '@/types/core/activityLog.types';
 import { eq } from 'drizzle-orm';
 import activityLogRepository from '@/repositories/v1/analytics/activity-log.repository';
 
-export class ActivityLogService {
+export class ActivityLogService extends BaseEventHandler {
   private static instance: ActivityLogService | null = null;
 
   protected constructor() {
+    super();
     this.setupEventListeners();
   }
 
@@ -18,12 +20,14 @@ export class ActivityLogService {
     this.instance = new ActivityLogService();
   }
 
-  protected setupEventListeners(): void {
-    onAppEvent('activity_log', event => {
-      if (event.type === 'activity_log') {
-        void this.handleActivityLogEvent(event as ActivityLogEvent);
-      }
-    });
+  protected getEventHandlers() {
+    return [
+      {
+        eventType: 'activity_log',
+        handler: async (event: AppEvent) =>
+          this.handleActivityLogEvent(event as ActivityLogEvent),
+      },
+    ];
   }
 
   protected async handleActivityLogEvent(

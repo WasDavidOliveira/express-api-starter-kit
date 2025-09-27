@@ -1,14 +1,15 @@
 import { EmailService } from './email.service';
-import { onAppEvent } from '@/events';
-import { WelcomeEvent } from '@/types/core/events.types';
+import { BaseEventHandler } from '@/events/core/base-event-handler';
+import { AppEvent, WelcomeEvent } from '@/types/core/events.types';
 
-export class EmailEventService {
+export class EmailEventService extends BaseEventHandler {
   private static instance: EmailEventService | null = null;
   private emailService: EmailService;
 
   protected constructor() {
+    super();
     this.emailService = new EmailService();
-    this.setupListeners();
+    this.setupEventListeners();
   }
 
   static initialize(): void {
@@ -19,12 +20,14 @@ export class EmailEventService {
     this.instance = new EmailEventService();
   }
 
-  protected setupListeners(): void {
-    onAppEvent('welcome', async event => {
-      if (event.type === 'welcome') {
-        await this.sendWelcomeEmail(event as WelcomeEvent);
-      }
-    });
+  protected getEventHandlers() {
+    return [
+      {
+        eventType: 'welcome',
+        handler: async (event: AppEvent) =>
+          this.sendWelcomeEmail(event as WelcomeEvent),
+      },
+    ];
   }
 
   protected async sendWelcomeEmail(event: WelcomeEvent): Promise<void> {
@@ -32,9 +35,6 @@ export class EmailEventService {
       return;
     }
 
-    await this.emailService.sendWelcomeEmail(
-      event.data.email,
-      event.data.name
-    );
+    await this.emailService.sendWelcomeEmail(event.data.email, event.data.name);
   }
 }

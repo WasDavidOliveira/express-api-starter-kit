@@ -1,4 +1,12 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import request from 'supertest';
 import app from '@/server';
 import { StatusCode } from '@/constants/http';
@@ -56,7 +64,7 @@ describe('Envio de Email de Boas-vindas', () => {
 
     expect(response.status).toBe(StatusCode.OK);
     expect(response.body.message).toBe('Usuário criado com sucesso.');
-    
+
     expect(vi.mocked(emitAppEvent)).toHaveBeenCalledWith('welcome', {
       type: 'welcome',
       timestamp: expect.any(Date),
@@ -75,7 +83,7 @@ describe('Envio de Email de Boas-vindas', () => {
       .send(userData);
 
     expect(response.status).toBe(StatusCode.OK);
-    
+
     expect(vi.mocked(emitAppEvent)).toHaveBeenCalledWith('welcome', {
       type: 'welcome',
       timestamp: expect.any(Date),
@@ -95,7 +103,7 @@ describe('Envio de Email de Boas-vindas', () => {
 
     expect(response.status).toBe(StatusCode.OK);
     expect(response.body.message).toBe('Usuário criado com sucesso.');
-    
+
     expect(vi.mocked(emitAppEvent)).toHaveBeenCalledWith('welcome', {
       type: 'welcome',
       timestamp: expect.any(Date),

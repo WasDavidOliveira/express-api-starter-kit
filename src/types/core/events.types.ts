@@ -38,4 +38,8 @@ export interface WelcomeEvent extends BaseEvent {
   };
 }
 
-export type AppEvent = ErrorEvent | NotificationEvent | ActivityLogEvent | WelcomeEvent;
+export type AppEvent =
+  | ErrorEvent
+  | NotificationEvent
+  | ActivityLogEvent
+  | WelcomeEvent;
