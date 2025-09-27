@@ -14,6 +14,7 @@ const createDatabaseUrl = (): string => {
 
 export const appConfig = {
   port: process.env.PORT ?? 3000,
+  name: process.env.APP_NAME ?? 'Starter Kit API',
   nodeEnv: process.env.NODE_ENV ?? 'development',
   corsAllowedOrigins: process.env.CORS_ALLOWED_ORIGINS?.split(',') ?? [
     'http://localhost:5173',

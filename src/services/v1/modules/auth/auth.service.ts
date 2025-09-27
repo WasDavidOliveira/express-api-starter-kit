@@ -1,6 +1,7 @@
 import appConfig from '@/configs/app.config';
 import { NotFoundError, UnauthorizedError } from '@/exceptions/app.exceptions';
 import UserRepository from '@/repositories/v1/modules/auth/user.repository';
+import { emitAppEvent } from '@/events';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import {
@@ -41,6 +42,15 @@ export class AuthService {
     const user = await UserRepository.create({
       ...userData,
       password: passwordHash,
+    });
+
+    emitAppEvent('welcome', {
+      type: 'welcome',
+      timestamp: new Date(),
+      data: {
+        email: user.email,
+        name: user.name,
+      },
     });
 
     return user;

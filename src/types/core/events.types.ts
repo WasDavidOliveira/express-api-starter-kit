@@ -30,4 +30,12 @@ export interface NotificationEvent extends BaseEvent {
   };
 }
 
-export type AppEvent = ErrorEvent | NotificationEvent | ActivityLogEvent;
+export interface WelcomeEvent extends BaseEvent {
+  type: 'welcome';
+  data: {
+    email: string;
+    name: string;
+  };
+}
+
+export type AppEvent = ErrorEvent | NotificationEvent | ActivityLogEvent | WelcomeEvent;
