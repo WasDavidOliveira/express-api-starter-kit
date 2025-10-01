@@ -1,9 +1,6 @@
 import { SQL } from 'drizzle-orm';
 
-interface IBaseRepository<
-  TModel,
-  TCreateModel extends Record<string, unknown>,
-> {
+interface IBaseRepository<TModel, TCreateModel extends object> {
   create(data: TCreateModel): Promise<TModel>;
   update(id: number, data: Partial<TCreateModel>): Promise<TModel>;
   findById(id: number): Promise<TModel | null>;

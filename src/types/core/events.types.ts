@@ -27,6 +27,7 @@ export interface NotificationEvent extends BaseEvent {
     level: 'success' | 'warning' | 'info' | 'error';
     color?: number;
     stack?: string;
+    metadata?: Record<string, unknown>;
   };
 }
 

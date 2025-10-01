@@ -6,14 +6,17 @@ import {
   NotificationEvent,
 } from '@/types/core/events.types';
 import { NotificationFactory } from '@/factories/notification/notification.factory';
+import { EventErrorWrapper } from '@/events/core/event-error-wrapper';
 
 export class NotificationManagerService extends BaseEventHandler {
   private static instance: NotificationManagerService | null = null;
-  private providers: BaseNotificationProvider[] = [];
+  protected providers: BaseNotificationProvider[] = [];
+  protected errorWrapper: EventErrorWrapper;
 
   protected constructor(providers: BaseNotificationProvider[]) {
     super();
     this.providers = providers;
+    this.errorWrapper = new EventErrorWrapper();
 
     this.setupEventListeners();
   }
@@ -33,12 +36,22 @@ export class NotificationManagerService extends BaseEventHandler {
       {
         eventType: 'error',
         handler: async (event: AppEvent) =>
-          this.sendErrorNotification(event as ErrorEvent),
+          this.errorWrapper.wrapEventHandler(
+            'error',
+            this.constructor.name,
+            this.sendErrorNotification.bind(this),
+            event as ErrorEvent,
+          ),
       },
       {
         eventType: 'notification',
         handler: async (event: AppEvent) =>
-          this.sendNotification(event as NotificationEvent),
+          this.errorWrapper.wrapEventHandler(
+            'notification',
+            this.constructor.name,
+            this.sendNotification.bind(this),
+            event as NotificationEvent,
+          ),
       },
     ];
   }

@@ -1,7 +1,6 @@
 import nodemailer from 'nodemailer';
-import { emailConfig } from '@/configs/providers/email.config';
 import { EmailMessage, EmailResponse } from '@/types/core/notification';
-import { appConfig } from '@/configs/app.config';
+import { emailConfig } from '@/configs/providers/email.config';
 
 export class EmailService {
   private transporter: nodemailer.Transporter | null = null;
@@ -263,7 +262,7 @@ export class EmailService {
               
               <p style="margin-top: 32px;">
                 Com carinho,<br>
-                <strong>Equipe ${process.env.EMAIL_FROM_NAME || 'Sistema'}</strong>
+                <strong>Equipe ${emailConfig.fromName ?? 'Sistema'}</strong>
               </p>
             </div>
             
@@ -275,7 +274,7 @@ export class EmailService {
               </div>
               
               <p>Este é um email automático, mas você pode responder se tiver dúvidas!</p>
-              <p>© ${new Date().getFullYear()} ${process.env.EMAIL_FROM_NAME || 'Sistema'}. Todos os direitos reservados.</p>
+              <p>© ${new Date().getFullYear()} ${emailConfig.fromName ?? 'Sistema'}. Todos os direitos reservados.</p>
             </div>
           </div>
         </body>
